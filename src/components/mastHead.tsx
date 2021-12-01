@@ -5,7 +5,12 @@ import sectionStore from "../stores/sectionStore";
 
 const StyledNavbar = styled(Navbar)`
   .navbar-brand {
-    margin-right: 0;
+    padding: 0;
+    margin: 0;
+    font-family: Amador;
+    font-size: 100px;
+    line-height: 100px;
+    -webkit-text-stroke: 2.5px rgb(168, 195, 217);
   }
 
   .navbar-text {
@@ -20,15 +25,7 @@ const NavigationBar = () => {
       bg="white"
       expand={false}>
       <Nav className="flex-column">
-        <Navbar.Brand href="/">
-          <img
-            className=""
-            src="/header.png"
-            width="420"
-            height="77"
-            alt="The Bullhorn"
-          />
-        </Navbar.Brand>
+        <Navbar.Brand href="/">The Bullhorn</Navbar.Brand>
       </Nav>
     </StyledNavbar>
   );

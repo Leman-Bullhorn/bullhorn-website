@@ -2,12 +2,12 @@ import React from "react";
 import { Card } from "react-bootstrap";
 import styled from "styled-components";
 
-import { IContributor } from "../types";
+import { IWriter } from "../types";
 import TimeStamp from "./timeStamp";
 
 interface ArticleProps {
   headline: string;
-  contributors: IContributor[];
+  contributors: IWriter[];
   creationDate: Date;
   imageUrl?: string;
   featured?: boolean;

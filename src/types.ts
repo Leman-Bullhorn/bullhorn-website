@@ -1,11 +1,11 @@
-export interface IContributor {
+export interface IWriter {
   firstName: string;
   lastName: string;
 }
 
 export interface IArticle {
   headline: string;
-  contributors: IContributor[];
+  contributors: IWriter[];
   creationDate: Date;
   imageUrl?: string;
   featured?: boolean;

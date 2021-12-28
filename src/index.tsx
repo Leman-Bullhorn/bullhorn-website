@@ -7,15 +7,20 @@ import { lightTheme } from "./theme";
 import { GlobalStyles } from "./global";
 import HomePage from "./pages/homePage";
 import NotFoundPage from "./pages/notFoundPage";
-import sectionsStore, { ISection } from "./stores/sectionStore";
-import articleStore, { IArticle } from "./stores/articleStore";
-import Contributor from "./contributor";
+import sectionsStore from "./stores/sectionStore";
+import articleStore from "./stores/articleStore";
+import { IContributor, ISection, IArticle } from "./types";
 import contributorStore from "./stores/contributorStore";
 
-const contributors = [
-  new Contributor("Max", "Glass"),
-
-  new Contributor("Jasper", "Dratt"),
+const contributors: IContributor[] = [
+  {
+    firstName: "Max",
+    lastName: "Glass",
+  },
+  {
+    firstName: "Jasper",
+    lastName: "Dratt",
+  },
 ];
 contributorStore.setContributors(contributors);
 

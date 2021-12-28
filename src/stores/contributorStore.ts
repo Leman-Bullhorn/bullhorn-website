@@ -1,17 +1,17 @@
-import Contributor from "../contributor";
+import { IContributor } from "../types";
 
 class ContributorStore {
-  private contributors: Contributor[] = [];
+  private contributors: IContributor[] = [];
 
   getContributors() {
     return this.contributors;
   }
 
-  setContributors(contributors: Contributor[]) {
+  setContributors(contributors: IContributor[]) {
     this.contributors = contributors;
   }
 
-  addContributor(contributor: Contributor) {
+  addContributor(contributor: IContributor) {
     this.contributors.push(contributor);
   }
 }

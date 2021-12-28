@@ -1,14 +1,4 @@
-import Contributor from "../contributor";
-import { ISection } from "./sectionStore";
-
-export interface IArticle {
-  headline: string;
-  contributors: Contributor[];
-  creationDate: Date;
-  imageUrl?: string;
-  featured?: boolean;
-  section: ISection;
-}
+import { IArticle } from "../types";
 
 class ArticleStore {
   private articles: IArticle[] = [];

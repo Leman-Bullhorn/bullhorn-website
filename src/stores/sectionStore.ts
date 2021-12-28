@@ -1,7 +1,4 @@
-export interface ISection {
-  name: string;
-  route: string;
-}
+import { ISection } from "../types";
 
 class SectionsStore {
   private sections: ISection[] = [];

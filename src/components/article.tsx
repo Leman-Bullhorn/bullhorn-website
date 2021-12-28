@@ -2,12 +2,12 @@ import React from "react";
 import { Card } from "react-bootstrap";
 import styled from "styled-components";
 
-import Contributor from "../contributor";
+import { IContributor } from "../types";
 import TimeStamp from "./timeStamp";
 
 interface ArticleProps {
   headline: string;
-  contributors: Contributor[];
+  contributors: IContributor[];
   creationDate: Date;
   imageUrl?: string;
   featured?: boolean;
@@ -72,11 +72,11 @@ export default class Article extends React.Component<ArticleProps> {
                 {this.props.contributors.map((contributor, idx) => {
                   return (
                     <Card.Link
-                      key={contributor.getHyphenatedName()}
-                      href={`/contributors/${contributor.getHyphenatedName()}`}>
+                      key={`${contributor.firstName}-${contributor.lastName}`}
+                      href={`/contributors/${contributor.firstName}-${contributor.lastName}`}>
                       {idx === this.props.contributors.length - 1
-                        ? `${contributor.getFirstName()} ${contributor.getLastName()}`
-                        : `${contributor.getFirstName()} ${contributor.getLastName()}, `}
+                        ? `${contributor.firstName} ${contributor.lastName}`
+                        : `${contributor.firstName} ${contributor.lastName}, `}
                     </Card.Link>
                   );
                 })}

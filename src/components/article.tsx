@@ -1,6 +1,7 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 import styled from "styled-components";
+import LinkContainer from "./linkContainer";
 
 import { IWriter } from "../types";
 import TimeStamp from "./timeStamp";
@@ -55,29 +56,36 @@ export default class Article extends React.Component<ArticleProps> {
         <Card border="white">
           <Card.Body>
             {this.props.imageUrl && (
-              <Card.Link
-                href={`/articles/${getArticleURL(this.props.headline)}`}>
-                <Card.Img variant="top" src={this.props.imageUrl} />
-              </Card.Link>
+              <LinkContainer
+                to={`/articles/${getArticleURL(this.props.headline)}`}>
+                <Card.Link>
+                  <Card.Img variant="top" src={this.props.imageUrl} />
+                </Card.Link>
+              </LinkContainer>
             )}
             <Card.Title>
-              <Card.Link
-                href={`/articles/${getArticleURL(this.props.headline)}`}>
-                {this.props.headline}
-              </Card.Link>
+              <LinkContainer
+                to={`/articles/${getArticleURL(this.props.headline)}`}>
+                <Card.Link
+                  href={`/articles/${getArticleURL(this.props.headline)}`}>
+                  {this.props.headline}
+                </Card.Link>
+              </LinkContainer>
             </Card.Title>
             <Card.Subtitle>
               <Card.Text>
                 By:{" "}
                 {this.props.contributors.map((contributor, idx) => {
                   return (
-                    <Card.Link
-                      key={`${contributor.firstName}-${contributor.lastName}`}
-                      href={`/contributors/${contributor.firstName}-${contributor.lastName}`}>
-                      {idx === this.props.contributors.length - 1
-                        ? `${contributor.firstName} ${contributor.lastName}`
-                        : `${contributor.firstName} ${contributor.lastName}, `}
-                    </Card.Link>
+                    <LinkContainer
+                      to={`/contributors/${contributor.firstName}-${contributor.lastName}`}
+                      key={`${contributor.firstName}-${contributor.lastName}`}>
+                      <Card.Link>
+                        {idx === this.props.contributors.length - 1
+                          ? `${contributor.firstName} ${contributor.lastName}`
+                          : `${contributor.firstName} ${contributor.lastName}, `}
+                      </Card.Link>
+                    </LinkContainer>
                   );
                 })}
               </Card.Text>

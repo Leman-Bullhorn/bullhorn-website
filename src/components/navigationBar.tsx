@@ -1,6 +1,7 @@
 import React from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import styled from "styled-components";
+import LinkContainer from "./linkContainer";
 import sectionStore from "../stores/sectionStore";
 
 const StyledNavbar = styled(Navbar)`
@@ -36,23 +37,24 @@ export default class NavigationBar extends React.Component<NavigationBarProps> {
         fixed="top"
         bg="light">
         <Container>
-          <Navbar.Brand href="/">
-            <img
-              src="/logo.png"
-              width="auto"
-              height="40px"
-              className="d-inline-block align-top"
-              alt=""
-            />
-          </Navbar.Brand>
+          <LinkContainer to="/">
+            <Navbar.Brand>
+              <img
+                src="/logo.png"
+                width="40px"
+                height="40px"
+                className="d-inline-block align-top"
+                alt=""
+              />
+            </Navbar.Brand>
+          </LinkContainer>
+
           <Nav fill as="ul">
             {sectionStore.getSections().map(section => (
               <Nav.Item as="li" key={section.route}>
-                <Nav.Link
-                  eventKey={section.route}
-                  href={`sections/${section.route}`}>
-                  {section.name}
-                </Nav.Link>
+                <LinkContainer to={`sections/${section.route}`}>
+                  <Nav.Link eventKey={section.route}>{section.name}</Nav.Link>
+                </LinkContainer>
               </Nav.Item>
             ))}
           </Nav>

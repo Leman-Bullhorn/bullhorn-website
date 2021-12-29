@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Container, Row, Nav, Navbar } from "react-bootstrap";
 import styled from "styled-components";
+import LinkContainer from "./linkContainer";
 import sectionStore from "../stores/sectionStore";
 
 const StyledNavbar = styled(Navbar)`
@@ -25,7 +26,9 @@ const NavigationBar = () => {
       bg="white"
       expand={false}>
       <Nav className="flex-column">
-        <Navbar.Brand href="/">The Bullhorn</Navbar.Brand>
+        <LinkContainer to="/">
+          <Navbar.Brand>The Bullhorn</Navbar.Brand>
+        </LinkContainer>
       </Nav>
     </StyledNavbar>
   );
@@ -121,11 +124,9 @@ const Masthead = (props: MastHeadProps) => {
         <Nav fill as="ul">
           {sectionStore.getSections().map(section => (
             <Nav.Item as="li" key={section.route}>
-              <StyledLink
-                eventKey={section.route}
-                href={`sections/${section.route}`}>
-                {section.name}
-              </StyledLink>
+              <LinkContainer to={`sections/${section.route}`}>
+                <StyledLink eventKey={section.route}>{section.name}</StyledLink>
+              </LinkContainer>
             </Nav.Item>
           ))}
         </Nav>

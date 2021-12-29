@@ -11,6 +11,7 @@ import sectionsStore from "./stores/sectionStore";
 import articleStore from "./stores/articleStore";
 import { IWriter, ISection, IArticle } from "./types";
 import contributorStore from "./stores/writerStore";
+import React from "react";
 
 const contributors: IWriter[] = [
   {
@@ -90,16 +91,18 @@ const articles: IArticle[] = [
 articleStore.setArticles(articles);
 
 ReactDOM.render(
-  <ThemeProvider theme={lightTheme}>
-    <>
-      <GlobalStyles />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </BrowserRouter>
-    </>
-  </ThemeProvider>,
+  <React.StrictMode>
+    <ThemeProvider theme={lightTheme}>
+      <>
+        <GlobalStyles />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </BrowserRouter>
+      </>
+    </ThemeProvider>
+  </React.StrictMode>,
   document.getElementById("root"),
 );

@@ -37,7 +37,7 @@ export default class NavigationBar extends React.Component<NavigationBarProps> {
         fixed="top"
         bg="light">
         <Container>
-          <LinkContainer to="/">
+          <LinkContainer to="/" onClick={() => window.scrollTo(0, 0)}>
             <Navbar.Brand>
               <img
                 src="/logo.png"

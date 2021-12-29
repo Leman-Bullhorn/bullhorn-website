@@ -26,7 +26,7 @@ const NavigationBar = () => {
       bg="white"
       expand={false}>
       <Nav className="flex-column">
-        <LinkContainer to="/">
+        <LinkContainer to="/" onClick={() => window.scrollTo(0, 0)}>
           <Navbar.Brand>The Bullhorn</Navbar.Brand>
         </LinkContainer>
       </Nav>

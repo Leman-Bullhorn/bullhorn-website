@@ -1,7 +1,7 @@
 import React from "react";
 import NavigationBar from "../components/navigationBar";
 
-export default class HomePage extends React.Component {
+export default class NotFoundPage extends React.Component {
   render() {
     return (
       <>

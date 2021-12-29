@@ -5,7 +5,7 @@ export interface IWriter {
 
 export interface IArticle {
   headline: string;
-  contributors: IWriter[];
+  writers: IWriter[];
   creationDate: Date;
   imageUrl?: string;
   featured?: boolean;

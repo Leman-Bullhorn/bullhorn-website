@@ -10,10 +10,10 @@ import NotFoundPage from "./pages/notFoundPage";
 import sectionsStore from "./stores/sectionStore";
 import articleStore from "./stores/articleStore";
 import { IWriter, ISection, IArticle } from "./types";
-import contributorStore from "./stores/writerStore";
+import writerStore from "./stores/writerStore";
 import React from "react";
 
-const contributors: IWriter[] = [
+const writers: IWriter[] = [
   {
     firstName: "Max",
     lastName: "Glass",
@@ -23,7 +23,7 @@ const contributors: IWriter[] = [
     lastName: "Dratt",
   },
 ];
-contributorStore.setWriters(contributors);
+writerStore.setWriters(writers);
 
 const sections: ISection[] = [
   {
@@ -60,7 +60,7 @@ sectionsStore.setSections(sections);
 const articles: IArticle[] = [
   {
     headline: "Featured Article",
-    contributors: contributorStore.getWriters(),
+    writers: writerStore.getWriters(),
     creationDate: new Date(Date.now() - 24 * 60 * 30 * 60000),
     imageUrl:
       "https://ichef.bbci.co.uk/news/976/cpsprodpb/13F00/production/_95146618_bills.jpg",
@@ -69,13 +69,13 @@ const articles: IArticle[] = [
   },
   {
     headline: "Random Article",
-    contributors: [contributorStore.getWriters()[0]],
+    writers: [writerStore.getWriters()[0]],
     creationDate: new Date(Date.now() - 1 * 60000),
     section: sectionsStore.getSections()[1],
   },
   {
     headline: "Random Article 2",
-    contributors: [contributorStore.getWriters()[0]],
+    writers: [writerStore.getWriters()[0]],
     imageUrl:
       "https://ichef.bbci.co.uk/news/976/cpsprodpb/13F00/production/_95146618_bills.jpg",
     creationDate: new Date(Date.now() - 60 * 60000),
@@ -83,7 +83,7 @@ const articles: IArticle[] = [
   },
   {
     headline: "Maybe this column should be opinions?",
-    contributors: [contributorStore.getWriters()[0]],
+    writers: [writerStore.getWriters()[0]],
     creationDate: new Date(Date.now() - 30 * 60000),
     section: sectionsStore.getSections()[3],
   },

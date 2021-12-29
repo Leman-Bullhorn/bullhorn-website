@@ -8,7 +8,7 @@ import TimeStamp from "./timeStamp";
 
 interface ArticleProps {
   headline: string;
-  contributors: IWriter[];
+  writers: IWriter[];
   creationDate: Date;
   imageUrl?: string;
   featured?: boolean;
@@ -75,15 +75,15 @@ export default class Article extends React.Component<ArticleProps> {
             <Card.Subtitle>
               <Card.Text>
                 By:{" "}
-                {this.props.contributors.map((contributor, idx) => {
+                {this.props.writers.map((writer, idx) => {
                   return (
                     <LinkContainer
-                      to={`/contributors/${contributor.firstName}-${contributor.lastName}`}
-                      key={`${contributor.firstName}-${contributor.lastName}`}>
+                      to={`/writers/${writer.firstName}-${writer.lastName}`}
+                      key={`${writer.firstName}-${writer.lastName}`}>
                       <Card.Link>
-                        {idx === this.props.contributors.length - 1
-                          ? `${contributor.firstName} ${contributor.lastName}`
-                          : `${contributor.firstName} ${contributor.lastName}, `}
+                        {idx === this.props.writers.length - 1
+                          ? `${writer.firstName} ${writer.lastName}`
+                          : `${writer.firstName} ${writer.lastName}, `}
                       </Card.Link>
                     </LinkContainer>
                   );

@@ -3,16 +3,8 @@ import { Card } from "react-bootstrap";
 import styled from "styled-components";
 import LinkContainer from "./linkContainer";
 
-import { IWriter } from "../types";
+import { IArticle } from "../types";
 import TimeStamp from "./timeStamp";
-
-interface ArticleProps {
-  headline: string;
-  writers: IWriter[];
-  creationDate: Date;
-  imageUrl?: string;
-  featured?: boolean;
-}
 
 const Styles = styled.div`
   font-family: serif;
@@ -49,7 +41,7 @@ const getArticleURL = (articleName: string) => {
   return articleName.replace(/[^A-Za-z0-9 -]/g, "").replaceAll(" ", "-");
 };
 
-export default class Article extends React.Component<ArticleProps> {
+export default class Article extends React.Component<IArticle> {
   render() {
     return (
       <Styles>
@@ -63,6 +55,7 @@ export default class Article extends React.Component<ArticleProps> {
                 </Card.Link>
               </LinkContainer>
             )}
+
             <Card.Title>
               <LinkContainer
                 to={`/articles/${getArticleURL(this.props.headline)}`}>
@@ -72,13 +65,14 @@ export default class Article extends React.Component<ArticleProps> {
                 </Card.Link>
               </LinkContainer>
             </Card.Title>
+
             <Card.Subtitle>
               <Card.Text>
                 By:{" "}
                 {this.props.writers.map((writer, idx) => {
                   return (
                     <LinkContainer
-                      to={`/writers/${writer.firstName}-${writer.lastName}`}
+                      to={`/writer/${writer.firstName}-${writer.lastName}`}
                       key={`${writer.firstName}-${writer.lastName}`}>
                       <Card.Link>
                         {idx === this.props.writers.length - 1
@@ -89,6 +83,10 @@ export default class Article extends React.Component<ArticleProps> {
                   );
                 })}
               </Card.Text>
+
+              {this.props.preview && (
+                <Card.Text>{this.props.preview}</Card.Text>
+              )}
 
               <Card.Text className="text-muted">
                 <TimeStamp originalDate={this.props.creationDate} />

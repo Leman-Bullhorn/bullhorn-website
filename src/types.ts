@@ -1,6 +1,9 @@
 export interface IWriter {
+  id: number;
   firstName: string;
   lastName: string;
+  bio: string;
+  title: string;
 }
 
 export interface IArticle {
@@ -9,6 +12,7 @@ export interface IArticle {
   creationDate: Date;
   imageUrl?: string;
   featured?: boolean;
+  preview?: string;
   section: ISection;
 }
 

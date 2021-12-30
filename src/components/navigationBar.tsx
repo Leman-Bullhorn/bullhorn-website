@@ -24,42 +24,58 @@ const StyledNavbar = styled(Navbar)`
   }
 `;
 
+const NavbarCollapse = styled(Navbar.Collapse)`
+  flex-grow: 0;
+`;
+
 interface NavigationBarProps {
   visible?: boolean;
+  buffer?: boolean;
 }
 
 export default class NavigationBar extends React.Component<NavigationBarProps> {
   render() {
     const visible = this.props.visible ?? true;
+    const buffer = this.props.buffer ?? true;
     return (
-      <StyledNavbar
-        className={`${visible ? "styled-nav-visible" : "styled-nav-hidden"}`}
-        fixed="top"
-        bg="light">
-        <Container>
-          <LinkContainer to="/" onClick={() => window.scrollTo(0, 0)}>
-            <Navbar.Brand>
-              <img
-                src="/logo.png"
-                width="40px"
-                height="40px"
-                className="d-inline-block align-top"
-                alt=""
-              />
-            </Navbar.Brand>
-          </LinkContainer>
-
-          <Nav fill as="ul">
-            {sectionStore.getSections().map(section => (
-              <Nav.Item as="li" key={section.route}>
-                <LinkContainer to={`sections/${section.route}`}>
-                  <Nav.Link eventKey={section.route}>{section.name}</Nav.Link>
-                </LinkContainer>
-              </Nav.Item>
-            ))}
-          </Nav>
-        </Container>
-      </StyledNavbar>
+      <>
+        <StyledNavbar
+          className={`${visible ? "styled-nav-visible" : "styled-nav-hidden"}`}
+          fixed="top"
+          bg="light"
+          expand="md">
+          <Container>
+            <Nav className="me-auto">
+              <LinkContainer to="/" onClick={() => window.scrollTo(0, 0)}>
+                <Navbar.Brand>
+                  <img
+                    src="/logo.png"
+                    width="40px"
+                    height="40px"
+                    className="d-inline-block align-top"
+                    alt=""
+                  />
+                </Navbar.Brand>
+              </LinkContainer>
+            </Nav>
+            <Navbar.Toggle aria-controls="responsive-navbar" />
+            <NavbarCollapse id="responsive-navbar">
+              <Nav as="ul">
+                {sectionStore.getSections().map(section => (
+                  <Nav.Item as="li" key={section.route}>
+                    <LinkContainer to={`sections/${section.route}`}>
+                      <Nav.Link eventKey={section.route}>
+                        {section.name}
+                      </Nav.Link>
+                    </LinkContainer>
+                  </Nav.Item>
+                ))}
+              </Nav>
+            </NavbarCollapse>
+          </Container>
+        </StyledNavbar>
+        {buffer && <div style={{ height: "50px" }} />}
+      </>
     );
   }
 }

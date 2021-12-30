@@ -21,7 +21,10 @@ function getFormattedDate(
   const month = MONTH_NAMES[date.getMonth()];
   const year = date.getFullYear();
   let ampmString = date.getHours() > 12 ? "PM" : "AM";
-  const hours = date.getHours() > 12 ? date.getHours() % 12 : date.getHours();
+  let hours = date.getHours() > 12 ? date.getHours() % 12 : date.getHours();
+  if (hours === 0) {
+    hours = 12;
+  }
 
   let minutes: number | string = date.getMinutes();
 

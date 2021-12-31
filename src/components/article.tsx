@@ -69,19 +69,12 @@ export default class Article extends React.Component<IArticle> {
             <Card.Subtitle>
               <Card.Text>
                 By:{" "}
-                {this.props.writers.map((writer, idx) => {
-                  return (
-                    <LinkContainer
-                      to={`/writer/${writer.firstName}-${writer.lastName}`}
-                      key={`${writer.firstName}-${writer.lastName}`}>
-                      <Card.Link>
-                        {idx === this.props.writers.length - 1
-                          ? `${writer.firstName} ${writer.lastName}`
-                          : `${writer.firstName} ${writer.lastName}, `}
-                      </Card.Link>
-                    </LinkContainer>
-                  );
-                })}
+                <LinkContainer
+                  to={`/writer/${this.props.writer.firstName}-${this.props.writer.lastName}`}>
+                  <Card.Link>
+                    {this.props.writer.firstName} {this.props.writer.lastName}
+                  </Card.Link>
+                </LinkContainer>
               </Card.Text>
 
               {this.props.preview && (
@@ -89,7 +82,7 @@ export default class Article extends React.Component<IArticle> {
               )}
 
               <Card.Text className="text-muted">
-                <TimeStamp originalDate={this.props.creationDate} />
+                <TimeStamp originalDate={this.props.publicationDate} />
               </Card.Text>
             </Card.Subtitle>
           </Card.Body>

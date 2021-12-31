@@ -43,7 +43,7 @@ function getFormattedDate(
   return `${month} ${day}, ${year}`;
 }
 
-export const timeSince = (dateParam: Date) => {
+export const timeSince = (dateParam: Date | string) => {
   if (!dateParam) {
     return null;
   }

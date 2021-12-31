@@ -7,13 +7,15 @@ export interface IWriter {
 }
 
 export interface IArticle {
+  id: number;
   headline: string;
-  writers: IWriter[];
-  creationDate: Date;
+  body: string;
+  writer: IWriter;
+  publicationDate: Date;
   imageUrl?: string;
   featured?: boolean;
   preview?: string;
-  section: ISection;
+  section?: ISection;
 }
 
 export interface ISection {

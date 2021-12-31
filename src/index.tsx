@@ -6,24 +6,11 @@ import { ThemeProvider } from "styled-components";
 import { lightTheme } from "./theme";
 import { GlobalStyles } from "./global";
 import HomePage from "./pages/homePage";
+import WriterPage from "./pages/writerPage";
 import NotFoundPage from "./pages/notFoundPage";
 import sectionsStore from "./stores/sectionStore";
-import articleStore from "./stores/articleStore";
-import { IWriter, ISection, IArticle } from "./types";
-import writerStore from "./stores/writerStore";
+import { ISection } from "./types";
 import React from "react";
-
-const writers: IWriter[] = [
-  {
-    firstName: "Max",
-    lastName: "Glass",
-  },
-  {
-    firstName: "Jasper",
-    lastName: "Dratt",
-  },
-];
-writerStore.setWriters(writers);
 
 const sections: ISection[] = [
   {
@@ -57,38 +44,52 @@ const sections: ISection[] = [
 ];
 sectionsStore.setSections(sections);
 
-const articles: IArticle[] = [
-  {
-    headline: "Featured Article",
-    writers: writerStore.getWriters(),
-    creationDate: new Date(Date.now() - 24 * 60 * 30 * 60000),
-    imageUrl:
-      "https://ichef.bbci.co.uk/news/976/cpsprodpb/13F00/production/_95146618_bills.jpg",
-    featured: false,
-    section: sectionsStore.getSections()[0],
-  },
-  {
-    headline: "Random Article",
-    writers: [writerStore.getWriters()[0]],
-    creationDate: new Date(Date.now() - 1 * 60000),
-    section: sectionsStore.getSections()[1],
-  },
-  {
-    headline: "Random Article 2",
-    writers: [writerStore.getWriters()[0]],
-    imageUrl:
-      "https://ichef.bbci.co.uk/news/976/cpsprodpb/13F00/production/_95146618_bills.jpg",
-    creationDate: new Date(Date.now() - 60 * 60000),
-    section: sectionsStore.getSections()[2],
-  },
-  {
-    headline: "Maybe this column should be opinions?",
-    writers: [writerStore.getWriters()[0]],
-    creationDate: new Date(Date.now() - 30 * 60000),
-    section: sectionsStore.getSections()[3],
-  },
-];
-articleStore.setArticles(articles);
+// const articles: IArticle[] = [
+//   {
+//     id: 1,
+//     headline: "Featured Article",
+//     body: "This is a test body",
+//     writer: writerStore.getWriters()[0],
+//     publicationDate: new Date(Date.now() - 24 * 60 * 30 * 60000),
+//     imageUrl:
+//       "https://ichef.bbci.co.uk/news/976/cpsprodpb/13F00/production/_95146618_bills.jpg",
+//     featured: false,
+//     section: sectionsStore.getSections()[0],
+//     preview:
+//       "Stuyvesant Model UN hosted MiniMUNC, their first in-person conference since the beginning of the pandemic",
+//   },
+//   {
+//     id: 2,
+//     headline: "Random Article",
+//     body: "This is a test body",
+//     writer: writerStore.getWriters()[0],
+//     publicationDate: new Date(Date.now() - 1 * 60000),
+//     section: sectionsStore.getSections()[1],
+//     preview:
+//       "Stuyvesant Model UN hosted MiniMUNC, their first in-person conference since the beginning of the pandemic",
+//   },
+//   {
+//     id: 3,
+//     headline: "Random Article 2",
+//     body: "This is a test body",
+//     writer: writerStore.getWriters()[1],
+//     imageUrl:
+//       "https://ichef.bbci.co.uk/news/976/cpsprodpb/13F00/production/_95146618_bills.jpg",
+//     publicationDate: new Date(Date.now() - 60 * 60000),
+//     section: sectionsStore.getSections()[2],
+//     preview:
+//       "Stuyvesant Model UN hosted MiniMUNC, their first in-person conference since the beginning of the pandemic",
+//   },
+//   {
+//     id: 4,
+//     headline: "Maybe this column should be opinions?",
+//     body: "This is a test body",
+//     writer: writerStore.getWriters()[0],
+//     publicationDate: new Date(Date.now() - 30 * 60000),
+//     section: sectionsStore.getSections()[3],
+//   },
+// ];
+// articleStore.setArticles(articles);
 
 ReactDOM.render(
   <React.StrictMode>
@@ -98,6 +99,7 @@ ReactDOM.render(
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/writer/:writerName" element={<WriterPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>

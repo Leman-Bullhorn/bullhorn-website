@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, Nav, Container } from "react-bootstrap";
+import { Navbar, Nav, Container, Col } from "react-bootstrap";
 import styled from "styled-components";
 import LinkContainer from "./linkContainer";
 import sectionStore from "../stores/sectionStore";
@@ -12,6 +12,7 @@ const StyledNavbar = styled(Navbar)`
   box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.28);
   padding-bottom: 0px;
   padding-top: 0px;
+  flex-wrap: wrap;
 
   &.styled-nav-visible {
     visibility: visible;
@@ -22,6 +23,15 @@ const StyledNavbar = styled(Navbar)`
     visibility: hidden;
     transform: translateY(-70px);
   }
+`;
+
+const StyledBullhornText = styled.p`
+  font-family: "amador";
+  font-size: 30px;
+  margin-bottom: 0;
+  line-height: 0.8;
+  margin-top: 0.5rem;
+  cursor: pointer;
 `;
 
 const NavbarCollapse = styled(Navbar.Collapse)`
@@ -44,7 +54,14 @@ export default class NavigationBar extends React.Component<NavigationBarProps> {
           fixed="top"
           bg="light"
           expand="md">
-          <Container>
+          <Container fluid>
+            <Col xs={2} />
+            <LinkContainer to="/" onClick={() => window.scrollTo(0, 0)}>
+              <StyledBullhornText>The Bullhorn</StyledBullhornText>
+            </LinkContainer>
+            <Col xs={2} />
+          </Container>
+          <Container fluid>
             <Nav className="me-auto">
               <LinkContainer to="/" onClick={() => window.scrollTo(0, 0)}>
                 <Navbar.Brand>

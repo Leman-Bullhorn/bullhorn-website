@@ -34,10 +34,6 @@ const StyledBullhornText = styled.p`
   cursor: pointer;
 `;
 
-const NavbarCollapse = styled(Navbar.Collapse)`
-  flex-grow: 0;
-`;
-
 interface NavigationBarProps {
   visible?: boolean;
   buffer?: boolean;
@@ -55,29 +51,38 @@ export default class NavigationBar extends React.Component<NavigationBarProps> {
           bg="light"
           expand="md">
           <Container fluid>
-            <Col xs={2} />
+            <Col xs={2}>
+              <Nav className="me-auto">
+                <LinkContainer to="/" onClick={() => window.scrollTo(0, 0)}>
+                  <Navbar.Brand>
+                    <img
+                      src="/logo.png"
+                      width="40px"
+                      height="40px"
+                      className="d-inline-block align-top"
+                      alt=""
+                    />
+                  </Navbar.Brand>
+                </LinkContainer>
+              </Nav>
+            </Col>
             <LinkContainer to="/" onClick={() => window.scrollTo(0, 0)}>
               <StyledBullhornText>The Bullhorn</StyledBullhornText>
             </LinkContainer>
-            <Col xs={2} />
+            <Col xs={2}>
+              <Navbar.Toggle aria-controls="responsive-navbar" />
+            </Col>
           </Container>
-          <Container fluid>
-            <Nav className="me-auto">
-              <LinkContainer to="/" onClick={() => window.scrollTo(0, 0)}>
-                <Navbar.Brand>
-                  <img
-                    src="/logo.png"
-                    width="40px"
-                    height="40px"
-                    className="d-inline-block align-top"
-                    alt=""
-                  />
-                </Navbar.Brand>
-              </LinkContainer>
-            </Nav>
-            <Navbar.Toggle aria-controls="responsive-navbar" />
-            <NavbarCollapse id="responsive-navbar">
-              <Nav as="ul">
+
+          <Container
+            fluid
+            className="flex-nowrap"
+            style={{ flexWrap: "nowrap" }}>
+            <Col xs={0} md={2} />
+            <Navbar.Collapse id="responsive-navbar" className="flex-grow-0">
+              <Nav
+                as="ul"
+                className="flex-grow-1 justify-content-center flex-shrink-0">
                 {sectionStore.getSections().map(section => (
                   <Nav.Item as="li" key={section.route}>
                     <LinkContainer to={`sections/${section.route}`}>
@@ -88,10 +93,12 @@ export default class NavigationBar extends React.Component<NavigationBarProps> {
                   </Nav.Item>
                 ))}
               </Nav>
-            </NavbarCollapse>
+            </Navbar.Collapse>
+            <Col xs={2} />
           </Container>
         </StyledNavbar>
-        {buffer && <div style={{ height: "50px" }} />}
+
+        {buffer && <div style={{ height: "90px" }} />}
       </>
     );
   }

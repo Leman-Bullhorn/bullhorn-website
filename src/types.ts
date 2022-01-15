@@ -12,9 +12,9 @@ export interface IArticle {
   body: string;
   writer: IWriter;
   publicationDate: Date;
-  imageUrl?: string;
+  imageUrl: string;
   featured?: boolean;
-  preview?: string;
+  preview: string;
   section?: ISection;
 }
 

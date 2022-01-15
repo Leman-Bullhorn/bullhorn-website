@@ -15,3 +15,13 @@ export const getArticlesByWriterId = async (writerId: number) => {
   );
   return response.data;
 };
+
+export const getArticles = async (limit?: number) => {
+  let response = await axios.get<IArticle[]>(`${BASE_URL}/articles`, {
+    params: {
+      limit: limit ?? 10,
+    },
+  });
+
+  return response.data;
+};

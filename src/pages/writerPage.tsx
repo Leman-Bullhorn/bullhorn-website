@@ -7,12 +7,17 @@ import { getWriterByName, getArticlesByWriterId } from "../api/requests";
 import { IArticle, IWriter } from "../types";
 import styled from "styled-components";
 import articleStore from "../stores/articleStore";
-import Article from "../components/article";
+import { ArticleBlock } from "../components/articleBlock";
 
 const BioContainer = styled(Container)`
   margin-top: 50px;
   border-bottom: 1px solid
     rgba(${({ theme }) => theme.lemanColorComponents}, 0.4);
+`;
+
+const BorderedDiv = styled.div`
+  border-right: 1px solid #dddddd;
+  padding-right: 50px;
 `;
 
 export default function WriterPage() {
@@ -87,7 +92,7 @@ export default function WriterPage() {
     return () => {
       abortController.abort(); // cancel pending fetch request on component unmount
     };
-  });
+  }, [writerName]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -107,8 +112,6 @@ export default function WriterPage() {
     );
   }
 
-  console.log(recentArticles);
-
   return (
     <>
       <NavigationBar />
@@ -124,11 +127,24 @@ export default function WriterPage() {
         <Row>
           <p>Recent Articles</p>
         </Row>
-        {recentArticles.map(article => (
-          <Row key={article.id}>
-            <Article {...article} />
-          </Row>
-        ))}
+
+        {/* hide on screens smaller than than md */}
+        <BorderedDiv style={{ maxWidth: "70%" }} className="d-none d-md-block">
+          {recentArticles.map(article => (
+            <Row key={`${article.id}`}>
+              <ArticleBlock {...article} />
+            </Row>
+          ))}
+        </BorderedDiv>
+        {/* hide on screens larger than or equal to md */}
+        <BorderedDiv className="d-md-none">
+          {recentArticles.map(article => (
+            <Row key={`${article.id}`}>
+              <ArticleBlock {...article} />
+            </Row>
+          ))}
+        </BorderedDiv>
+
         <Row>
           <Button
             onClick={updateRecentArticles}

@@ -19,6 +19,7 @@ export interface IArticle {
 }
 
 export interface ISection {
+  id: number;
   name: string;
-  route: string;
+  permalink: string;
 }

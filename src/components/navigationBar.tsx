@@ -3,6 +3,7 @@ import { Navbar, Nav, Container, Col } from "react-bootstrap";
 import styled from "styled-components";
 import LinkContainer from "./linkContainer";
 import sectionStore from "../stores/sectionStore";
+import { ISection } from "../types";
 
 const StyledNavbar = styled(Navbar)`
   transition-property: all;
@@ -39,7 +40,29 @@ interface NavigationBarProps {
   buffer?: boolean;
 }
 
-export default class NavigationBar extends React.Component<NavigationBarProps> {
+interface NavigationBarState {
+  loadedSections: ISection[];
+}
+
+export default class NavigationBar extends React.Component<
+  NavigationBarProps,
+  NavigationBarState
+> {
+  constructor(props: NavigationBarProps) {
+    super(props);
+    this.state = { loadedSections: [] };
+  }
+
+  async componentDidMount() {
+    try {
+      this.setState({
+        loadedSections: await sectionStore.getSectionsOrRequest(),
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   render() {
     const visible = this.props.visible ?? true;
     const buffer = this.props.buffer ?? true;
@@ -83,15 +106,16 @@ export default class NavigationBar extends React.Component<NavigationBarProps> {
               <Nav
                 as="ul"
                 className="flex-grow-1 justify-content-center flex-shrink-0">
-                {sectionStore.getSections().map(section => (
-                  <Nav.Item as="li" key={section.route}>
-                    <LinkContainer to={`sections/${section.route}`}>
-                      <Nav.Link eventKey={section.route}>
-                        {section.name}
-                      </Nav.Link>
-                    </LinkContainer>
-                  </Nav.Item>
-                ))}
+                {this.state.loadedSections &&
+                  this.state.loadedSections.map(section => (
+                    <Nav.Item as="li" key={section.permalink}>
+                      <LinkContainer to={section.permalink}>
+                        <Nav.Link eventKey={section.permalink}>
+                          {section.name}
+                        </Nav.Link>
+                      </LinkContainer>
+                    </Nav.Item>
+                  ))}
               </Nav>
             </Navbar.Collapse>
             <Col xs={2} />

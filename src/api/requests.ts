@@ -1,5 +1,5 @@
 import { BASE_URL, axios } from "./utils";
-import { IWriter, IArticle } from "../types";
+import { IWriter, IArticle, ISection } from "../types";
 
 export const getWriterByName = async (hyphenateName: string) => {
   let response = await axios.get<IWriter>(
@@ -22,6 +22,12 @@ export const getArticles = async (limit?: number) => {
       limit: limit ?? 10,
     },
   });
+
+  return response.data;
+};
+
+export const getSections = async () => {
+  let response = await axios.get<ISection[]>(`${BASE_URL}/sections`);
 
   return response.data;
 };

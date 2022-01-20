@@ -3,6 +3,7 @@ import { Container, Row, Nav, Navbar } from "react-bootstrap";
 import styled from "styled-components";
 import LinkContainer from "./linkContainer";
 import sectionStore from "../stores/sectionStore";
+import { ISection } from "../types";
 
 const StyledNavbar = styled(Navbar)`
   .navbar-brand {
@@ -100,11 +101,27 @@ interface MastHeadProps {
 }
 
 const Masthead = (props: MastHeadProps) => {
+  const [activeSections, setActiveSections] = useState<ISection[]>([]);
+
   const ref: any = useRef();
   const isVisible = useOnScreen(ref);
 
   useEffect(() => {
     props.changeVisibility?.(isVisible);
+
+    const abortController = new AbortController();
+
+    void (async function () {
+      try {
+        setActiveSections(await sectionStore.getSectionsOrRequest());
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+
+    return () => {
+      abortController.abort();
+    };
   }, [isVisible, props]);
 
   return (
@@ -122,13 +139,16 @@ const Masthead = (props: MastHeadProps) => {
       </Styles>
       <BorderedRow>
         <Nav fill as="ul">
-          {sectionStore.getSections().map(section => (
-            <Nav.Item as="li" key={section.route}>
-              <LinkContainer to={`sections/${section.route}`}>
-                <StyledLink eventKey={section.route}>{section.name}</StyledLink>
-              </LinkContainer>
-            </Nav.Item>
-          ))}
+          {activeSections &&
+            activeSections.map(section => (
+              <Nav.Item as="li" key={section.permalink}>
+                <LinkContainer to={section.permalink}>
+                  <StyledLink eventKey={section.permalink}>
+                    {section.name}
+                  </StyledLink>
+                </LinkContainer>
+              </Nav.Item>
+            ))}
         </Nav>
       </BorderedRow>
     </Container>

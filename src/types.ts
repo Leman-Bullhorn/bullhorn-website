@@ -15,7 +15,7 @@ export interface IArticle {
   imageUrl: string;
   featured?: boolean;
   preview: string;
-  section?: ISection;
+  section: ISection;
 }
 
 export interface ISection {

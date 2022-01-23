@@ -9,6 +9,12 @@ export const getWriterByName = async (hyphenateName: string) => {
   return response.data;
 };
 
+export const getArticleBySlug = async (slug: string) => {
+  let response = await axios.get<IArticle>(`${BASE_URL}/articles/${slug}`);
+
+  return response.data;
+};
+
 export const getArticlesByWriterId = async (writerId: number) => {
   let response = await axios.get<IArticle[]>(
     `${BASE_URL}/writers/${writerId}/articles`,

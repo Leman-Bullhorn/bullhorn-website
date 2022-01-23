@@ -9,6 +9,7 @@ export interface IWriter {
 export interface IArticle {
   id: number;
   headline: string;
+  slug: string;
   body: string;
   writer: IWriter;
   publicationDate: Date;

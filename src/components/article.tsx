@@ -37,19 +37,18 @@ const Styles = styled.div`
   }
 `;
 
-const getArticleURL = (articleName: string) => {
-  return articleName.replace(/[^A-Za-z0-9 -]/g, "").replaceAll(" ", "-");
-};
-
 export default class Article extends React.Component<IArticle> {
   render() {
+    const sectionName = this.props.section.name.toLowerCase();
+    const articleUrl = `/article/${sectionName}/${this.props.slug}`;
+    const writerUrl = `/writer/${this.props.writer.firstName}-${this.props.writer.lastName}`;
+
     return (
       <Styles>
-        <Card border="white">
+        <Card>
           <Card.Body>
             {this.props.imageUrl && (
-              <LinkContainer
-                to={`/articles/${getArticleURL(this.props.headline)}`}>
+              <LinkContainer to={articleUrl}>
                 <Card.Link>
                   <Card.Img variant="top" src={this.props.imageUrl} />
                 </Card.Link>
@@ -57,20 +56,15 @@ export default class Article extends React.Component<IArticle> {
             )}
 
             <Card.Title>
-              <LinkContainer
-                to={`/articles/${getArticleURL(this.props.headline)}`}>
-                <Card.Link
-                  href={`/articles/${getArticleURL(this.props.headline)}`}>
-                  {this.props.headline}
-                </Card.Link>
+              <LinkContainer to={articleUrl}>
+                <Card.Link href={articleUrl}>{this.props.headline}</Card.Link>
               </LinkContainer>
             </Card.Title>
 
             <Card.Subtitle>
               <Card.Text>
                 By:{" "}
-                <LinkContainer
-                  to={`/writer/${this.props.writer.firstName}-${this.props.writer.lastName}`}>
+                <LinkContainer to={writerUrl}>
                   <Card.Link>
                     {this.props.writer.firstName} {this.props.writer.lastName}
                   </Card.Link>

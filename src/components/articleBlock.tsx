@@ -10,12 +10,40 @@ const BorderedDiv = styled.div`
   padding-bottom: 20px;
 `;
 
+const StyledLink = styled(Link)`
+  color: black;
+  text-decoration: none;
+  margin-left: 0;
+  margin-right: 0;
+
+  :hover {
+    color: rgb(${({ theme }) => theme.lemanColorComponents});
+    text-decoration: underline;
+  }
+`;
+
+const StyledImg = styled.img`
+  transition: opacity 0.25s ease-in-out;
+  border-radius: calc(0.25rem - 1px);
+
+  :hover,
+  :hover {
+    opacity: 0.7;
+  }
+`;
+
 export const ArticleBlock = (props: IArticle) => {
+  const sectionName = props.section.name.toLowerCase();
+  const articleUrl = `/article/${sectionName}/${props.slug}`;
+
   return (
     <BorderedDiv>
       <Row>
         <Col>
-          <h3 className="fw-bolder">{props.headline}</h3>
+          <h3 className="fw-bolder">
+            <StyledLink to={articleUrl}>{props.headline}</StyledLink>
+          </h3>
+
           {props.preview && <p>{props.preview}</p>}
           <p className="text-muted">
             <TimeStamp originalDate={props.publicationDate} />
@@ -26,7 +54,7 @@ export const ArticleBlock = (props: IArticle) => {
             <Link
               to={`/article/${props.section.name.toLowerCase()}/${props.slug}`}>
               <figure>
-                <img width="100%" src={props.imageUrl} alt="" />
+                <StyledImg width="100%" src={props.imageUrl} alt="" />
               </figure>
             </Link>
           )}

@@ -7,7 +7,7 @@ import { ISection } from "../types";
 
 const StyledNavbar = styled(Navbar)`
   transition-property: all;
-  transition-duration: 0.5s;
+  transition-duration: 0.25s;
   transition-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
   transition-delay: 0s;
   box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.28);
@@ -22,7 +22,7 @@ const StyledNavbar = styled(Navbar)`
 
   &.styled-nav-hidden {
     visibility: hidden;
-    transform: translateY(-70px);
+    transform: translateY(-100%);
   }
 `;
 

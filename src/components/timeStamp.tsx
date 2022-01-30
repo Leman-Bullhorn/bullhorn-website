@@ -28,6 +28,10 @@ export default class TimeStamp extends React.Component<
     clearInterval(this.interval);
   }
   render() {
-    return timeSince(this.props.originalDate);
+    return (
+      <time dateTime={this.props.originalDate.toLocaleString()}>
+        {timeSince(this.props.originalDate)}
+      </time>
+    );
   }
 }

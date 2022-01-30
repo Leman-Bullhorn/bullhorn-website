@@ -3,23 +3,12 @@ import styled from "styled-components";
 import { Col, Row } from "react-bootstrap";
 import TimeStamp from "./timeStamp";
 import { Link } from "react-router-dom";
+import { ThemedLink } from "./themedLink";
 
 const BorderedDiv = styled.div`
   border-bottom: 1px solid #dddddd;
   margin-bottom: 20px;
   padding-bottom: 20px;
-`;
-
-const StyledLink = styled(Link)`
-  color: black;
-  text-decoration: none;
-  margin-left: 0;
-  margin-right: 0;
-
-  :hover {
-    color: rgb(${({ theme }) => theme.lemanColorComponents});
-    text-decoration: underline;
-  }
 `;
 
 const StyledImg = styled.img`
@@ -41,7 +30,7 @@ export const ArticleBlock = (props: IArticle) => {
       <Row>
         <Col>
           <h3 className="fw-bolder">
-            <StyledLink to={articleUrl}>{props.headline}</StyledLink>
+            <ThemedLink to={articleUrl}>{props.headline}</ThemedLink>
           </h3>
 
           {props.preview && <p>{props.preview}</p>}

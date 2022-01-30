@@ -4,6 +4,7 @@ import styled from "styled-components";
 import LinkContainer from "./linkContainer";
 import sectionStore from "../stores/sectionStore";
 import { ISection } from "../types";
+import { HorizontalDivider } from "./horizontalDivider";
 
 const StyledNavbar = styled(Navbar)`
   .navbar-brand {
@@ -37,7 +38,6 @@ const NavigationBar = () => {
 
 const BorderedRow = styled(Row)`
   margin-top: 0px;
-  border-top: 1px solid rgba(${({ theme }) => theme.lemanColorComponents}, 0.4);
   padding: 0 60px;
   border-bottom: 4px double black;
   margin-bottom: 1rem;
@@ -137,6 +137,7 @@ const Masthead = (props: MastHeadProps) => {
           Léman Manhattan Preparatory School
         </a>
       </Styles>
+      <HorizontalDivider />
       <BorderedRow>
         <Nav fill as="ul">
           {activeSections &&

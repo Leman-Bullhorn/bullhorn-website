@@ -5,6 +5,7 @@ import LinkContainer from "./linkContainer";
 
 import { IArticle } from "../types";
 import TimeStamp from "./timeStamp";
+import { HeadlineFont } from "./headlineFont";
 
 const Styles = styled.div`
   font-family: serif;
@@ -55,15 +56,17 @@ export default class Article extends React.Component<IArticle> {
               </LinkContainer>
             )}
 
-            <Card.Title>
-              <LinkContainer to={articleUrl}>
-                <Card.Link href={articleUrl}>{this.props.headline}</Card.Link>
-              </LinkContainer>
-            </Card.Title>
+            <HeadlineFont>
+              <Card.Title>
+                <LinkContainer to={articleUrl}>
+                  <Card.Link>{this.props.headline}</Card.Link>
+                </LinkContainer>
+              </Card.Title>
+            </HeadlineFont>
 
             <Card.Subtitle>
               <Card.Text>
-                By:{" "}
+                By{" "}
                 <LinkContainer to={writerUrl}>
                   <Card.Link>
                     {this.props.writer.firstName} {this.props.writer.lastName}

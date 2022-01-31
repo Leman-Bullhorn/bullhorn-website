@@ -4,6 +4,7 @@ import { Col, Row } from "react-bootstrap";
 import TimeStamp from "./timeStamp";
 import { Link } from "react-router-dom";
 import { ThemedLink } from "./themedLink";
+import { HeadlineFont } from "./headlineFont";
 
 const BorderedDiv = styled.div`
   border-bottom: 1px solid #dddddd;
@@ -29,9 +30,11 @@ export const ArticleBlock = (props: IArticle) => {
     <BorderedDiv>
       <Row>
         <Col>
-          <h3 className="fw-bolder">
-            <ThemedLink to={articleUrl}>{props.headline}</ThemedLink>
-          </h3>
+          <HeadlineFont>
+            <h3 className="fw-bolder">
+              <ThemedLink to={articleUrl}>{props.headline}</ThemedLink>
+            </h3>
+          </HeadlineFont>
 
           {props.preview && <p>{props.preview}</p>}
           <p className="text-muted">

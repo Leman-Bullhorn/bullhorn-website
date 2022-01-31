@@ -8,8 +8,6 @@ import TimeStamp from "./timeStamp";
 import { HeadlineFont } from "./headlineFont";
 
 const Styles = styled.div`
-  font-family: serif;
-
   .card {
     margin-bottom: 1rem;
   }
@@ -75,7 +73,9 @@ export default class Article extends React.Component<IArticle> {
               </Card.Text>
 
               {this.props.preview && (
-                <Card.Text>{this.props.preview}</Card.Text>
+                <Card.Text className="text-muted">
+                  {this.props.preview}
+                </Card.Text>
               )}
 
               <Card.Text className="text-muted">

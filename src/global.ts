@@ -2,6 +2,6 @@ import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
 body {
-  font-family: Helvetica,  Times New Roman;
+  font-family: Franklin, arial, Times New Roman;
 }
 `;

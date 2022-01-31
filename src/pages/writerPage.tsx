@@ -8,6 +8,7 @@ import { IArticle, IWriter } from "../types";
 import styled from "styled-components";
 import articleStore from "../stores/articleStore";
 import { ArticleBlock } from "../components/articleBlock";
+import { HeadlineFont } from "../components/headlineFont";
 
 const BioContainer = styled(Container)`
   margin-top: 50px;
@@ -116,10 +117,12 @@ export default function WriterPage() {
     <>
       <NavigationBar />
       <BioContainer>
-        <h5 className="lh-1 fw-lighter text-start">{activeWriter.title}</h5>
-        <h1 className="lh-1 fw-bolder text-start">
-          {activeWriter.firstName} {activeWriter.lastName}
-        </h1>
+        <HeadlineFont>
+          <h5 className="lh-1 fw-lighter text-start">{activeWriter.title}</h5>
+          <h1 className="lh-1 fw-bolder text-start">
+            {activeWriter.firstName} {activeWriter.lastName}
+          </h1>
+        </HeadlineFont>
         <br />
         <p className="text-muted fw-light text-wrap w-75">{activeWriter.bio}</p>
       </BioContainer>

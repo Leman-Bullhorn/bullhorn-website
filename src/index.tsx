@@ -9,6 +9,7 @@ import HomePage from "./pages/homePage";
 import WriterPage from "./pages/writerPage";
 import NotFoundPage from "./pages/notFoundPage";
 import React from "react";
+import ArticlePage from "./pages/articlePage";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -19,6 +20,7 @@ ReactDOM.render(
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/writer/:writerName" element={<WriterPage />} />
+            <Route path="/article/:section/:slug" element={<ArticlePage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>

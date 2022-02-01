@@ -1,7 +1,7 @@
-import { IArticle } from "../types";
 import styled from "styled-components";
+import { IArticle } from "../types";
 import { Col, Row } from "react-bootstrap";
-import TimeStamp from "./timeStamp";
+import { TimeStamp } from "./timeStamp";
 import { Link } from "react-router-dom";
 import { ThemedLink } from "./themedLink";
 import { HeadlineFont } from "./headlineFont";

@@ -1,10 +1,10 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 import styled from "styled-components";
-import LinkContainer from "./linkContainer";
+import { LinkContainer } from "./linkContainer";
 
 import { IArticle } from "../types";
-import TimeStamp from "./timeStamp";
+import { TimeStamp } from "./timeStamp";
 import { HeadlineFont } from "./headlineFont";
 
 const Styles = styled.div`
@@ -36,7 +36,7 @@ const Styles = styled.div`
   }
 `;
 
-export default class Article extends React.Component<IArticle> {
+export class Article extends React.Component<IArticle> {
   render() {
     const sectionName = this.props.section.name.toLowerCase();
     const articleUrl = `/article/${sectionName}/${this.props.slug}`;

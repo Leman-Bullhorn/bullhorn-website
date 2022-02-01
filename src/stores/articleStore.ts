@@ -16,4 +16,4 @@ class ArticleStore {
   }
 }
 
-export default new ArticleStore();
+export const articleStore = new ArticleStore();

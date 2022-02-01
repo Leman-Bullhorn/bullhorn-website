@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import MastHead from "../components/mastHead";
-import Article from "../components/article";
+import { Masthead } from "../components/mastHead";
+import { Article } from "../components/article";
 import { Container, Row, Col } from "react-bootstrap";
-import NavigationBar from "../components/navigationBar";
+import { NavigationBar } from "../components/navigationBar";
 import { IArticle } from "../types";
 import { getArticles } from "../api/requests";
 
-const HomePage = () => {
+export const HomePage = () => {
   const [isMastHeadVisible, setMastHeadVisible] = useState(true);
   const [activeArticles, setActiveArticles] = useState<IArticle[]>([]);
 
@@ -37,7 +37,7 @@ const HomePage = () => {
       <NavigationBar visible={!isMastHeadVisible} buffer={false} />
       <Container>
         <Row>
-          <MastHead changeVisibility={setMastHeadVisible} />
+          <Masthead changeVisibility={setMastHeadVisible} />
         </Row>
 
         <Row xs={1} sm={1} md={2} lg={3} xl={3} xxl={3}>

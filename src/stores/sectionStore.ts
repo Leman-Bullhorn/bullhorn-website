@@ -27,4 +27,4 @@ class SectionsStore {
   }
 }
 
-export default new SectionsStore();
+export const sectionsStore = new SectionsStore();

@@ -9,10 +9,7 @@ interface TimeStampState {
   dummy: number;
 }
 
-export default class TimeStamp extends React.Component<
-  TimeStampProps,
-  TimeStampState
-> {
+export class TimeStamp extends React.Component<TimeStampProps, TimeStampState> {
   interval!: NodeJS.Timeout;
 
   // dummy is just to force a re-render of this component so the time will update

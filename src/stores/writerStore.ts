@@ -16,4 +16,4 @@ class WritersStore {
   }
 }
 
-export default new WritersStore();
+export const writersStore = new WritersStore();

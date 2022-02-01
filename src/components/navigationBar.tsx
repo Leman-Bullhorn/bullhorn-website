@@ -1,8 +1,8 @@
 import React from "react";
 import { Navbar, Nav, Container, Col } from "react-bootstrap";
 import styled from "styled-components";
-import LinkContainer from "./linkContainer";
-import sectionStore from "../stores/sectionStore";
+import { LinkContainer } from "./linkContainer";
+import { sectionsStore } from "../stores/sectionStore";
 import { ISection } from "../types";
 
 const StyledNavbar = styled(Navbar)`
@@ -44,7 +44,7 @@ interface NavigationBarState {
   loadedSections: ISection[];
 }
 
-export default class NavigationBar extends React.Component<
+export class NavigationBar extends React.Component<
   NavigationBarProps,
   NavigationBarState
 > {
@@ -56,7 +56,7 @@ export default class NavigationBar extends React.Component<
   async componentDidMount() {
     try {
       this.setState({
-        loadedSections: await sectionStore.getSectionsOrRequest(),
+        loadedSections: await sectionsStore.getSectionsOrRequest(),
       });
     } catch (e) {
       console.error(e);

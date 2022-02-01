@@ -208,7 +208,7 @@ import { isFunction } from "lodash";
 const isModifiedEvent = event =>
   !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
 
-const LinkContainer = ({
+export const LinkContainer = ({
   children,
   onClick,
   replace, // eslint-disable-line no-unused-vars
@@ -296,5 +296,3 @@ LinkContainer.defaultProps = {
   activeStyle: null,
   isActive: null,
 };
-
-export default LinkContainer;

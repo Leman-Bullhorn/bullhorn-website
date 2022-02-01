@@ -1,15 +1,16 @@
 import "./index.scss";
+import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 
 import { lightTheme } from "./theme";
 import { GlobalStyles } from "./global";
-import HomePage from "./pages/homePage";
-import WriterPage from "./pages/writerPage";
-import NotFoundPage from "./pages/notFoundPage";
-import React from "react";
-import ArticlePage from "./pages/articlePage";
+import { HomePage } from "./pages/homePage";
+import { WriterPage } from "./pages/writerPage";
+import { NotFoundPage } from "./pages/notFoundPage";
+
+import { ArticlePage } from "./pages/articlePage";
 
 ReactDOM.render(
   <React.StrictMode>

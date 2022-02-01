@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import NavigationBar from "../components/navigationBar";
-import sectionStore from "../stores/sectionStore";
+import { NavigationBar } from "../components/navigationBar";
+import { sectionsStore } from "../stores/sectionStore";
 import { getSections, getArticleBySlug } from "../api/requests";
 import { ISection, IArticle } from "../types";
-import articleStore from "../stores/articleStore";
+import { articleStore } from "../stores/articleStore";
 import { VariableContainer } from "../components/variableContainer";
 import styled from "styled-components";
 import { Row } from "react-bootstrap";
 import { HorizontalDivider } from "../components/horizontalDivider";
 import { ThemedLink } from "../components/themedLink";
-import TimeStamp from "../components/timeStamp";
+import { TimeStamp } from "../components/timeStamp";
 import { HeadlineFont } from "../components/headlineFont";
 
 const StyledContainer = styled(VariableContainer)`
@@ -25,7 +25,7 @@ const BlackDivider = styled(HorizontalDivider)`
   border-bottom: 1px solid black;
 `;
 
-const ArticlePage = () => {
+export const ArticlePage = () => {
   const { section, slug } = useParams();
   const [isError, setError] = useState(false);
   const [activeSection, setActiveSection] = useState<ISection>();
@@ -40,7 +40,7 @@ const ArticlePage = () => {
 
     const abortController = new AbortController();
     void (async function () {
-      let foundSection = sectionStore
+      let foundSection = sectionsStore
         .getSections()
         .find(({ name }) => name.toLowerCase() === section);
 
@@ -56,7 +56,7 @@ const ArticlePage = () => {
           setError(true);
         } else {
           setActiveSection(foundSection);
-          sectionStore.setSections(newSections);
+          sectionsStore.setSections(newSections);
         }
       }
 
@@ -163,4 +163,3 @@ const ArticlePage = () => {
     </>
   );
 };
-export default ArticlePage;

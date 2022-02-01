@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Container, Row, Nav, Navbar } from "react-bootstrap";
 import styled from "styled-components";
-import LinkContainer from "./linkContainer";
-import sectionStore from "../stores/sectionStore";
+import { LinkContainer } from "./linkContainer";
+import { sectionsStore } from "../stores/sectionStore";
 import { ISection } from "../types";
 import { HorizontalDivider } from "./horizontalDivider";
 
@@ -100,7 +100,7 @@ interface MastHeadProps {
   changeVisibility?: (visible: boolean) => void;
 }
 
-const Masthead = (props: MastHeadProps) => {
+export const Masthead = (props: MastHeadProps) => {
   const [activeSections, setActiveSections] = useState<ISection[]>([]);
 
   const ref: any = useRef();
@@ -113,7 +113,7 @@ const Masthead = (props: MastHeadProps) => {
 
     void (async function () {
       try {
-        setActiveSections(await sectionStore.getSectionsOrRequest());
+        setActiveSections(await sectionsStore.getSectionsOrRequest());
       } catch (e) {
         console.error(e);
       }
@@ -155,4 +155,3 @@ const Masthead = (props: MastHeadProps) => {
     </Container>
   );
 };
-export default Masthead;

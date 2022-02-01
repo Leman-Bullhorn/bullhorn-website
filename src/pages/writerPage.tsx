@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import { Container, Button, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import NavigationBar from "../components/navigationBar";
-import writerStore from "../stores/writerStore";
+import { NavigationBar } from "../components/navigationBar";
+import { writersStore } from "../stores/writerStore";
 import { getWriterByName, getArticlesByWriterId } from "../api/requests";
 import { IArticle, IWriter } from "../types";
 import styled from "styled-components";
-import articleStore from "../stores/articleStore";
+import { articleStore } from "../stores/articleStore";
 import { ArticleBlock } from "../components/articleBlock";
 import { HeadlineFont } from "../components/headlineFont";
 
@@ -21,7 +21,7 @@ const BorderedDiv = styled.div`
   padding-right: 50px;
 `;
 
-export default function WriterPage() {
+export function WriterPage() {
   const { writerName } = useParams();
   const [isError, setError] = useState(false);
   const [activeWriter, setActiveWriter] = useState<IWriter>({
@@ -69,7 +69,7 @@ export default function WriterPage() {
   useEffect(() => {
     const abortController = new AbortController();
     void (async function () {
-      const tempWriter = writerStore
+      const tempWriter = writersStore
         .getWriters()
         .find(
           writer => writerName === `${writer.firstName}-${writer.lastName}`,
@@ -81,7 +81,7 @@ export default function WriterPage() {
         // If we don't have the writer in the store, request it.
         try {
           const writer = await getWriterByName(writerName!);
-          writerStore.addWriter(writer);
+          writersStore.addWriter(writer);
           setActiveWriter(writer);
         } catch (e) {
           setError(true);

@@ -1,4 +1,3 @@
-import React from "react";
 import { Card } from "react-bootstrap";
 import styled from "styled-components";
 import { LinkContainer } from "./linkContainer";
@@ -36,55 +35,51 @@ const Styles = styled.div`
   }
 `;
 
-export class Article extends React.Component<IArticle> {
-  render() {
-    const sectionName = this.props.section.name.toLowerCase();
-    const articleUrl = `/article/${sectionName}/${this.props.slug}`;
-    const writerUrl = `/writer/${this.props.writer.firstName}-${this.props.writer.lastName}`;
+export const Article = (props: IArticle) => {
+  const sectionName = props.section.name.toLowerCase();
+  const articleUrl = `/article/${sectionName}/${props.slug}`;
+  const writerUrl = `/writer/${props.writer.firstName}-${props.writer.lastName}`;
 
-    return (
-      <Styles>
-        <Card>
-          <Card.Body>
-            {this.props.imageUrl && (
+  return (
+    <Styles>
+      <Card>
+        <Card.Body>
+          {props.imageUrl && (
+            <LinkContainer to={articleUrl}>
+              <Card.Link>
+                <Card.Img variant="top" src={props.imageUrl} />
+              </Card.Link>
+            </LinkContainer>
+          )}
+
+          <HeadlineFont>
+            <Card.Title>
               <LinkContainer to={articleUrl}>
+                <Card.Link>{props.headline}</Card.Link>
+              </LinkContainer>
+            </Card.Title>
+          </HeadlineFont>
+
+          <Card.Subtitle>
+            <Card.Text>
+              By{" "}
+              <LinkContainer to={writerUrl}>
                 <Card.Link>
-                  <Card.Img variant="top" src={this.props.imageUrl} />
+                  {props.writer.firstName} {props.writer.lastName}
                 </Card.Link>
               </LinkContainer>
+            </Card.Text>
+
+            {props.preview && (
+              <Card.Text className="text-muted">{props.preview}</Card.Text>
             )}
 
-            <HeadlineFont>
-              <Card.Title>
-                <LinkContainer to={articleUrl}>
-                  <Card.Link>{this.props.headline}</Card.Link>
-                </LinkContainer>
-              </Card.Title>
-            </HeadlineFont>
-
-            <Card.Subtitle>
-              <Card.Text>
-                By{" "}
-                <LinkContainer to={writerUrl}>
-                  <Card.Link>
-                    {this.props.writer.firstName} {this.props.writer.lastName}
-                  </Card.Link>
-                </LinkContainer>
-              </Card.Text>
-
-              {this.props.preview && (
-                <Card.Text className="text-muted">
-                  {this.props.preview}
-                </Card.Text>
-              )}
-
-              <Card.Text className="text-muted">
-                <TimeStamp originalDate={this.props.publicationDate} />
-              </Card.Text>
-            </Card.Subtitle>
-          </Card.Body>
-        </Card>
-      </Styles>
-    );
-  }
-}
+            <Card.Text className="text-muted">
+              <TimeStamp originalDate={props.publicationDate} />
+            </Card.Text>
+          </Card.Subtitle>
+        </Card.Body>
+      </Card>
+    </Styles>
+  );
+};

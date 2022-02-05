@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { Navbar, Nav, Container, Col } from "react-bootstrap";
 import styled from "styled-components";
 import { LinkContainer } from "./linkContainer";
@@ -40,90 +40,81 @@ interface NavigationBarProps {
   buffer?: boolean;
 }
 
-interface NavigationBarState {
-  loadedSections: ISection[];
-}
+export const NavigationBar = (props: NavigationBarProps) => {
+  const [loadedSections, setLoadedSections] = useState<ISection[]>([]);
 
-export class NavigationBar extends React.Component<
-  NavigationBarProps,
-  NavigationBarState
-> {
-  constructor(props: NavigationBarProps) {
-    super(props);
-    this.state = { loadedSections: [] };
-  }
+  useEffect(() => {
+    const abortController = new AbortController();
+    void (async function () {
+      try {
+        setLoadedSections(await sectionsStore.getSectionsOrRequest());
+      } catch (e) {
+        console.error(e);
+      }
+    })();
 
-  async componentDidMount() {
-    try {
-      this.setState({
-        loadedSections: await sectionsStore.getSectionsOrRequest(),
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  }
+    return () => {
+      abortController.abort();
+    };
+  }, []);
 
-  render() {
-    const visible = this.props.visible ?? true;
-    const buffer = this.props.buffer ?? true;
-    return (
-      <>
-        <StyledNavbar
-          className={`${visible ? "styled-nav-visible" : "styled-nav-hidden"}`}
-          fixed="top"
-          bg="light"
-          expand="md">
-          <Container fluid>
-            <Col xs={2}>
-              <Nav className="me-auto">
-                <LinkContainer to="/" onClick={() => window.scrollTo(0, 0)}>
-                  <Navbar.Brand>
-                    <img
-                      src="/logo.png"
-                      width="40px"
-                      height="40px"
-                      className="d-inline-block align-top"
-                      alt=""
-                    />
-                  </Navbar.Brand>
-                </LinkContainer>
-              </Nav>
-            </Col>
-            <LinkContainer to="/" onClick={() => window.scrollTo(0, 0)}>
-              <StyledBullhornText>The Bullhorn</StyledBullhornText>
-            </LinkContainer>
-            <Col xs={2}>
-              <Navbar.Toggle aria-controls="responsive-navbar" />
-            </Col>
-          </Container>
+  const visible = props.visible ?? true;
+  const buffer = props.buffer ?? true;
 
-          <Container
-            fluid
-            className="flex-nowrap"
-            style={{ flexWrap: "nowrap" }}>
-            <Col xs={0} md={2} />
-            <Navbar.Collapse id="responsive-navbar" className="flex-grow-0">
-              <Nav
-                as="ul"
-                className="flex-grow-1 justify-content-center flex-shrink-0">
-                {this.state.loadedSections &&
-                  this.state.loadedSections.map(section => (
-                    <Nav.Item as="li" key={section.permalink}>
-                      <LinkContainer to={section.permalink}>
-                        <Nav.Link eventKey={section.permalink}>
-                          {section.name}
-                        </Nav.Link>
-                      </LinkContainer>
-                    </Nav.Item>
-                  ))}
-              </Nav>
-            </Navbar.Collapse>
-            <Col xs={2} />
-          </Container>
-        </StyledNavbar>
+  return (
+    <>
+      <StyledNavbar
+        className={`${visible ? "styled-nav-visible" : "styled-nav-hidden"}`}
+        fixed="top"
+        bg="light"
+        expand="md">
+        <Container fluid>
+          <Col xs={2}>
+            <Nav className="me-auto">
+              <LinkContainer to="/" onClick={() => window.scrollTo(0, 0)}>
+                <Navbar.Brand>
+                  <img
+                    src="/logo.png"
+                    width="40px"
+                    height="40px"
+                    className="d-inline-block align-top"
+                    alt=""
+                  />
+                </Navbar.Brand>
+              </LinkContainer>
+            </Nav>
+          </Col>
+          <LinkContainer to="/" onClick={() => window.scrollTo(0, 0)}>
+            <StyledBullhornText>The Bullhorn</StyledBullhornText>
+          </LinkContainer>
+          <Col xs={2}>
+            <Navbar.Toggle aria-controls="responsive-navbar" />
+          </Col>
+        </Container>
 
-        {buffer && <div style={{ height: "90px" }} />}
-      </>
-    );
-  }
-}
+        <Container fluid className="flex-nowrap" style={{ flexWrap: "nowrap" }}>
+          <Col xs={0} md={2} />
+          <Navbar.Collapse id="responsive-navbar" className="flex-grow-0">
+            <Nav
+              as="ul"
+              className="flex-grow-1 justify-content-center flex-shrink-0">
+              {loadedSections &&
+                loadedSections.map(section => (
+                  <Nav.Item as="li" key={section.permalink}>
+                    <LinkContainer to={section.permalink}>
+                      <Nav.Link eventKey={section.permalink}>
+                        {section.name}
+                      </Nav.Link>
+                    </LinkContainer>
+                  </Nav.Item>
+                ))}
+            </Nav>
+          </Navbar.Collapse>
+          <Col xs={2} />
+        </Container>
+      </StyledNavbar>
+
+      {buffer && <div style={{ height: "90px" }} />}
+    </>
+  );
+};

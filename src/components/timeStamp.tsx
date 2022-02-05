@@ -1,34 +1,24 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { timeSince } from "../utils/time";
 
 interface TimeStampProps {
   originalDate: Date;
 }
 
-interface TimeStampState {
-  dummy: number;
-}
+export const TimeStamp = (props: TimeStampProps) => {
+  const [, setDummy] = useState(Date.now());
 
-export class TimeStamp extends React.Component<TimeStampProps, TimeStampState> {
-  interval!: NodeJS.Timeout;
+  useEffect(() => {
+    const interval = setInterval(() => setDummy(Date.now()), 1000);
 
-  // dummy is just to force a re-render of this component so the time will update
-  // using Date.now() because it guarantees the number will be different
-  componentDidMount() {
-    this.interval = setInterval(
-      () => this.setState({ dummy: Date.now() }),
-      1000,
-    );
-  }
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-  render() {
-    return (
-      <time dateTime={this.props.originalDate.toLocaleString()}>
-        {timeSince(this.props.originalDate)}
-      </time>
-    );
-  }
-}
+  return (
+    <time dateTime={props.originalDate.toLocaleString()}>
+      {timeSince(props.originalDate)}
+    </time>
+  );
+};

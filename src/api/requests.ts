@@ -1,5 +1,6 @@
-import { BASE_URL, axios } from "./utils";
-import { IWriter, IArticle, ISection } from "../types";
+import { BASE_URL, axios, parseJwt } from "./utils";
+import { IWriter, IArticle, ISection, AuthRole } from "../types";
+import { authStore } from "../stores/authStore";
 
 export const getWriterByName = async (hyphenateName: string) => {
   let response = await axios.get<IWriter>(
@@ -36,4 +37,18 @@ export const getSections = async () => {
   let response = await axios.get<ISection[]>(`${BASE_URL}/sections`);
 
   return response.data;
+};
+
+export const login = async (username: string, password: string) => {
+  let response = await axios.post<{ accessToken: string }>(
+    `${BASE_URL}/login`,
+    { username, password },
+  );
+
+  authStore.setAccessToken(response.data.accessToken);
+
+  let parsedJwt = parseJwt<{ role: AuthRole; exp: number }>(
+    response.data.accessToken,
+  );
+  authStore.setRole(parsedJwt.role);
 };

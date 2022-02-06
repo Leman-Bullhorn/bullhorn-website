@@ -24,3 +24,8 @@ export interface ISection {
   name: string;
   permalink: string;
 }
+
+export enum AuthRole {
+  Admin = "Admin",
+  Default = "Default",
+}

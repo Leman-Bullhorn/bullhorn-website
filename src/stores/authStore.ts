@@ -21,6 +21,11 @@ class AuthStore {
   isAdmin() {
     return this.role === AuthRole.Admin;
   }
+
+  reset() {
+    this.accessToken = undefined;
+    this.role = AuthRole.Default;
+  }
 }
 
 export const authStore = new AuthStore();

@@ -1,18 +1,19 @@
 import { IWriter } from "../types";
 
 class WritersStore {
-  private writers: IWriter[] = [];
+  private writers = new Set<IWriter>();
 
   getWriters() {
-    return this.writers;
+    return Array.from(this.writers);
   }
 
   setWriters(writers: IWriter[]) {
-    this.writers = writers;
+    this.writers = new Set(writers);
   }
 
+  // If the writer is already present then the addition is ignored
   addWriter(writer: IWriter) {
-    this.writers.push(writer);
+    this.writers.add(writer);
   }
 }
 

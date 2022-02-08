@@ -1,4 +1,4 @@
-import Axios from "axios";
+import Axios, { AxiosResponse } from "axios";
 import applyCaseMiddleware from "axios-case-converter";
 
 // export const BASE_URL =
@@ -10,6 +10,7 @@ export const BASE_URL = "http://localhost:8000/api";
 
 export const axios = applyCaseMiddleware(
   Axios.create({
+    validateStatus: status => status >= 200 && status < 500,
     timeout: 60000,
   }),
 );
@@ -28,4 +29,22 @@ export const parseJwt = <T>(token: string): T => {
   );
 
   return JSON.parse(jsonPayload);
+};
+
+export interface ApiError {
+  timestamp: string;
+  code: number;
+  error: string;
+  message: string;
+}
+
+export const validateStatusCode = <T>(
+  response: AxiosResponse<T | ApiError>,
+  returnFunc: () => T = () => (response as AxiosResponse<T>).data,
+): T => {
+  if (response.status >= 200 && response.status < 300) {
+    return returnFunc();
+  } else {
+    throw new Error((response as AxiosResponse<ApiError>).data.message);
+  }
 };

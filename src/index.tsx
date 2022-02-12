@@ -11,6 +11,7 @@ import { WriterPage } from "./pages/writerPage";
 import { NotFoundPage } from "./pages/notFoundPage";
 
 import { ArticlePage } from "./pages/articlePage";
+import { AdminPage } from "./pages/adminPage";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -22,6 +23,7 @@ ReactDOM.render(
             <Route path="/" element={<HomePage />} />
             <Route path="/writer/:writerName" element={<WriterPage />} />
             <Route path="/article/:section/:slug" element={<ArticlePage />} />
+            <Route path="/admin" element={<AdminPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>

@@ -1,5 +1,5 @@
 import { BASE_URL, axios, validateStatusCode } from "./utils";
-import { IWriter, IArticle, ISection } from "../types";
+import { IWriter, IArticle, ISection, AuthRole } from "../types";
 
 export const getWriterByName = async (hyphenateName: string) => {
   const response = await axios.get<IWriter>(
@@ -40,10 +40,16 @@ export const getSections = async () => {
 };
 
 export const login = async (username: string, password: string) => {
-  const response = await axios.post<{ accessToken: string }>(
-    `${BASE_URL}/login`,
-    { username, password },
-  );
+  const response = await axios.post<AuthRole>(`${BASE_URL}/login`, {
+    username,
+    password,
+  });
+
+  return validateStatusCode(response);
+};
+
+export const current = async () => {
+  const response = await axios.get<AuthRole>(`${BASE_URL}/current`);
 
   return validateStatusCode(response);
 };

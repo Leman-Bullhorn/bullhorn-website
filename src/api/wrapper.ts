@@ -4,7 +4,6 @@ import { sectionsStore } from "../stores/sectionStore";
 import { writersStore } from "../stores/writerStore";
 import { AuthRole } from "../types";
 import * as raw from "./requests";
-import { parseJwt } from "./utils";
 
 export const getWriterByName = async (hyphenateName: string) => {
   let writer = writersStore
@@ -69,30 +68,19 @@ export const getSections = async () => {
 };
 
 export const login = async (username: string, password: string) => {
-  const loginAndStore = async () => {
-    try {
-      const { accessToken } = await raw.login(username, password);
-      authStore.setAccessToken(accessToken);
+  let current = await raw.current();
 
-      let { role } = parseJwt<{ role: AuthRole; exp: number }>(accessToken);
-      authStore.setRole(role);
-    } catch (e) {
-      authStore.reset();
-    }
-  };
-
-  let currentAccessToken = authStore.getAccessToken();
-
-  if (currentAccessToken) {
-    let parsedJwt =
-      parseJwt<{ role: AuthRole; exp: number }>(currentAccessToken);
-    // if the token is expired
-    if (parsedJwt.exp <= new Date().getUTCSeconds()) {
-      await loginAndStore();
-    }
-    // if the access token is still valid no need to do anything
-    return;
+  if (current === AuthRole.Admin) {
+    authStore.setRole(current);
+    return current;
   }
 
-  await loginAndStore();
+  try {
+    let role = await raw.login(username, password);
+    authStore.setRole(role);
+    return role;
+  } catch (e) {
+    authStore.reset();
+    return AuthRole.Default;
+  }
 };

@@ -1,7 +1,6 @@
 import { AuthRole } from "../types";
 
 class AuthStore {
-  private accessToken: string | undefined;
   private role: AuthRole = AuthRole.Default;
 
   getRole() {
@@ -11,19 +10,11 @@ class AuthStore {
     this.role = role;
   }
 
-  getAccessToken() {
-    return this.accessToken;
-  }
-  setAccessToken(accessToken: string) {
-    this.accessToken = accessToken;
-  }
-
   isAdmin() {
     return this.role === AuthRole.Admin;
   }
 
   reset() {
-    this.accessToken = undefined;
     this.role = AuthRole.Default;
   }
 }

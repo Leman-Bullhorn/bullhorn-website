@@ -37,7 +37,7 @@ export const getArticlesByWriterId = async (writerId: number) => {
 export const getArticles = async (limit?: number) => {
   try {
     const articles = await raw.getArticles(limit);
-    articles.forEach(articleStore.addArticle);
+    articleStore.setArticles(articles);
 
     return articles;
   } catch (e) {

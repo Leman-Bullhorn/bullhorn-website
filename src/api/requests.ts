@@ -1,5 +1,22 @@
 import { BASE_URL, axios, validateStatusCode } from "./utils";
 import { IWriter, IArticle, ISection, AuthRole } from "../types";
+import { AxiosResponse } from "axios";
+
+const articlesReturnFunction = (response: AxiosResponse<IArticle[], any>) => {
+  return () => {
+    response.data.map(
+      article => (article.publicationDate = new Date(article.publicationDate)),
+    );
+    return response.data;
+  };
+};
+
+const articleReturnFunction = (response: AxiosResponse<IArticle, any>) => {
+  return () => {
+    response.data.publicationDate = new Date(response.data.publicationDate);
+    return response.data;
+  };
+};
 
 export const getWriterByName = async (hyphenateName: string) => {
   const response = await axios.get<IWriter>(
@@ -14,7 +31,7 @@ export const getArticlesByWriterId = async (writerId: number) => {
     `${BASE_URL}/writers/${writerId}/articles`,
   );
 
-  return validateStatusCode(response);
+  return validateStatusCode(response, articlesReturnFunction(response));
 };
 
 export const getArticles = async (limit?: number) => {
@@ -24,13 +41,13 @@ export const getArticles = async (limit?: number) => {
     },
   });
 
-  return validateStatusCode(response);
+  return validateStatusCode(response, articlesReturnFunction(response));
 };
 
 export const getArticleBySlug = async (slug: string) => {
   const response = await axios.get<IArticle>(`${BASE_URL}/articles/${slug}`);
 
-  return validateStatusCode(response);
+  return validateStatusCode(response, articleReturnFunction(response));
 };
 
 export const getSections = async () => {

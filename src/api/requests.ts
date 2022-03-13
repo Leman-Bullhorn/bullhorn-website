@@ -18,6 +18,33 @@ const articleReturnFunction = (response: AxiosResponse<IArticle, any>) => {
   };
 };
 
+export const getWriters = async () => {
+  const response = await axios.get<IWriter[]>(`${BASE_URL}/writers`);
+
+  return validateStatusCode(response);
+};
+
+export const postArticle = async (
+  headline: string,
+  body: string,
+  writerId: number,
+  sectionId: number,
+  preview?: string,
+  imageUrl?: string,
+) => {
+  const postData: any = {
+    headline,
+    body,
+    writer_id: writerId,
+    section_id: sectionId,
+  };
+  if (preview) postData.preview = preview;
+  if (imageUrl) postData.imageUrl = imageUrl;
+  const response = await axios.post<IArticle>(`${BASE_URL}/articles`, postData);
+
+  return validateStatusCode(response);
+};
+
 export const getWriterByName = async (hyphenateName: string) => {
   const response = await axios.get<IWriter>(
     `${BASE_URL}/writers/${hyphenateName}`,

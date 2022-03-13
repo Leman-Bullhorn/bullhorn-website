@@ -5,6 +5,17 @@ import { writersStore } from "../stores/writerStore";
 import { AuthRole } from "../types";
 import * as raw from "./requests";
 
+export const getWriters = async () => {
+  try {
+    const writers = await raw.getWriters();
+
+    writersStore.setWriters(writers);
+    return writers;
+  } catch (e) {
+    return [];
+  }
+};
+
 export const getWriterByName = async (hyphenateName: string) => {
   let writer = writersStore
     .getWriters()

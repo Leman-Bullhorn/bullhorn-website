@@ -1,14 +1,12 @@
-import { useState, useEffect, useCallback } from "react";
 import { Container, Button, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { NavigationBar } from "../components/navigationBar";
-import { writersStore } from "../stores/writerStore";
 import { getWriterByName, getArticlesByWriterId } from "../api/requests";
-import { IArticle, IWriter } from "../types";
+import { IApiError, IArticle, IWriter } from "../types";
 import styled from "styled-components";
-import { articleStore } from "../stores/articleStore";
 import { ArticleBlock } from "../components/articleBlock";
 import { HeadlineFont } from "../components/headlineFont";
+import { useQuery, useQueryClient } from "react-query";
 
 const BioContainer = styled(Container)`
   margin-top: 50px;
@@ -23,94 +21,45 @@ const BorderedDiv = styled.div`
 
 export function WriterPage() {
   const { writerName } = useParams();
-  const [isError, setError] = useState(false);
-  const [activeWriter, setActiveWriter] = useState<IWriter>({
-    id: -1,
-    firstName: "",
-    lastName: "",
-    title: "",
-    bio: "",
-  });
-  const [recentArticles, setRecentArticles] = useState<IArticle[]>([]);
 
-  const updateRecentArticles = useCallback(async () => {
-    if (activeWriter.id === -1) return;
-    const tempWriterArticles = articleStore
-      .getArticles()
-      .filter(article => article.writer.id === activeWriter.id);
+  const queryClient = useQueryClient();
 
-    // If we have more articles in the cache then just use those.
-    if (tempWriterArticles.length > recentArticles.length) {
-      setRecentArticles(tempWriterArticles);
-      // Otherwise try to get new articles from the API.
-    } else {
-      try {
-        let articles = await getArticlesByWriterId(activeWriter.id);
-        if (articles.length === recentArticles.length) return;
+  const {
+    data: writer,
+    isLoading: loadingWriter,
+    isError: isWriterError,
+    isSuccess: isWriterSuccess,
+    error: writerError,
+  } = useQuery<IWriter, IApiError, IWriter>(["writers", writerName!], () =>
+    getWriterByName(writerName!),
+  );
 
-        for (const article of articles) {
-          if (
-            !articleStore
-              .getArticles()
-              .some(storeArticle => storeArticle.id === article.id)
-          ) {
-            articleStore.addArticle(article);
-          }
-        }
+  const {
+    data: recentArticles,
+    isLoading: loadingArticles,
+    isError: isArticleError,
+    isSuccess: isArticleSuccess,
+    error: articleError,
+  } = useQuery<IArticle[], IApiError, IArticle[]>(
+    ["articles", writer?.id],
+    () => getArticlesByWriterId(writer!.id),
+    { enabled: writer !== undefined },
+  );
 
-        setRecentArticles(articles);
-      } catch (e) {
-        setError(true);
-        console.log(e);
-      }
-    }
-  }, [activeWriter.id, recentArticles.length]);
+  if (isWriterError) {
+    return <p>Error {writerError.message}</p>;
+  }
 
-  useEffect(() => {
-    const abortController = new AbortController();
-    void (async function () {
-      const tempWriter = writersStore
-        .getWriters()
-        .find(
-          writer => writerName === `${writer.firstName}-${writer.lastName}`,
-        );
+  if (isArticleError) {
+    return <p>Error {articleError.message}</p>;
+  }
 
-      if (tempWriter) {
-        setActiveWriter(tempWriter);
-      } else {
-        // If we don't have the writer in the store, request it.
-        try {
-          const writer = await getWriterByName(writerName!);
-          writersStore.addWriter(writer);
-          setActiveWriter(writer);
-        } catch (e) {
-          setError(true);
-          console.log(e);
-        }
-      }
-    })();
+  if (!isWriterSuccess || loadingWriter) {
+    return <p>Loading</p>;
+  }
 
-    return () => {
-      abortController.abort(); // cancel pending fetch request on component unmount
-    };
-  }, [writerName]);
-
-  useEffect(() => {
-    const abortController = new AbortController();
-    updateRecentArticles();
-
-    return () => {
-      abortController.abort();
-    };
-  }, [activeWriter, updateRecentArticles]);
-
-  if (isError) {
-    return (
-      <div>
-        <NavigationBar />
-        Error!
-      </div>
-    );
+  if (loadingArticles || !isArticleSuccess) {
+    return <p>Loading Articles</p>;
   }
 
   return (
@@ -118,13 +67,13 @@ export function WriterPage() {
       <NavigationBar />
       <BioContainer>
         <HeadlineFont>
-          <h5 className="lh-1 fw-lighter text-start">{activeWriter.title}</h5>
+          <h5 className="lh-1 fw-lighter text-start">{writer.title}</h5>
           <h1 className="lh-1 fw-bolder text-start">
-            {activeWriter.firstName} {activeWriter.lastName}
+            {writer.firstName} {writer.lastName}
           </h1>
         </HeadlineFont>
         <br />
-        <p className="text-muted fw-light text-wrap w-75">{activeWriter.bio}</p>
+        <p className="text-muted fw-light text-wrap w-75">{writer.bio}</p>
       </BioContainer>
       <Container>
         <Row>
@@ -150,7 +99,9 @@ export function WriterPage() {
 
         <Row>
           <Button
-            onClick={updateRecentArticles}
+            onClick={() =>
+              queryClient.invalidateQueries(["articles", writer.id])
+            }
             variant="outline-primary"
             size="lg">
             Show More

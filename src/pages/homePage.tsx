@@ -1,46 +1,45 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Masthead } from "../components/mastHead";
 import { Article } from "../components/article";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { NavigationBar } from "../components/navigationBar";
-import { IArticle } from "../types";
-import { getArticles } from "../api/wrapper";
+import { AuthRole, IApiError, IArticle } from "../types";
+import { current, getArticles } from "../api/requests";
+import { useQuery } from "react-query";
+import { Link } from "react-router-dom";
 
 export const HomePage = () => {
   const [isMastHeadVisible, setMastHeadVisible] = useState(true);
-  const [activeArticles, setActiveArticles] = useState<IArticle[]>([]);
-  const [isError, setError] = useState(false);
-  const [isLoading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const abortController = new AbortController();
+  const {
+    data: articles,
+    isLoading,
+    isError,
+    isSuccess,
+  } = useQuery<IArticle[], IApiError, IArticle[]>("articles", () =>
+    getArticles(),
+  );
 
-    void (async function () {
-      let articles = await getArticles();
-      console.log(articles);
-      if (articles.length === 0) {
-        setError(true);
-      }
-      setActiveArticles(articles);
-      setLoading(false);
-    })();
-
-    return () => {
-      abortController.abort();
-    };
-  }, []);
+  const { data: roleData } = useQuery("role", current);
 
   if (isError) {
     return <p>Network issue!</p>;
   }
 
   // This should eventually either render a spinner or a skeleton
-  if (isLoading) {
+  if (isLoading || !isSuccess) {
     return <h1>Loading...</h1>;
   }
 
   return (
     <>
+      {roleData === AuthRole.Admin && (
+        <Link
+          to={"/admin"}
+          style={{ position: "absolute", margin: "5px", zIndex: 1 }}>
+          <Button as="p">Admin Page</Button>
+        </Link>
+      )}
       <NavigationBar visible={!isMastHeadVisible} buffer={false} />
       <Container>
         <Row>
@@ -48,7 +47,7 @@ export const HomePage = () => {
         </Row>
         <Row xs={1} sm={1} md={2} lg={3} xl={3} xxl={3}>
           <Col className="featured-column">
-            <Article {...activeArticles[0]} />
+            <Article {...articles[0]} />
           </Col>
           <Col>{/* <Article {...activeArticles[1]} /> */}</Col>
           <Col>{/* <Article {...activeArticles[2]} /> */}</Col>

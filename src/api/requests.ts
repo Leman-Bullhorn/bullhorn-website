@@ -1,5 +1,12 @@
 import { BASE_URL, axios, validateStatusCode } from "./utils";
-import { IWriter, IArticle, ISection, AuthRole } from "../types";
+import {
+  IWriter,
+  IArticle,
+  ISection,
+  AuthRole,
+  LoginInfo,
+  ArticleData,
+} from "../types";
 import { AxiosResponse } from "axios";
 
 const articlesReturnFunction = (response: AxiosResponse<IArticle[], any>) => {
@@ -24,14 +31,14 @@ export const getWriters = async () => {
   return validateStatusCode(response);
 };
 
-export const postArticle = async (
-  headline: string,
-  body: string,
-  writerId: number,
-  sectionId: number,
-  preview?: string,
-  imageUrl?: string,
-) => {
+export const postArticle = async ({
+  headline,
+  body,
+  writerId,
+  sectionId,
+  preview,
+  imageUrl,
+}: ArticleData) => {
   const postData: any = {
     headline,
     body,
@@ -83,7 +90,7 @@ export const getSections = async () => {
   return validateStatusCode(response);
 };
 
-export const login = async (username: string, password: string) => {
+export const login = async ({ username, password }: LoginInfo) => {
   const response = await axios.post<AuthRole>(`${BASE_URL}/login`, {
     username,
     password,

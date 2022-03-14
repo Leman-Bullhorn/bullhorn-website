@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
 import { Navbar, Nav, Container, Col } from "react-bootstrap";
 import styled from "styled-components";
 import { LinkContainer } from "./linkContainer";
-import { sectionsStore } from "../stores/sectionStore";
-import { ISection } from "../types";
+import { IApiError, ISection } from "../types";
+import { useQuery } from "react-query";
+import { getSections } from "../api/requests";
 
 const StyledNavbar = styled(Navbar)`
   transition-property: all;
@@ -41,22 +41,21 @@ interface NavigationBarProps {
 }
 
 export const NavigationBar = (props: NavigationBarProps) => {
-  const [loadedSections, setLoadedSections] = useState<ISection[]>([]);
+  const {
+    data: sections,
+    isLoading,
+    isError,
+    isSuccess,
+    error,
+  } = useQuery<ISection[], IApiError, ISection[]>("sections", getSections);
 
-  useEffect(() => {
-    const abortController = new AbortController();
-    void (async function () {
-      try {
-        setLoadedSections(await sectionsStore.getSectionsOrRequest());
-      } catch (e) {
-        console.error(e);
-      }
-    })();
+  if (isError) {
+    return <h1>Error {error.message}</h1>;
+  }
 
-    return () => {
-      abortController.abort();
-    };
-  }, []);
+  if (isLoading || !isSuccess) {
+    return <h1>Loading...</h1>;
+  }
 
   const visible = props.visible ?? true;
   const buffer = props.buffer ?? true;
@@ -98,16 +97,15 @@ export const NavigationBar = (props: NavigationBarProps) => {
             <Nav
               as="ul"
               className="flex-grow-1 justify-content-center flex-shrink-0">
-              {loadedSections &&
-                loadedSections.map(section => (
-                  <Nav.Item as="li" key={section.permalink}>
-                    <LinkContainer to={section.permalink}>
-                      <Nav.Link eventKey={section.permalink}>
-                        {section.name}
-                      </Nav.Link>
-                    </LinkContainer>
-                  </Nav.Item>
-                ))}
+              {sections.map(section => (
+                <Nav.Item as="li" key={section.permalink}>
+                  <LinkContainer to={section.permalink}>
+                    <Nav.Link eventKey={section.permalink}>
+                      {section.name}
+                    </Nav.Link>
+                  </LinkContainer>
+                </Nav.Item>
+              ))}
             </Nav>
           </Navbar.Collapse>
           <Col xs={2} />

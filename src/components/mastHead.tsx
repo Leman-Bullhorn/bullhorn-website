@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { Container, Row, Nav, Navbar } from "react-bootstrap";
 import styled from "styled-components";
 import { LinkContainer } from "./linkContainer";
-import { sectionsStore } from "../stores/sectionStore";
-import { ISection } from "../types";
+import { IApiError, ISection } from "../types";
 import { HorizontalDivider } from "./horizontalDivider";
+import { useQuery } from "react-query";
+import { getSections } from "../api/requests";
 
 const StyledNavbar = styled(Navbar)`
   .navbar-brand {
@@ -81,12 +82,18 @@ const StyledLink = styled(Nav.Link)`
 function useOnScreen(ref: any) {
   const [isIntersecting, setIntersecting] = useState(false);
 
-  const observer = new IntersectionObserver(([entry]) =>
-    setIntersecting(entry.isIntersecting),
+  const observer = useMemo(
+    () =>
+      new IntersectionObserver(([entry]) =>
+        setIntersecting(entry.isIntersecting),
+      ),
+    [],
   );
 
   useEffect(() => {
-    observer.observe(ref.current);
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
     // Remove the observer as soon as the component is unmounted
     return () => {
       observer.disconnect();
@@ -101,28 +108,28 @@ interface MastHeadProps {
 }
 
 export const Masthead = (props: MastHeadProps) => {
-  const [activeSections, setActiveSections] = useState<ISection[]>([]);
-
   const ref: any = useRef();
   const isVisible = useOnScreen(ref);
 
   useEffect(() => {
     props.changeVisibility?.(isVisible);
-
-    const abortController = new AbortController();
-
-    void (async function () {
-      try {
-        setActiveSections(await sectionsStore.getSectionsOrRequest());
-      } catch (e) {
-        console.error(e);
-      }
-    })();
-
-    return () => {
-      abortController.abort();
-    };
   }, [isVisible, props]);
+
+  const {
+    data: sections,
+    isLoading,
+    isError,
+    error,
+    isSuccess,
+  } = useQuery<ISection[], IApiError, ISection[]>("sections", getSections);
+
+  if (isError) {
+    return <h1>Error {error.message}</h1>;
+  }
+
+  if (isLoading || !isSuccess) {
+    return <h1>Loading...</h1>;
+  }
 
   return (
     <Container ref={ref}>
@@ -140,16 +147,15 @@ export const Masthead = (props: MastHeadProps) => {
       <HorizontalDivider />
       <BorderedRow>
         <Nav fill as="ul">
-          {activeSections &&
-            activeSections.map(section => (
-              <Nav.Item as="li" key={section.permalink}>
-                <LinkContainer to={section.permalink}>
-                  <StyledLink eventKey={section.permalink}>
-                    {section.name}
-                  </StyledLink>
-                </LinkContainer>
-              </Nav.Item>
-            ))}
+          {sections.map(section => (
+            <Nav.Item as="li" key={section.permalink}>
+              <LinkContainer to={section.permalink}>
+                <StyledLink eventKey={section.permalink}>
+                  {section.name}
+                </StyledLink>
+              </LinkContainer>
+            </Nav.Item>
+          ))}
         </Nav>
       </BorderedRow>
     </Container>

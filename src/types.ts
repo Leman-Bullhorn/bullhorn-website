@@ -1,3 +1,18 @@
+export interface IApiError {
+  timestamp: string;
+  status: number;
+  message: string;
+}
+
+export interface ArticleData {
+  headline: string;
+  body: string;
+  writerId: number;
+  sectionId: number;
+  preview?: string;
+  imageUrl?: string;
+}
+
 export interface IWriter {
   id: number;
   firstName: string;
@@ -28,4 +43,9 @@ export interface ISection {
 export enum AuthRole {
   Admin = "Admin",
   Default = "Default",
+}
+
+export interface LoginInfo {
+  username: string;
+  password: string;
 }

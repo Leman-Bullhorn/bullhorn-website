@@ -1,11 +1,79 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import { Container, Row, Nav, Navbar } from "react-bootstrap";
+import { Container, Row, Nav, Navbar, Placeholder } from "react-bootstrap";
 import styled from "styled-components";
 import { LinkContainer } from "./linkContainer";
 import { IApiError, ISection } from "../types";
 import { HorizontalDivider } from "./horizontalDivider";
 import { useQuery } from "react-query";
 import { getSections } from "../api/requests";
+
+interface MastHeadProps {
+  changeVisibility?: (visible: boolean) => void;
+}
+
+export const Masthead = (props: MastHeadProps) => {
+  const ref: any = useRef();
+  const isVisible = useOnScreen(ref);
+
+  useEffect(() => {
+    props.changeVisibility?.(isVisible);
+  }, [isVisible, props]);
+
+  const {
+    data: sections,
+    isLoading,
+    isError,
+    error,
+    isIdle,
+  } = useQuery<ISection[], IApiError, ISection[]>("sections", getSections);
+
+  if (isError) {
+    return <h1>Error {error.message}</h1>;
+  }
+
+  return (
+    <Container ref={ref}>
+      <Row>
+        <StyledNavbar
+          className="justify-content-center"
+          bg="white"
+          expand={false}>
+          <Nav className="flex-column">
+            <Nav.Link href="/" onClick={() => window.scrollTo(0, 0)}>
+              <Navbar.Brand>The Bullhorn</Navbar.Brand>
+            </Nav.Link>
+          </Nav>
+        </StyledNavbar>
+      </Row>
+      <Row className="text-center mb-1">
+        <BrandText
+          href="https://www.lemanmanhattan.org/"
+          target="_blank"
+          rel="noreferrer">
+          Léman Manhattan Preparatory School
+        </BrandText>
+      </Row>
+      <HorizontalDivider />
+      <BorderedRow>
+        <Nav fill as="ul">
+          {isLoading || isIdle ? (
+            <SectionsPlaceholder />
+          ) : (
+            sections.map(section => (
+              <Nav.Item as="li" key={section.permalink}>
+                <LinkContainer to={section.permalink}>
+                  <StyledLink eventKey={section.permalink}>
+                    {section.name}
+                  </StyledLink>
+                </LinkContainer>
+              </Nav.Item>
+            ))
+          )}
+        </Nav>
+      </BorderedRow>
+    </Container>
+  );
+};
 
 const StyledNavbar = styled(Navbar)`
   .navbar-brand {
@@ -22,21 +90,6 @@ const StyledNavbar = styled(Navbar)`
   }
 `;
 
-const NavigationBar = () => {
-  return (
-    <StyledNavbar
-      className="bullhorn-mast justify-content-center"
-      bg="white"
-      expand={false}>
-      <Nav className="flex-column">
-        <Nav.Link href="/" onClick={() => window.scrollTo(0, 0)}>
-          <Navbar.Brand>The Bullhorn</Navbar.Brand>
-        </Nav.Link>
-      </Nav>
-    </StyledNavbar>
-  );
-};
-
 const BorderedRow = styled(Row)`
   margin-top: 0px;
   padding: 0 60px;
@@ -44,19 +97,15 @@ const BorderedRow = styled(Row)`
   margin-bottom: 1rem;
 `;
 
-const Styles = styled.div`
-  a {
-    color: rgb(${({ theme }) => theme.lemanColorComponents});
-    text-decoration-color: black;
-    text-decoration-line: none;
-    font-size: 1rem;
-    line-height: 1rem;
-    font-weight: 500;
-    transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out,
-      border-color 0.25s ease-in-out;
-  }
+const BrandText = styled.a`
+  color: rgb(${({ theme }) => theme.lemanColorComponents});
+  text-decoration-line: none;
+  line-height: 1rem;
+  font-weight: 500;
+  transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out,
+    border-color 0.25s ease-in-out;
 
-  a:hover {
+  :hover {
     text-decoration: underline;
   }
 `;
@@ -80,7 +129,7 @@ const StyledLink = styled(Nav.Link)`
 `;
 
 function useOnScreen(ref: any) {
-  const [isIntersecting, setIntersecting] = useState(false);
+  const [isIntersecting, setIntersecting] = useState(true);
 
   const observer = useMemo(
     () =>
@@ -103,61 +152,22 @@ function useOnScreen(ref: any) {
   return isIntersecting;
 }
 
-interface MastHeadProps {
-  changeVisibility?: (visible: boolean) => void;
-}
+const PlaceholderText = styled.span`
+  padding: 0.5rem 1rem;
+  display: block;
+  line-height: 1rem;
+`;
 
-export const Masthead = (props: MastHeadProps) => {
-  const ref: any = useRef();
-  const isVisible = useOnScreen(ref);
-
-  useEffect(() => {
-    props.changeVisibility?.(isVisible);
-  }, [isVisible, props]);
-
-  const {
-    data: sections,
-    isLoading,
-    isError,
-    error,
-    isSuccess,
-  } = useQuery<ISection[], IApiError, ISection[]>("sections", getSections);
-
-  if (isError) {
-    return <h1>Error {error.message}</h1>;
-  }
-
-  if (isLoading || !isSuccess) {
-    return <h1>Loading...</h1>;
-  }
-
+const SectionsPlaceholder = () => {
   return (
-    <Container ref={ref}>
-      <Row>
-        <NavigationBar />
-      </Row>
-      <Styles className="text-center mb-0">
-        <a
-          href="https://www.lemanmanhattan.org/"
-          target="_blank"
-          rel="noreferrer">
-          Léman Manhattan Preparatory School
-        </a>
-      </Styles>
-      <HorizontalDivider />
-      <BorderedRow>
-        <Nav fill as="ul">
-          {sections.map(section => (
-            <Nav.Item as="li" key={section.permalink}>
-              <LinkContainer to={section.permalink}>
-                <StyledLink eventKey={section.permalink}>
-                  {section.name}
-                </StyledLink>
-              </LinkContainer>
-            </Nav.Item>
-          ))}
-        </Nav>
-      </BorderedRow>
-    </Container>
+    <>
+      {Array.from(Array(6).keys()).map(idx => (
+        <Nav.Item as="li" key={idx}>
+          <Placeholder as={PlaceholderText} animation="glow">
+            <Placeholder xs={10} style={{ borderRadius: "0.125rem" }} />
+          </Placeholder>
+        </Nav.Item>
+      ))}
+    </>
   );
 };

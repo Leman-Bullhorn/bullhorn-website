@@ -1,12 +1,16 @@
-import { Container, Button, Row } from "react-bootstrap";
+import { Container, Button, Row, Placeholder } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { NavigationBar } from "../components/navigationBar";
 import { getWriterByName, getArticlesByWriterId } from "../api/requests";
 import { IApiError, IArticle, IWriter } from "../types";
 import styled from "styled-components";
-import { ArticleBlock } from "../components/articleBlock";
+import {
+  ArticleBlock,
+  ArticleBlockPlaceholder,
+} from "../components/articleBlock";
 import { HeadlineFont } from "../components/headlineFont";
 import { useQuery, useQueryClient } from "react-query";
+import { TextPlaceholder } from "../components/textPlaceholder";
 
 const BioContainer = styled(Container)`
   margin-top: 50px;
@@ -26,9 +30,9 @@ export function WriterPage() {
 
   const {
     data: writer,
-    isLoading: loadingWriter,
+    isLoading: isWriterLoading,
     isError: isWriterError,
-    isSuccess: isWriterSuccess,
+    isIdle: isWriterIdle,
     error: writerError,
   } = useQuery<IWriter, IApiError, IWriter>(["writers", writerName!], () =>
     getWriterByName(writerName!),
@@ -36,9 +40,9 @@ export function WriterPage() {
 
   const {
     data: recentArticles,
-    isLoading: loadingArticles,
+    isLoading: isArticleLoading,
     isError: isArticleError,
-    isSuccess: isArticleSuccess,
+    isIdle: isArticleIdle,
     error: articleError,
   } = useQuery<IArticle[], IApiError, IArticle[]>(
     ["articles", writer?.id],
@@ -54,53 +58,73 @@ export function WriterPage() {
     return <p>Error {articleError.message}</p>;
   }
 
-  if (!isWriterSuccess || loadingWriter) {
-    return <p>Loading</p>;
-  }
-
-  if (loadingArticles || !isArticleSuccess) {
-    return <p>Loading Articles</p>;
-  }
+  const articlesOrSkeleton =
+    isArticleLoading || isArticleIdle
+      ? Array.from(Array(3).keys()).map(idx => (
+          <Row key={idx.toString()}>
+            <ArticleBlockPlaceholder />
+          </Row>
+        ))
+      : recentArticles.map(article => (
+          <Row key={`${article.id}`}>
+            <ArticleBlock {...article} />
+          </Row>
+        ));
 
   return (
     <>
       <NavigationBar />
       <BioContainer>
         <HeadlineFont>
-          <h5 className="lh-1 fw-lighter text-start">{writer.title}</h5>
-          <h1 className="lh-1 fw-bolder text-start">
-            {writer.firstName} {writer.lastName}
-          </h1>
+          {isWriterLoading || isWriterIdle ? (
+            <>
+              <Placeholder animation="glow" as="h5">
+                <TextPlaceholder xs={2} />
+              </Placeholder>
+              <Placeholder animation="glow" as="h1">
+                <TextPlaceholder xs={4} />
+              </Placeholder>
+            </>
+          ) : (
+            <>
+              <h5 className="lh-1 fw-lighter text-start">{writer.title}</h5>
+              <h1 className="lh-1 fw-bolder text-start">
+                {writer.firstName} {writer.lastName}
+              </h1>
+            </>
+          )}
         </HeadlineFont>
         <br />
-        <p className="text-muted fw-light text-wrap w-75">{writer.bio}</p>
+        {isWriterLoading || isWriterIdle ? (
+          <Placeholder animation="glow" as="p">
+            <TextPlaceholder xs={7} />
+          </Placeholder>
+        ) : (
+          <p className="text-muted fw-light text-wrap w-75">{writer.bio}</p>
+        )}
       </BioContainer>
       <Container>
         <Row>
-          <p>Recent Articles</p>
+          {isArticleLoading || isArticleIdle ? (
+            <Placeholder animation="glow" as="p">
+              <TextPlaceholder xs={1} />
+            </Placeholder>
+          ) : (
+            <p>Recent Articles</p>
+          )}
         </Row>
 
         {/* hide on screens smaller than than md */}
         <BorderedDiv style={{ maxWidth: "70%" }} className="d-none d-md-block">
-          {recentArticles.map(article => (
-            <Row key={`${article.id}`}>
-              <ArticleBlock {...article} />
-            </Row>
-          ))}
+          {articlesOrSkeleton}
         </BorderedDiv>
         {/* hide on screens larger than or equal to md */}
-        <BorderedDiv className="d-md-none">
-          {recentArticles.map(article => (
-            <Row key={`${article.id}`}>
-              <ArticleBlock {...article} />
-            </Row>
-          ))}
-        </BorderedDiv>
+        <BorderedDiv className="d-md-none">{articlesOrSkeleton}</BorderedDiv>
 
         <Row>
           <Button
             onClick={() =>
-              queryClient.invalidateQueries(["articles", writer.id])
+              writer && queryClient.invalidateQueries(["articles", writer.id])
             }
             variant="outline-primary"
             size="lg">

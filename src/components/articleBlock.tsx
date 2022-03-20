@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { IArticle } from "../types";
-import { Col, Row } from "react-bootstrap";
+import { Col, Placeholder, Row } from "react-bootstrap";
 import { TimeStamp } from "./timeStamp";
 import { Link } from "react-router-dom";
 import { ThemedLink } from "./themedLink";
 import { HeadlineFont } from "./headlineFont";
+import { TextPlaceholder } from "./textPlaceholder";
 
 const BorderedDiv = styled.div`
   border-bottom: 1px solid #dddddd;
@@ -50,6 +51,44 @@ export const ArticleBlock = (props: IArticle) => {
               </figure>
             </Link>
           )}
+        </Col>
+      </Row>
+    </BorderedDiv>
+  );
+};
+
+export const ArticleBlockPlaceholder = () => {
+  return (
+    <BorderedDiv>
+      <Row>
+        <Col>
+          <HeadlineFont>
+            <Placeholder as="h3" animation="glow">
+              <TextPlaceholder xs={9} />
+              <br />
+              <TextPlaceholder xs={3} />
+            </Placeholder>
+          </HeadlineFont>
+          <Placeholder animation="glow" className="text-muted">
+            <TextPlaceholder xs={10} size="xs" />
+            <br />
+            <TextPlaceholder xs={10} size="xs" />
+            <br />
+            <TextPlaceholder xs={5} size="xs" />
+          </Placeholder>
+        </Col>
+        <Col xs={4}>
+          <Placeholder
+            as="div"
+            animation="glow"
+            style={{ width: "100%", height: "100%" }}>
+            <Placeholder
+              as="img"
+              xs={12}
+              height="100%"
+              style={{ borderRadius: "calc(-1px + 0.25rem)" }}
+            />
+          </Placeholder>
         </Col>
       </Row>
     </BorderedDiv>

@@ -45,16 +45,12 @@ export const NavigationBar = (props: NavigationBarProps) => {
     data: sections,
     isLoading,
     isError,
-    isSuccess,
+    isIdle,
     error,
   } = useQuery<ISection[], IApiError, ISection[]>("sections", getSections);
 
   if (isError) {
     return <h1>Error {error.message}</h1>;
-  }
-
-  if (isLoading || !isSuccess) {
-    return <h1>Loading...</h1>;
   }
 
   const visible = props.visible ?? true;
@@ -97,15 +93,17 @@ export const NavigationBar = (props: NavigationBarProps) => {
             <Nav
               as="ul"
               className="flex-grow-1 justify-content-center flex-shrink-0">
-              {sections.map(section => (
-                <Nav.Item as="li" key={section.permalink}>
-                  <LinkContainer to={section.permalink}>
-                    <Nav.Link eventKey={section.permalink}>
-                      {section.name}
-                    </Nav.Link>
-                  </LinkContainer>
-                </Nav.Item>
-              ))}
+              {!isLoading &&
+                !isIdle &&
+                sections.map(section => (
+                  <Nav.Item as="li" key={section.permalink}>
+                    <LinkContainer to={section.permalink}>
+                      <Nav.Link eventKey={section.permalink}>
+                        {section.name}
+                      </Nav.Link>
+                    </LinkContainer>
+                  </Nav.Item>
+                ))}
             </Nav>
           </Navbar.Collapse>
           <Col xs={2} />

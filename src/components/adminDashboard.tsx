@@ -29,6 +29,7 @@ export const AdminDashboard = () => {
   const {
     data: articleData,
     isLoading: isLoadingArticles,
+    isIdle: isArticlesIdle,
     isError: isErrorArticles,
     error: articleError,
   } = useQuery<IArticle[], IApiError, IArticle[]>("articles", async () =>
@@ -37,14 +38,12 @@ export const AdminDashboard = () => {
 
   const {
     data: writerData,
-    isLoading: isLoadingWriters,
     isError: isErrorWriters,
     error: writerError,
   } = useQuery<IWriter[], IApiError, IWriter[]>("writers", getWriters);
 
   const {
     data: sectionData,
-    isLoading: isLoadingSections,
     isError: isErrorSections,
     error: sectionError,
   } = useQuery<ISection[], IApiError, ISection[]>("sections", getSections);
@@ -74,7 +73,7 @@ export const AdminDashboard = () => {
   ) => {
     let writerId = parseInt(event.target.value);
 
-    const selectedWriter = writerData!.find(writer => writer.id === writerId);
+    const selectedWriter = writerData?.find(writer => writer.id === writerId);
     if (!selectedWriter) return;
 
     setArticleFormWriter(selectedWriter);
@@ -85,7 +84,7 @@ export const AdminDashboard = () => {
   ) => {
     let sectionId = parseInt(event.target.value);
 
-    const selectedSection = sectionData!.find(
+    const selectedSection = sectionData?.find(
       section => section.id === sectionId,
     );
     if (!selectedSection) return;
@@ -98,7 +97,7 @@ export const AdminDashboard = () => {
   const onClickEditArticle = (event: React.MouseEvent<SVGSVGElement>) => {
     const articleId = parseInt(event.currentTarget.id);
 
-    const selectedArticle = articleData!.find(
+    const selectedArticle = articleData?.find(
       article => article.id === articleId,
     );
     if (!selectedArticle) return;
@@ -118,10 +117,6 @@ export const AdminDashboard = () => {
     return <h1>Error {sectionError.message}</h1>;
   }
 
-  if (isLoadingArticles || isLoadingWriters || isLoadingSections) {
-    return <h1>Loading...</h1>;
-  }
-
   return (
     <>
       <Container>
@@ -139,31 +134,33 @@ export const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {articleData!.map(article => (
-                  <tr key={article.id}>
-                    <td>{article.id}</td>
-                    <td>{article.headline}</td>
-                    <td>{article.section.name}</td>
-                    <td>{article.publicationDate.toLocaleDateString()}</td>
-                    <td>
-                      {article.writer.firstName} {article.writer.lastName}
-                    </td>
-                    <td>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="green"
-                        viewBox="0 0 16 16"
-                        className="user-select-none"
-                        style={{ cursor: "pointer" }}
-                        id={article.id.toString()}
-                        onClick={onClickEditArticle}>
-                        <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
-                      </svg>
-                    </td>
-                  </tr>
-                ))}
+                {!isArticlesIdle &&
+                  !isLoadingArticles &&
+                  articleData.map(article => (
+                    <tr key={article.id}>
+                      <td>{article.id}</td>
+                      <td>{article.headline}</td>
+                      <td>{article.section.name}</td>
+                      <td>{article.publicationDate.toLocaleDateString()}</td>
+                      <td>
+                        {article.writer.firstName} {article.writer.lastName}
+                      </td>
+                      <td>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="green"
+                          viewBox="0 0 16 16"
+                          className="user-select-none"
+                          style={{ cursor: "pointer" }}
+                          id={article.id.toString()}
+                          onClick={onClickEditArticle}>
+                          <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
+                        </svg>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </Table>
           </Col>
@@ -189,7 +186,7 @@ export const AdminDashboard = () => {
                   controlId="writerInput"
                   label="Writer">
                   <Form.Select required onChange={onChangeWriterSelection}>
-                    {writerData!.map(writer => (
+                    {(writerData ?? []).map(writer => (
                       <option key={writer.id} value={writer.id.toString()}>
                         {writer.firstName} {writer.lastName}
                       </option>
@@ -201,7 +198,7 @@ export const AdminDashboard = () => {
                   controlId="sectionInput"
                   label="Section">
                   <Form.Select required onChange={onChangeSectionSelection}>
-                    {sectionData!.map(section => (
+                    {(sectionData ?? []).map(section => (
                       <option key={section.id} value={section.id.toString()}>
                         {section.name}
                       </option>

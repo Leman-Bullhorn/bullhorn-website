@@ -9,14 +9,19 @@ import {
   Col,
   Row,
 } from "react-bootstrap";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  useInfiniteQuery,
+} from "react-query";
 import {
   getArticles,
   postArticle,
   getWriters,
   getSections,
 } from "../api/requests";
-import { IApiError, IArticle, ISection, IWriter } from "../types";
+import { IApiError, IArticle, ISection, IWriter, Paginated } from "../types";
 
 export const AdminDashboard = () => {
   const [articleFormHeadline, setArticleFormHeadline] = useState("");
@@ -28,12 +33,15 @@ export const AdminDashboard = () => {
 
   const {
     data: articleData,
-    isLoading: isLoadingArticles,
-    isIdle: isArticlesIdle,
-    isError: isErrorArticles,
+    isError: isArticlesError,
     error: articleError,
-  } = useQuery<IArticle[], IApiError, IArticle[]>("articles", async () =>
-    getArticles(99999),
+  } = useInfiniteQuery<Paginated<IArticle[]>, IApiError, Paginated<IArticle[]>>(
+    "articles",
+    ({ pageParam = 1 }) => getArticles(pageParam),
+    {
+      getNextPageParam: lastPage => lastPage.next?.page,
+      getPreviousPageParam: lastPage => lastPage.previous?.page,
+    },
   );
 
   const {
@@ -95,17 +103,21 @@ export const AdminDashboard = () => {
   };
 
   const onClickEditArticle = (event: React.MouseEvent<SVGSVGElement>) => {
+    if (!articleData) return;
+
     const articleId = parseInt(event.currentTarget.id);
 
-    const selectedArticle = articleData?.find(
-      article => article.id === articleId,
-    );
-    if (!selectedArticle) return;
-
-    console.log(selectedArticle);
+    for (const page of articleData.pages) {
+      let maybeFoundArticle = page.content.find(
+        article => article.id === articleId,
+      );
+      if (maybeFoundArticle) {
+        return maybeFoundArticle;
+      }
+    }
   };
 
-  if (isErrorArticles) {
+  if (isArticlesError) {
     return <h1>Error {articleError.message}</h1>;
   }
 
@@ -134,33 +146,35 @@ export const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {!isArticlesIdle &&
-                  !isLoadingArticles &&
-                  articleData.map(article => (
-                    <tr key={article.id}>
-                      <td>{article.id}</td>
-                      <td>{article.headline}</td>
-                      <td>{article.section.name}</td>
-                      <td>{article.publicationDate.toLocaleDateString()}</td>
-                      <td>
-                        {article.writer.firstName} {article.writer.lastName}
-                      </td>
-                      <td>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="green"
-                          viewBox="0 0 16 16"
-                          className="user-select-none"
-                          style={{ cursor: "pointer" }}
-                          id={article.id.toString()}
-                          onClick={onClickEditArticle}>
-                          <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
-                        </svg>
-                      </td>
-                    </tr>
-                  ))}
+                {articleData?.pages.map(page => (
+                  <>
+                    {page.content.map(article => (
+                      <tr key={article.id}>
+                        <td>{article.id}</td>
+                        <td>{article.headline}</td>
+                        <td>{article.section.name}</td>
+                        <td>{article.publicationDate.toLocaleDateString()}</td>
+                        <td>
+                          {article.writer.firstName} {article.writer.lastName}
+                        </td>
+                        <td>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="green"
+                            viewBox="0 0 16 16"
+                            className="user-select-none"
+                            style={{ cursor: "pointer" }}
+                            id={article.id.toString()}
+                            onClick={onClickEditArticle}>
+                            <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
+                          </svg>
+                        </td>
+                      </tr>
+                    ))}
+                  </>
+                ))}
               </tbody>
             </Table>
           </Col>

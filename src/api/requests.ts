@@ -6,6 +6,7 @@ import {
   AuthRole,
   LoginInfo,
   ArticleData,
+  Paginated,
 } from "../types";
 import { AxiosResponse } from "axios";
 
@@ -68,14 +69,24 @@ export const getArticlesByWriterId = async (writerId: number) => {
   return validateStatusCode(response, articlesReturnFunction(response));
 };
 
-export const getArticles = async (limit?: number) => {
-  const response = await axios.get<IArticle[]>(`${BASE_URL}/articles`, {
-    params: {
-      limit: limit ?? 10,
+export const getArticles = async (page: number = 1, limit: number = 2) => {
+  const response = await axios.get<Paginated<IArticle[]>>(
+    `${BASE_URL}/articles`,
+    {
+      params: {
+        page,
+        limit,
+      },
     },
-  });
+  );
 
-  return validateStatusCode(response, articlesReturnFunction(response));
+  const articles = validateStatusCode(response);
+
+  articles.content.forEach(
+    article => (article.publicationDate = new Date(article.publicationDate)),
+  );
+
+  return articles;
 };
 
 export const getArticleBySlug = async (slug: string) => {

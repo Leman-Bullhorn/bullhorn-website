@@ -1,3 +1,15 @@
+export interface Paginated<T> {
+  next?: {
+    page: number;
+    limit: number;
+  };
+  previous?: {
+    page: number;
+    limit: number;
+  };
+  content: T;
+}
+
 export interface IApiError {
   timestamp: string;
   status: number;

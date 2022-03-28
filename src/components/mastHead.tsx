@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useEffect } from "react";
 import { Container, Row, Nav, Navbar, Placeholder } from "react-bootstrap";
 import styled from "styled-components";
 import { LinkContainer } from "./linkContainer";
@@ -6,18 +6,20 @@ import { IApiError, ISection } from "../types";
 import { HorizontalDivider } from "./horizontalDivider";
 import { useQuery } from "react-query";
 import { getSections } from "../api/requests";
+import { useInView } from "react-intersection-observer";
 
 interface MastHeadProps {
   changeVisibility?: (visible: boolean) => void;
 }
 
 export const Masthead = (props: MastHeadProps) => {
-  const ref: any = useRef();
-  const isVisible = useOnScreen(ref);
+  const { ref, inView } = useInView();
+
+  const changeVisibility = props.changeVisibility;
 
   useEffect(() => {
-    props.changeVisibility?.(isVisible);
-  }, [isVisible, props]);
+    changeVisibility?.(inView);
+  }, [changeVisibility, inView]);
 
   const {
     data: sections,
@@ -128,29 +130,29 @@ const StyledLink = styled(Nav.Link)`
   }
 `;
 
-function useOnScreen(ref: any) {
-  const [isIntersecting, setIntersecting] = useState(true);
+// function useOnScreen(ref: any) {
+//   const [isIntersecting, setIntersecting] = useState(true);
 
-  const observer = useMemo(
-    () =>
-      new IntersectionObserver(([entry]) =>
-        setIntersecting(entry.isIntersecting),
-      ),
-    [],
-  );
+//   const observer = useMemo(
+//     () =>
+//       new IntersectionObserver(([entry]) =>
+//         setIntersecting(entry.isIntersecting),
+//       ),
+//     [],
+//   );
 
-  useEffect(() => {
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-    // Remove the observer as soon as the component is unmounted
-    return () => {
-      observer.disconnect();
-    };
-  });
+//   useEffect(() => {
+//     if (ref.current) {
+//       observer.observe(ref.current);
+//     }
+//     // Remove the observer as soon as the component is unmounted
+//     return () => {
+//       observer.disconnect();
+//     };
+//   });
 
-  return isIntersecting;
-}
+//   return isIntersecting;
+// }
 
 const PlaceholderText = styled.span`
   padding: 0.5rem 1rem;

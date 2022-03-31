@@ -69,7 +69,7 @@ export const getArticlesByWriterId = async (writerId: number) => {
   return validateStatusCode(response, articlesReturnFunction(response));
 };
 
-export const getArticles = async (page: number = 1, limit: number = 2) => {
+export const getArticles = async (page: number = 1, limit: number = 10) => {
   const response = await axios.get<Paginated<IArticle[]>>(
     `${BASE_URL}/articles`,
     {

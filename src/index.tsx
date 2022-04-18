@@ -12,6 +12,7 @@ import { WriterPage } from "./pages/writerPage";
 import { NotFoundPage } from "./pages/notFoundPage";
 import { ArticlePage } from "./pages/articlePage";
 import { AdminPage } from "./pages/adminPage";
+import ScrollToTop from "./components/scrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ ReactDOM.render(
       <QueryClientProvider client={queryClient}>
         <GlobalStyles />
         <BrowserRouter>
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/writer/:writerName" element={<WriterPage />} />

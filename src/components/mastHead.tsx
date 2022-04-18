@@ -41,7 +41,7 @@ export const Masthead = (props: MastHeadProps) => {
           bg="white"
           expand={false}>
           <Nav className="flex-column">
-            <Nav.Link href="/" onClick={() => window.scrollTo(0, 0)}>
+            <Nav.Link href="/">
               <Navbar.Brand>The Bullhorn</Navbar.Brand>
             </Nav.Link>
           </Nav>
@@ -129,30 +129,6 @@ const StyledLink = styled(Nav.Link)`
     text-decoration: underline;
   }
 `;
-
-// function useOnScreen(ref: any) {
-//   const [isIntersecting, setIntersecting] = useState(true);
-
-//   const observer = useMemo(
-//     () =>
-//       new IntersectionObserver(([entry]) =>
-//         setIntersecting(entry.isIntersecting),
-//       ),
-//     [],
-//   );
-
-//   useEffect(() => {
-//     if (ref.current) {
-//       observer.observe(ref.current);
-//     }
-//     // Remove the observer as soon as the component is unmounted
-//     return () => {
-//       observer.disconnect();
-//     };
-//   });
-
-//   return isIntersecting;
-// }
 
 const PlaceholderText = styled.span`
   padding: 0.5rem 1rem;

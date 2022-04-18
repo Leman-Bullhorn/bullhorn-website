@@ -33,7 +33,7 @@ export const AdminDashboard = () => {
     fetchNextPage: fetchNextArticlePage,
     hasNextPage: hasNextArticlePage,
   } = useInfiniteQuery<Paginated<IArticle[]>, IApiError, Paginated<IArticle[]>>(
-    "articles",
+    "paginatedArticles",
     ({ pageParam = 1 }) => getArticles(pageParam, 20),
     {
       getNextPageParam: lastPage => lastPage.next?.page,

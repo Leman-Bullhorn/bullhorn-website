@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Masthead } from "../components/mastHead";
 import { Article } from "../components/article";
-import { Container, Row, Col, Button, Spinner } from "react-bootstrap";
+import { Container, Row, Col, Spinner } from "react-bootstrap";
 import { NavigationBar } from "../components/navigationBar";
 import { AuthRole, IApiError, IArticle, Paginated } from "../types";
 import { current, getArticles } from "../api/requests";
@@ -30,13 +30,7 @@ export const HomePage = () => {
 
   return (
     <>
-      {roleData === AuthRole.Admin && (
-        <Link
-          to={"/admin"}
-          style={{ position: "absolute", margin: "5px", zIndex: 1 }}>
-          <Button as="p">Admin Page</Button>
-        </Link>
-      )}
+      {roleData === AuthRole.Admin && <AdminPageButton />}
       <NavigationBar visible={!isMastHeadVisible} buffer={false} />
 
       <Container>

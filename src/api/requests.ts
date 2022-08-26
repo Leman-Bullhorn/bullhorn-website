@@ -7,6 +7,7 @@ import {
   LoginInfo,
   ArticleData,
   Paginated,
+  DriveFile,
 } from "../types";
 import { AxiosResponse } from "axios";
 
@@ -112,6 +113,34 @@ export const login = async ({ username, password }: LoginInfo) => {
 
 export const current = async () => {
   const response = await axios.get<AuthRole>(`${BASE_URL}/current`);
+
+  return validateStatusCode(response);
+};
+
+export const getDrafts = async () => {
+  const response = await axios.get<DriveFile[]>(`${BASE_URL}/drive/drafts`);
+
+  return validateStatusCode(response);
+};
+
+export const getFinals = async () => {
+  const response = await axios.get<DriveFile[]>(`${BASE_URL}/drive/finals`);
+
+  return validateStatusCode(response);
+};
+
+export const moveToFinal = async (fileId: string) => {
+  const response = await axios.post<DriveFile>(
+    `${BASE_URL}/drive/final/${fileId}`,
+  );
+
+  return validateStatusCode(response);
+};
+
+export const moveToDraft = async (fileId: string) => {
+  const response = await axios.post<DriveFile>(
+    `${BASE_URL}/drive/draft/${fileId}`,
+  );
 
   return validateStatusCode(response);
 };

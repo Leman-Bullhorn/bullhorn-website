@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Spinner, Container, Card, Form, Alert, Button } from "react-bootstrap";
-import { useQueryClient, useMutation } from "react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { login } from "../api/requests";
 
 export const LoginScreen = () => {
@@ -11,7 +11,7 @@ export const LoginScreen = () => {
 
   const loginMutation = useMutation(login, {
     onSuccess() {
-      queryClient.invalidateQueries("role");
+      queryClient.invalidateQueries(["role"]);
     },
   });
 

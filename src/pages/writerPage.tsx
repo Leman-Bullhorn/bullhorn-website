@@ -9,7 +9,7 @@ import {
   ArticleBlockPlaceholder,
 } from "../components/articleBlock";
 import { HeadlineFont } from "../components/headlineFont";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { TextPlaceholder } from "../components/textPlaceholder";
 
 const BioContainer = styled(Container)`
@@ -32,7 +32,6 @@ export function WriterPage() {
     data: writer,
     isLoading: isWriterLoading,
     isError: isWriterError,
-    isIdle: isWriterIdle,
     error: writerError,
   } = useQuery<IWriter, IApiError, IWriter>(["writers", writerName!], () =>
     getWriterByName(writerName!),
@@ -42,7 +41,6 @@ export function WriterPage() {
     data: recentArticles,
     isLoading: isArticleLoading,
     isError: isArticleError,
-    isIdle: isArticleIdle,
     error: articleError,
   } = useQuery<IArticle[], IApiError, IArticle[]>(
     ["articles", writer?.id],
@@ -58,8 +56,7 @@ export function WriterPage() {
     return <p>Error {articleError.message}</p>;
   }
 
-  const articlesOrSkeleton =
-    isArticleLoading || isArticleIdle
+  const articlesOrSkeleton = isArticleLoading
       ? Array.from(Array(3).keys()).map(idx => (
           <Row key={idx.toString()}>
             <ArticleBlockPlaceholder />
@@ -76,7 +73,7 @@ export function WriterPage() {
       <NavigationBar />
       <BioContainer>
         <HeadlineFont>
-          {isWriterLoading || isWriterIdle ? (
+          {isWriterLoading ? (
             <>
               <Placeholder animation="glow" as="h5">
                 <TextPlaceholder xs={2} />
@@ -95,7 +92,7 @@ export function WriterPage() {
           )}
         </HeadlineFont>
         <br />
-        {isWriterLoading || isWriterIdle ? (
+        {isWriterLoading ? (
           <Placeholder animation="glow" as="p">
             <TextPlaceholder xs={7} />
           </Placeholder>
@@ -105,7 +102,7 @@ export function WriterPage() {
       </BioContainer>
       <Container>
         <Row>
-          {isArticleLoading || isArticleIdle ? (
+          {isArticleLoading ? (
             <Placeholder animation="glow" as="p">
               <TextPlaceholder xs={1} />
             </Placeholder>

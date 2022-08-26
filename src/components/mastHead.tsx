@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { LinkContainer } from "./linkContainer";
 import { IApiError, ISection } from "../types";
 import { HorizontalDivider } from "./horizontalDivider";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getSections } from "../api/requests";
 import { useInView } from "react-intersection-observer";
 
@@ -26,8 +26,7 @@ export const Masthead = (props: MastHeadProps) => {
     isLoading,
     isError,
     error,
-    isIdle,
-  } = useQuery<ISection[], IApiError, ISection[]>("sections", getSections);
+  } = useQuery<ISection[], IApiError, ISection[]>(["sections"], getSections);
 
   if (isError) {
     return <h1>Error {error.message}</h1>;
@@ -58,7 +57,7 @@ export const Masthead = (props: MastHeadProps) => {
       <HorizontalDivider />
       <BorderedRow>
         <Nav fill as="ul">
-          {isLoading || isIdle ? (
+          {isLoading ? (
             <SectionsPlaceholder />
           ) : (
             sections.map(section => (

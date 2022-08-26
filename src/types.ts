@@ -61,3 +61,13 @@ export interface LoginInfo {
   username: string;
   password: string;
 }
+
+export interface DriveFile {
+  id: string;
+  name: string;
+  mimeType: string;
+  webViewLink: string;
+  authorName: string;
+  authorEmail: string;
+  authorPicture: string;
+}

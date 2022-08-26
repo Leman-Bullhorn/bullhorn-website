@@ -5,8 +5,8 @@ import { Container, Row, Col, Spinner } from "react-bootstrap";
 import { NavigationBar } from "../components/navigationBar";
 import { AuthRole, IApiError, IArticle, Paginated } from "../types";
 import { current, getArticles } from "../api/requests";
-import { useQuery } from "react-query";
-import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import styled from "styled-components";
 
 export const HomePage = () => {
   const [isMastHeadVisible, setMastHeadVisible] = useState(true);
@@ -15,14 +15,13 @@ export const HomePage = () => {
     data: articles,
     isLoading,
     isError,
-    isIdle,
     error,
   } = useQuery<Paginated<IArticle[]>, IApiError, Paginated<IArticle[]>>(
-    ["articles", 1],
-    () => getArticles(1),
+    ["paginatedArticles", 1],
+    () => getArticles(1, 50),
   );
 
-  const { data: roleData } = useQuery("role", current);
+  const { data: roleData } = useQuery(["role"], current);
 
   if (isError) {
     return <p>{error}</p>;
@@ -37,7 +36,7 @@ export const HomePage = () => {
         <Row>
           <Masthead changeVisibility={setMastHeadVisible} />
         </Row>
-        {isLoading || isIdle ? (
+        {isLoading ? (
           <Spinner animation="border" role="status" />
         ) : (
           <Row xs={1} sm={1} md={2} lg={3} xl={3} xxl={3}>

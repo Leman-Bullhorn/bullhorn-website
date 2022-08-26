@@ -3,7 +3,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import { lightTheme } from "./theme";
 import { GlobalStyles } from "./global";
@@ -20,6 +21,7 @@ ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={lightTheme}>
       <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools />
         <GlobalStyles />
         <BrowserRouter>
           <ScrollToTop />

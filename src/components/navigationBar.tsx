@@ -2,7 +2,7 @@ import { Navbar, Nav, Container, Col } from "react-bootstrap";
 import styled from "styled-components";
 import { LinkContainer } from "./linkContainer";
 import { IApiError, ISection } from "../types";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getSections } from "../api/requests";
 
 const StyledNavbar = styled(Navbar)`
@@ -45,9 +45,8 @@ export const NavigationBar = (props: NavigationBarProps) => {
     data: sections,
     isLoading,
     isError,
-    isIdle,
     error,
-  } = useQuery<ISection[], IApiError, ISection[]>("sections", getSections);
+  } = useQuery<ISection[], IApiError, ISection[]>(["sections"], getSections);
 
   if (isError) {
     return <h1>Error {error.message}</h1>;
@@ -94,7 +93,6 @@ export const NavigationBar = (props: NavigationBarProps) => {
               as="ul"
               className="flex-grow-1 justify-content-center flex-shrink-0">
               {!isLoading &&
-                !isIdle &&
                 sections.map(section => (
                   <Nav.Item as="li" key={section.permalink}>
                     <LinkContainer to={section.permalink}>

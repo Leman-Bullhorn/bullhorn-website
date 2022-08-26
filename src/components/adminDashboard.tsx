@@ -16,7 +16,7 @@ import {
   useQuery,
   useQueryClient,
   useInfiniteQuery,
-} from "react-query";
+} from "@tanstack/react-query";
 import {
   getArticles,
   postArticle,
@@ -24,6 +24,7 @@ import {
   getSections,
 } from "../api/requests";
 import { IApiError, IArticle, ISection, IWriter, Paginated } from "../types";
+import { DriveTable } from "./driveTable";
 
 export const AdminDashboard = () => {
   const {
@@ -33,7 +34,7 @@ export const AdminDashboard = () => {
     fetchNextPage: fetchNextArticlePage,
     hasNextPage: hasNextArticlePage,
   } = useInfiniteQuery<Paginated<IArticle[]>, IApiError, Paginated<IArticle[]>>(
-    "paginatedArticles",
+    ["paginatedArticles"],
     ({ pageParam = 1 }) => getArticles(pageParam, 20),
     {
       getNextPageParam: lastPage => lastPage.next?.page,
@@ -69,6 +70,7 @@ export const AdminDashboard = () => {
             <ArticleCreationForm />
           </Col>
         </Row>
+          <DriveTable />
       </Container>
     </>
   );
@@ -228,17 +230,17 @@ const ArticleCreationForm = () => {
     data: writerData,
     isError: isErrorWriters,
     error: writerError,
-  } = useQuery<IWriter[], IApiError, IWriter[]>("writers", getWriters);
+  } = useQuery<IWriter[], IApiError, IWriter[]>(["writers"], getWriters);
 
   const {
     data: sectionData,
     isError: isErrorSections,
     error: sectionError,
-  } = useQuery<ISection[], IApiError, ISection[]>("sections", getSections);
+  } = useQuery<ISection[], IApiError, ISection[]>(["sections"], getSections);
 
   const articleMutation = useMutation(postArticle, {
     onSuccess() {
-      queryClient.invalidateQueries("articles");
+      queryClient.invalidateQueries(["articles"]);
     },
   });
 

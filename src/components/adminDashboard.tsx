@@ -258,9 +258,12 @@ const ArticleCreationForm = () => {
     const sectionId = articleFormSection?.id;
     if (sectionId === undefined) return;
 
+    // Escape the string
+    let body = JSON.parse(JSON.stringify(articleFormContent));
+
     articleMutation.mutate({
       headline: articleFormHeadline,
-      body: articleFormContent,
+      body,
       writerId,
       sectionId,
     });

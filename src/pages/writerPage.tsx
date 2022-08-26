@@ -57,16 +57,16 @@ export function WriterPage() {
   }
 
   const articlesOrSkeleton = isArticleLoading
-      ? Array.from(Array(3).keys()).map(idx => (
-          <Row key={idx.toString()}>
-            <ArticleBlockPlaceholder />
-          </Row>
-        ))
-      : recentArticles.map(article => (
-          <Row key={`${article.id}`}>
-            <ArticleBlock {...article} />
-          </Row>
-        ));
+    ? Array.from(Array(3).keys()).map(idx => (
+        <Row key={idx.toString()}>
+          <ArticleBlockPlaceholder />
+        </Row>
+      ))
+    : recentArticles.map(article => (
+        <Row key={`${article.id}`}>
+          <ArticleBlock {...article} />
+        </Row>
+      ));
 
   return (
     <>

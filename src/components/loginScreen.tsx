@@ -27,7 +27,7 @@ export const LoginScreen = () => {
       <Container className="d-flex vh-100 justify-content-center align-items-center">
         <Card
           style={{ width: "50vw" }}
-          onKeyDownCapture={e => {
+          onKeyDownCapture={(e: React.KeyboardEvent) => {
             if (!loginDisabled && e.key === "Enter") onSubmit();
           }}>
           <Card.Header>
@@ -42,7 +42,9 @@ export const LoginScreen = () => {
                 type="text"
                 required
                 placeholder="Enter username"
-                onChange={e => setUsername(e.target.value)}
+                onChange={(
+                  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+                ) => setUsername(e.target.value)}
               />
             </Form.FloatingLabel>
 
@@ -54,7 +56,9 @@ export const LoginScreen = () => {
                 type="password"
                 required
                 placeholder="Password"
-                onChange={e => setPassword(e.target.value)}
+                onChange={(
+                  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+                ) => setPassword(e.target.value)}
               />
             </Form.FloatingLabel>
 

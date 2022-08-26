@@ -309,7 +309,9 @@ const ArticleCreationForm = () => {
             type="text"
             required
             placeholder="Enter Headline"
-            onChange={e => setArticleFormHeadline(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setArticleFormHeadline(e.target.value)
+            }
           />
         </Form.FloatingLabel>
         <Form.FloatingLabel

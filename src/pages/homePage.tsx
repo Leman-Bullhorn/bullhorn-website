@@ -47,7 +47,7 @@ export const HomePage = () => {
   const { data: roleData } = useQuery(["role"], current);
 
   if (isError) {
-    return <p>{error}</p>;
+    return <p>{error.message}</p>;
   }
 
   return (

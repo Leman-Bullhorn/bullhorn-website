@@ -1,6 +1,6 @@
 import "./index.scss";
-import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
+import { StrictMode } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -17,8 +17,14 @@ import ScrollToTop from "./components/scrollToTop";
 
 const queryClient = new QueryClient();
 
-ReactDOM.render(
-  <React.StrictMode>
+const container = document.getElementById("root");
+if (container == null) {
+  throw new Error("Couldn't find root element");
+}
+const root = createRoot(container);
+
+root.render(
+  <StrictMode>
     <ThemeProvider theme={lightTheme}>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools />
@@ -35,6 +41,5 @@ ReactDOM.render(
         </BrowserRouter>
       </QueryClientProvider>
     </ThemeProvider>
-  </React.StrictMode>,
-  document.getElementById("root"),
+  </StrictMode>,
 );

@@ -70,7 +70,9 @@ export const AdminDashboard = () => {
             <ArticleCreationForm />
           </Col>
         </Row>
+        <Row>
           <DriveTable />
+        </Row>
       </Container>
     </>
   );

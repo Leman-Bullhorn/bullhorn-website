@@ -1,85 +1,66 @@
-import { Card } from "react-bootstrap";
-import styled from "styled-components";
-import { LinkContainer } from "./linkContainer";
+import styled, { css } from "styled-components";
 
 import { IArticle } from "../types";
 import { TimeStamp } from "./timeStamp";
 import { HeadlineFont } from "./headlineFont";
+import { ThemedLink } from "./themedLink";
+import { Link } from "react-router-dom";
 
-const Styles = styled.div`
-  .card {
-    margin-bottom: 1rem;
-  }
+const Styles = styled.div<{ bottom?: boolean }>`
+  padding-bottom: 0.75rem;
+  padding-top: 0.75rem;
 
-  .card-link {
-    color: black;
-    text-decoration: none;
-    margin-left: 0;
-    margin-right: 0;
-  }
+  ${(props: any) =>
+    !props.bottom &&
+    css`
+      border-bottom: 1px solid #dddddd;
+    `}
 
-  .card-link:hover {
-    color: rgb(${({ theme }) => theme.lemanColorComponents});
-    text-decoration: underline;
-  }
-
-  .card-img,
-  .card-img-top {
+  img {
     transition: opacity 0.25s ease-in-out;
     border-radius: calc(0.25rem - 1px);
   }
 
-  .card-img:hover,
-  .card-img-top:hover {
+  img:hover {
     opacity: 0.7;
   }
 `;
 
-export const Article = (props: IArticle) => {
+interface ArticleProps extends IArticle {
+  bottom?: boolean;
+}
+
+export const Article = (props: ArticleProps) => {
   const sectionName = props.section.name.toLowerCase();
   const articleUrl = `/article/${sectionName}/${props.slug}`;
   const writerUrl = `/writer/${props.writer.firstName}-${props.writer.lastName}`;
 
   return (
-    <Styles>
-      <Card>
-        <Card.Body>
-          {props.imageUrl && (
-            <LinkContainer to={articleUrl}>
-              <Card.Link>
-                <Card.Img variant="top" src={props.imageUrl} />
-              </Card.Link>
-            </LinkContainer>
-          )}
+    <Styles bottom={props.bottom}>
+      {props.imageUrl && (
+        <Link to={articleUrl}>
+          <img src={props.imageUrl} alt="" width="100%" />
+        </Link>
+      )}
 
-          <HeadlineFont>
-            <Card.Title>
-              <LinkContainer to={articleUrl}>
-                <Card.Link>{props.headline}</Card.Link>
-              </LinkContainer>
-            </Card.Title>
-          </HeadlineFont>
+      <HeadlineFont>
+        <ThemedLink to={articleUrl}>
+          <h4>{props.headline}</h4>
+        </ThemedLink>
+      </HeadlineFont>
 
-          <Card.Subtitle>
-            <Card.Text>
-              By{" "}
-              <LinkContainer to={writerUrl}>
-                <Card.Link>
-                  {props.writer.firstName} {props.writer.lastName}
-                </Card.Link>
-              </LinkContainer>
-            </Card.Text>
+      <span>
+        By{" "}
+        <ThemedLink to={writerUrl}>
+          {props.writer.firstName} {props.writer.lastName}
+        </ThemedLink>
+      </span>
 
-            {props.preview && (
-              <Card.Text className="text-muted">{props.preview}</Card.Text>
-            )}
+      {props.preview && <p className="text-muted">{props.preview}</p>}
 
-            <Card.Text className="text-muted">
-              <TimeStamp originalDate={props.publicationDate} />
-            </Card.Text>
-          </Card.Subtitle>
-        </Card.Body>
-      </Card>
+      <p className="text-muted">
+        <TimeStamp originalDate={props.publicationDate} />
+      </p>
     </Styles>
   );
 };

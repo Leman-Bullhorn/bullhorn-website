@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface Paginated<T> {
   next?: {
     page: number;
@@ -17,8 +19,7 @@ export interface IApiError {
 }
 
 export interface ArticleData {
-  headline: string;
-  body: string;
+  content: ArticleContent;
   writerId: number;
   sectionId: number;
   preview?: string;
@@ -37,7 +38,7 @@ export interface IArticle {
   id: number;
   headline: string;
   slug: string;
-  body: string;
+  content: ArticleContent;
   writer: IWriter;
   publicationDate: Date;
   imageUrl: string;
@@ -70,4 +71,22 @@ export interface DriveFile {
   authorName: string;
   authorEmail: string;
   authorPicture: string;
+}
+
+export interface ArticleSpan {
+  textContent: string;
+  fontStyle: string;
+  textDecoration: string;
+  color: string;
+  fontWeight: string;
+}
+
+export interface ArticleParagraph {
+  textAlignment: React.CSSProperties["textAlign"];
+  spans: ArticleSpan[];
+}
+
+export interface ArticleContent {
+  headline: string;
+  paragraphs: ArticleParagraph[];
 }

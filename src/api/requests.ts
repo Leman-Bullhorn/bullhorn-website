@@ -8,6 +8,7 @@ import {
   ArticleData,
   Paginated,
   DriveFile,
+  ArticleContent,
 } from "../types";
 import { AxiosResponse } from "axios";
 
@@ -34,16 +35,14 @@ export const getWriters = async () => {
 };
 
 export const postArticle = async ({
-  headline,
-  body,
+  content,
   writerId,
   sectionId,
   preview,
   imageUrl,
 }: ArticleData) => {
   const postData: any = {
-    headline,
-    body,
+    content,
     writer_id: writerId,
     section_id: sectionId,
   };
@@ -140,6 +139,14 @@ export const moveToFinal = async (fileId: string) => {
 export const moveToDraft = async (fileId: string) => {
   const response = await axios.post<DriveFile>(
     `${BASE_URL}/drive/draft/${fileId}`,
+  );
+
+  return validateStatusCode(response);
+};
+
+export const getArticleContent = async (fileId: string) => {
+  const response = await axios.get<ArticleContent>(
+    `${BASE_URL}/drive/content/${fileId}`,
   );
 
   return validateStatusCode(response);

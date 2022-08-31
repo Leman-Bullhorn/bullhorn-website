@@ -1,29 +1,10 @@
-import React, { useMemo, useState } from "react";
-import {
-  Alert,
-  Button,
-  Form,
-  Container,
-  Card,
-  Table,
-  Col,
-  Row,
-} from "react-bootstrap";
+import React, { useMemo } from "react";
+import { Container, Table, Col, Row } from "react-bootstrap";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Column, useTable, useSortBy } from "react-table";
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-  useInfiniteQuery,
-} from "@tanstack/react-query";
-import {
-  getArticles,
-  postArticle,
-  getWriters,
-  getSections,
-} from "../api/requests";
-import { IApiError, IArticle, ISection, IWriter, Paginated } from "../types";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { getArticles } from "../api/requests";
+import { IApiError, IArticle, Paginated } from "../types";
 import { DriveTable } from "./driveTable";
 
 export const AdminDashboard = () => {
@@ -65,9 +46,6 @@ export const AdminDashboard = () => {
               scrollableTarget="articles-table">
               <ArticlesTable articles={articles} />
             </InfiniteScroll>
-          </Col>
-          <Col>
-            <ArticleCreationForm />
           </Col>
         </Row>
         <Row>
@@ -217,152 +195,5 @@ const ArticlesTable = ({ articles }: ArticlesTableProps) => {
         })}
       </tbody>
     </Table>
-  );
-};
-
-const ArticleCreationForm = () => {
-  const [articleFormHeadline, setArticleFormHeadline] = useState("");
-  const [articleFormContent, setArticleFormContent] = useState("");
-  const [articleFormWriter, setArticleFormWriter] = useState<IWriter>();
-  const [articleFormSection, setArticleFormSection] = useState<ISection>();
-
-  const queryClient = useQueryClient();
-
-  const {
-    data: writerData,
-    isError: isErrorWriters,
-    error: writerError,
-  } = useQuery<IWriter[], IApiError, IWriter[]>(["writers"], getWriters);
-
-  const {
-    data: sectionData,
-    isError: isErrorSections,
-    error: sectionError,
-  } = useQuery<ISection[], IApiError, ISection[]>(["sections"], getSections);
-
-  const articleMutation = useMutation(postArticle, {
-    onSuccess() {
-      queryClient.invalidateQueries(["articles"]);
-    },
-  });
-
-  if (isErrorWriters) {
-    return <h1>Error {writerError.message}</h1>;
-  }
-
-  if (isErrorSections) {
-    return <h1>Error {sectionError.message}</h1>;
-  }
-
-  const publishArticle = async () => {
-    const writerId = articleFormWriter?.id;
-    if (writerId === undefined) return;
-    const sectionId = articleFormSection?.id;
-    if (sectionId === undefined) return;
-
-    // Escape the string
-    let body = JSON.parse(JSON.stringify(articleFormContent));
-
-    articleMutation.mutate({
-      headline: articleFormHeadline,
-      body,
-      writerId,
-      sectionId,
-    });
-  };
-
-  const onChangeWriterSelection = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    let writerId = parseInt(event.target.value);
-
-    const selectedWriter = writerData?.find(writer => writer.id === writerId);
-    if (!selectedWriter) return;
-
-    setArticleFormWriter(selectedWriter);
-  };
-
-  const onChangeSectionSelection = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    let sectionId = parseInt(event.target.value);
-
-    const selectedSection = sectionData?.find(
-      section => section.id === sectionId,
-    );
-    if (!selectedSection) return;
-
-    console.log(selectedSection);
-
-    setArticleFormSection(selectedSection);
-  };
-
-  return (
-    <Card>
-      <Card.Header>
-        <Card.Text>Create Article</Card.Text>
-      </Card.Header>
-      <Card.Body>
-        <Form.FloatingLabel
-          className="mb-3"
-          controlId="headlineInput"
-          label="Headline">
-          <Form.Control
-            type="text"
-            required
-            placeholder="Enter Headline"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setArticleFormHeadline(e.target.value)
-            }
-          />
-        </Form.FloatingLabel>
-        <Form.FloatingLabel
-          className="mb-3"
-          controlId="writerInput"
-          label="Writer">
-          <Form.Select required onChange={onChangeWriterSelection}>
-            {(writerData ?? []).map(writer => (
-              <option key={writer.id} value={writer.id.toString()}>
-                {writer.firstName} {writer.lastName}
-              </option>
-            ))}
-          </Form.Select>
-        </Form.FloatingLabel>
-        <Form.FloatingLabel
-          className="mb-3"
-          controlId="sectionInput"
-          label="Section">
-          <Form.Select required onChange={onChangeSectionSelection}>
-            {(sectionData ?? []).map(section => (
-              <option key={section.id} value={section.id.toString()}>
-                {section.name}
-              </option>
-            ))}
-          </Form.Select>
-        </Form.FloatingLabel>
-        <Form.Control
-          as="textarea"
-          rows={3}
-          required
-          onChange={e => setArticleFormContent(e.target.value)}
-        />
-        <br />
-        {articleMutation.isError && (
-          <Alert variant="danger">Failed to publish article</Alert>
-        )}
-        <Button
-          variant="primary"
-          type="submit"
-          onClick={publishArticle}
-          disabled={
-            articleFormHeadline === "" ||
-            articleFormContent === "" ||
-            articleFormSection === undefined ||
-            articleFormWriter === undefined
-          }>
-          Publish
-        </Button>
-      </Card.Body>
-    </Card>
   );
 };

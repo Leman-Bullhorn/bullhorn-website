@@ -5,10 +5,12 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import { getFinals, moveToDraft as moveToDraftReq } from "../api/requests";
 import { DriveFile, IApiError } from "../types";
+import { Centered } from "./centered";
+import { PublishArticleDialog } from "./publishArticleDialog";
 
 interface TableFile {
   name: string;
@@ -20,6 +22,9 @@ interface TableFile {
 const columnHelper = createColumnHelper<TableFile>();
 
 export const FinalsTable = () => {
+  const [showPublishDialog, setShowPublishDialog] = useState(false);
+  const [selectedArticleFileId, setSelectedArticleFileId] = useState<string>();
+
   const queryClient = useQueryClient();
 
   const mutationCount = useRef(0);
@@ -87,11 +92,27 @@ export const FinalsTable = () => {
     columnHelper.display({
       id: "draftAction",
       cell: info => (
+        <Centered>
+          <Button
+            className="d-flex"
+            variant="danger"
+            onClick={() => {
+              moveToDraft(info.row.original);
+            }}>
+            &larr; Move to Draft
+          </Button>
+        </Centered>
+      ),
+    }),
+    columnHelper.display({
+      id: "publish",
+      cell: info => (
         <Button
           onClick={() => {
-            moveToDraft(info.row.original);
+            setSelectedArticleFileId(info.row.original.id);
+            setShowPublishDialog(true);
           }}>
-          Move to Draft
+          Publish
         </Button>
       ),
     }),
@@ -127,18 +148,32 @@ export const FinalsTable = () => {
   }
 
   return (
-    <Table striped bordered hover>
-      <tbody>
-        {table.getRowModel().rows.map(row => (
-          <tr key={row.id}>
-            {row.getVisibleCells().map(cell => (
-              <td key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </Table>
+    <>
+      <PublishArticleDialog
+        articleFileId={selectedArticleFileId}
+        show={showPublishDialog}
+        onHide={() => {
+          setShowPublishDialog(false);
+          // Add a small delay so that the article is de-selected once the dialog is fully off screen
+          // since there is an animation.
+          setTimeout(() => {
+            setSelectedArticleFileId(undefined);
+          }, 200);
+        }}
+      />
+      <Table striped bordered hover>
+        <tbody>
+          {table.getRowModel().rows.map(row => (
+            <tr key={row.id}>
+              {row.getVisibleCells().map(cell => (
+                <td key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </>
   );
 };

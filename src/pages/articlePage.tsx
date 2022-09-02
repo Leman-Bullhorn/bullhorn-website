@@ -6,7 +6,7 @@ import { VariableContainer } from "../components/variableContainer";
 import styled from "styled-components";
 import { Placeholder, Row } from "react-bootstrap";
 import { HorizontalDivider } from "../components/horizontalDivider";
-import { ThemedLink } from "../components/themedLink";
+import { ThemedLink, ThemedAnchor } from "../components/themedLink";
 import { TimeStamp } from "../components/timeStamp";
 import { useQuery } from "@tanstack/react-query";
 import { TextPlaceholder } from "../components/textPlaceholder";
@@ -75,14 +75,36 @@ export const ArticlePage = () => {
                   {paragraph.spans.map((span, idx) => (
                     <span
                       key={idx}
-                      dangerouslySetInnerHTML={{ __html: span.textContent }}
                       style={{
                         fontStyle: span.fontStyle,
                         textDecoration: span.textDecoration,
                         color: span.color,
                         fontWeight: span.fontWeight,
-                      }}
-                    />
+                      }}>
+                      {span.content.map((content, idx) => {
+                        if ("anchor" in content) {
+                          return (
+                            <ThemedAnchor
+                              key={idx}
+                              href={content.anchor.href}
+                              dangerouslySetInnerHTML={{
+                                __html: content.anchor.content,
+                              }}
+                              rel="noreferrer"
+                              target="_blank"
+                            />
+                          );
+                        } else {
+                          return (
+                            <span
+                              dangerouslySetInnerHTML={{
+                                __html: content.text.content,
+                              }}
+                            />
+                          );
+                        }
+                      })}
+                    </span>
                   ))}
                 </p>
               ))}

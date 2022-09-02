@@ -73,8 +73,12 @@ export interface DriveFile {
   authorPicture: string;
 }
 
+type SpanContent =
+  | { text: { content: string } }
+  | { anchor: { href: string; content: string } };
+
 export interface ArticleSpan {
-  textContent: string;
+  content: SpanContent[];
   fontStyle: string;
   textDecoration: string;
   color: string;

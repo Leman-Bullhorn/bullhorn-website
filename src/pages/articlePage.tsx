@@ -94,6 +94,15 @@ export const ArticlePage = () => {
                               target="_blank"
                             />
                           );
+                        } else if ("image" in content) {
+                          return (
+                            <img
+                              src={content.image.src}
+                              alt={content.image.alt}
+                              width={content.image.width}
+                              height={content.image.height}
+                            />
+                          );
                         } else {
                           return (
                             <span

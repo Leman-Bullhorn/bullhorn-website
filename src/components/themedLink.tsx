@@ -12,3 +12,15 @@ export const ThemedLink = styled(Link)`
     text-decoration: underline;
   }
 `;
+
+export const ThemedAnchor = styled.a`
+  display: inline-block;
+  color: rgb(${({ theme }) => theme.lemanColorComponents}) !important;
+  margin-left: 0;
+  margin-right: 0;
+  text-decoration: underline;
+
+  :hover {
+    text-decoration-line: none;
+  }
+`;

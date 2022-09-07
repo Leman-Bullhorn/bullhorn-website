@@ -75,7 +75,8 @@ export interface DriveFile {
 
 type SpanContent =
   | { text: { content: string } }
-  | { anchor: { href: string; content: string } };
+  | { anchor: { href: string; content: string } }
+  | { image: { src: string; width: string; height: string; alt: string } };
 
 export interface ArticleSpan {
   content: SpanContent[];

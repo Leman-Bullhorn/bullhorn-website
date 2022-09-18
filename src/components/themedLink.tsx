@@ -13,6 +13,10 @@ export const ThemedLink = styled(Link)`
   }
 `;
 
+export const UnderlinedThemedLink = styled(ThemedLink)`
+  text-decoration: underline;
+`;
+
 export const ThemedAnchor = styled.a`
   display: inline-block;
   color: rgb(${({ theme }) => theme.lemanColorComponents}) !important;

@@ -99,6 +99,7 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
   return (
     <Modal
       size="lg"
+      backdrop="static"
       show={props.show}
       onHide={props.onHide}
       onEscapeKeyDown={props.onHide}>

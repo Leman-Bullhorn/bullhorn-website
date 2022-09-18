@@ -89,10 +89,11 @@ export const DraftsTable = () => {
       id: "finalAction",
       cell: info => (
         <Button
+          variant="success"
           onClick={() => {
             moveToFinal(info.row.original);
           }}>
-          Move to Final
+          Move to Final &rarr;
         </Button>
       ),
     }),

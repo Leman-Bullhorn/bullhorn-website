@@ -53,6 +53,23 @@ export const postArticle = async ({
   return validateStatusCode(response);
 };
 
+export const getWriterById = async (id: number) => {
+  const response = await axios.get<IWriter>(`${BASE_URL}/writers/${id}`);
+  return validateStatusCode(response);
+};
+
+export const updateWriterById = async (
+  id: number,
+  toChange: { title?: string; bio?: string },
+) => {
+  const response = await axios.patch<void>(
+    `${BASE_URL}/writers/${id}`,
+    toChange,
+  );
+
+  return validateStatusCode(response);
+};
+
 export const getWriterByName = async (hyphenateName: string) => {
   const response = await axios.get<IWriter>(
     `${BASE_URL}/writers/${hyphenateName}`,

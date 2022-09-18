@@ -4,6 +4,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { getArticles } from "../api/requests";
 import { IApiError, IArticle, Paginated } from "../types";
 import { DriveTable } from "./driveTable";
+import { WritersTable } from "./writersTable";
 import { ArticlesTable } from "./articlesTable";
 
 export const AdminDashboard = () => {
@@ -49,6 +50,7 @@ export const AdminDashboard = () => {
         </Row>
         <Row>
           <DriveTable />
+          <WritersTable />
         </Row>
       </Container>
     </>

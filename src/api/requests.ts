@@ -60,7 +60,12 @@ export const getWriterById = async (id: number) => {
 
 export const updateWriterById = async (
   id: number,
-  toChange: { title?: string; bio?: string },
+  toChange: {
+    firstName?: string;
+    lastName?: string;
+    title?: string;
+    bio?: string;
+  },
 ) => {
   const response = await axios.patch<void>(
     `${BASE_URL}/writers/${id}`,

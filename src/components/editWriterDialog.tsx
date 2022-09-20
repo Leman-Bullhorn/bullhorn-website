@@ -12,6 +12,8 @@ interface PublishArticleDialogProps {
 }
 
 export const EditWriterDialog = (props: PublishArticleDialogProps) => {
+  const [newFirstName, setNewFirstName] = useState<string>();
+  const [newLastName, setNewLastName] = useState<string>();
   const [newTitle, setNewTitle] = useState<string>();
   const [newBio, setNewBio] = useState<string>();
 
@@ -38,7 +40,13 @@ export const EditWriterDialog = (props: PublishArticleDialogProps) => {
   const { mutate: updateWriter } = useMutation<
     void,
     ApiError,
-    { id: number; bio?: string; title?: string }
+    {
+      id: number;
+      firstName?: string;
+      lastName?: string;
+      bio?: string;
+      title?: string;
+    }
   >(({ id, ...toChange }) => updateWriterById(id, toChange), {
     onSuccess: () => {
       queryClient.removeQueries(["writers", writerId]);
@@ -48,7 +56,13 @@ export const EditWriterDialog = (props: PublishArticleDialogProps) => {
 
   const onClickEdit = () => {
     if (writerId == null) return;
-    updateWriter({ id: writerId, bio: newBio, title: newTitle });
+    updateWriter({
+      id: writerId,
+      firstName: newFirstName,
+      lastName: newLastName,
+      bio: newBio,
+      title: newTitle,
+    });
     props.onHide?.();
   };
 
@@ -83,6 +97,24 @@ export const EditWriterDialog = (props: PublishArticleDialogProps) => {
           </h2>
         )}
         <Form>
+          <Form.Group>
+            <Form.Label>First Name</Form.Label>
+            <Form.Control
+              type="text"
+              defaultValue={writer?.firstName}
+              onChange={e => setNewFirstName(e.target.value)}
+            />
+          </Form.Group>
+          <br />
+          <Form.Group>
+            <Form.Label>Last Name</Form.Label>
+            <Form.Control
+              type="text"
+              defaultValue={writer?.lastName}
+              onChange={e => setNewLastName(e.target.value)}
+            />
+          </Form.Group>
+          <br />
           <Form.Group>
             <Form.Label>Title</Form.Label>
             <Form.Control

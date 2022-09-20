@@ -5,7 +5,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Table } from "react-bootstrap";
 import { getWriters } from "../api/requests";
 import { IApiError, IWriter } from "../types";
@@ -65,16 +65,8 @@ export const WritersTable = () => {
     }),
   ];
 
-  const data = useMemo(
-    () =>
-      writers?.map(writer => ({
-        ...writer,
-      })) ?? [],
-    [writers],
-  );
-
   const table = useReactTable({
-    data,
+    data: writers ?? [],
     columns,
     getCoreRowModel: getCoreRowModel(),
   });

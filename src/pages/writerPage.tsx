@@ -43,7 +43,7 @@ export function WriterPage() {
     isError: isArticleError,
     error: articleError,
   } = useQuery<IArticle[], IApiError, IArticle[]>(
-    ["articles", writer?.id],
+    ["articles", { paginated: false }, writer?.id],
     () => getArticlesByWriterId(writer!.id),
     { enabled: writer !== undefined },
   );

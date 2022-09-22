@@ -40,7 +40,7 @@ export const HomePage = () => {
     isError,
     error,
   } = useQuery<Paginated<IArticle[]>, IApiError, Paginated<IArticle[]>>(
-    ["paginatedArticles", 1],
+    ["articles", { paginated: true }, 1],
     () => getArticles(1, 50),
   );
 

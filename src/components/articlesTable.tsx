@@ -12,6 +12,7 @@ import styled from "styled-components";
 import { getArticleContent, updateArticleById } from "../api/requests";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApiError } from "../api/utils";
+import { UnderlinedThemedLink } from "./themedLink";
 
 const Refresh = styled.i`
   color: rgb(${({ theme }) => theme.lemanColorComponents});
@@ -79,19 +80,41 @@ export const ArticlesTable = ({ articles }: ArticlesTableProps) => {
   };
 
   const columns = [
-    columnHelper.accessor("id", { id: "id", header: "ID" }),
-    columnHelper.accessor("headline", { id: "headline", header: "Headline" }),
-    columnHelper.accessor("section.name", { id: "section", header: "Section" }),
+    columnHelper.display({
+      id: "headline",
+      header: "Headline",
+      cell: info => (
+        <UnderlinedThemedLink
+          to={`/article/${info.row.original.section.name.toLowerCase()}/${
+            info.row.original.slug
+          }`}>
+          {info.row.original.headline}
+        </UnderlinedThemedLink>
+      ),
+    }),
+    columnHelper.display({
+      id: "section",
+      header: "Section",
+      cell: ({ row }) => (
+        <UnderlinedThemedLink to={row.original.section.permalink}>
+          {row.original.section.name}
+        </UnderlinedThemedLink>
+      ),
+    }),
     columnHelper.display({
       id: "published",
       header: "Published",
-      cell: info => info.row.original.publicationDate.toLocaleDateString(),
+      cell: ({ row }) => row.original.publicationDate.toLocaleDateString(),
     }),
     columnHelper.display({
       id: "author",
       header: "Author",
-      cell: ({ row }) =>
-        `${row.original.writer.firstName} ${row.original.writer.lastName}`,
+      cell: ({ row }) => (
+        <UnderlinedThemedLink
+          to={`/writer/${row.original.writer.firstName}-${row.original.writer.lastName}`}>
+          {row.original.writer.firstName} {row.original.writer.lastName}
+        </UnderlinedThemedLink>
+      ),
     }),
     columnHelper.display({
       id: "edit",

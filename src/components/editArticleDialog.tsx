@@ -1,6 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Alert, Button, Form, Modal } from "react-bootstrap";
-import { getSections, getWriters, updateArticleById } from "../api/requests";
+import {
+  deleteArticleById,
+  getSections,
+  getWriters,
+  updateArticleById,
+} from "../api/requests";
 import { IArticle, IWriter, IApiError, ISection } from "../types";
 import { useMemo, useState } from "react";
 import Select from "react-select";
@@ -39,6 +44,16 @@ export const EditArticleDialog = (props: Props) => {
     },
   });
 
+  const { mutate: deleteArticle, isLoading: isDeletingArticle } = useMutation<
+    void,
+    ApiError,
+    { id: number }
+  >(({ id }) => deleteArticleById(id), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["articles"]);
+    },
+  });
+
   const onClickEdit = () => {
     let id = props.article?.id;
     if (id == null) return;
@@ -58,6 +73,18 @@ export const EditArticleDialog = (props: Props) => {
 
     updateArticle({ id, ...toChange });
     props.onHide?.();
+  };
+
+  const onClickDelete = () => {
+    let id = props.article?.id;
+    if (id == null) return;
+
+    deleteArticle(
+      { id },
+      {
+        onSuccess: props.onHide,
+      },
+    );
   };
 
   let { article } = props;
@@ -147,7 +174,12 @@ export const EditArticleDialog = (props: Props) => {
         </Form>
         <DangerDivider className="mb-3" />
         <h2 className="text-danger">Deleting Is Permanent</h2>
-        <Button variant="danger">Delete Article</Button>
+        <Button
+          variant="danger"
+          onClick={onClickDelete}
+          disabled={isDeletingArticle}>
+          {isDeletingArticle ? <>Deleting...</> : <>Delete Article</>}
+        </Button>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={props.onHide}>

@@ -40,6 +40,7 @@ export const postArticle = async ({
   sectionId,
   preview,
   imageUrl,
+  driveFileId,
 }: ArticleData) => {
   const postData: any = {
     content,
@@ -48,7 +49,26 @@ export const postArticle = async ({
   };
   if (preview) postData.preview = preview;
   if (imageUrl) postData.imageUrl = imageUrl;
+  if (driveFileId) postData.driveFileId = driveFileId;
   const response = await axios.post<IArticle>(`${BASE_URL}/articles`, postData);
+
+  return validateStatusCode(response);
+};
+
+export const updateArticleById = async (
+  id: number,
+  toChange: { writerId?: number; sectionId?: number; body?: ArticleContent },
+) => {
+  const response = await axios.patch<void>(
+    `${BASE_URL}/articles/${id}`,
+    toChange,
+  );
+
+  return validateStatusCode(response);
+};
+
+export const deleteArticleById = async (id: number) => {
+  const response = await axios.delete<void>(`${BASE_URL}/articles/${id}`);
 
   return validateStatusCode(response);
 };

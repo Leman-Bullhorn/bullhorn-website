@@ -1,7 +1,7 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { Alert, Button, Form, Modal } from "react-bootstrap";
-import Select from "react-select/";
+import Select from "react-select";
 import {
   getArticleContent,
   getSections,
@@ -19,6 +19,8 @@ interface PublishArticleDialogProps {
 export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
   const [selectedAuthor, setSelectedAuthor] = useState<string>();
   const [selectedSection, setSelectedSection] = useState<string>();
+
+  const queryClient = useQueryClient();
 
   const {
     data: writers,
@@ -65,6 +67,7 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
   const { mutate: publishArticle } = useMutation(postArticle, {
     onSuccess: () => {
       props.onHide?.();
+      queryClient.invalidateQueries(["articles"]);
     },
   });
 
@@ -81,6 +84,7 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
       content: articleContent!,
       sectionId,
       writerId,
+      driveFileId: props.articleFileId,
     });
   };
 

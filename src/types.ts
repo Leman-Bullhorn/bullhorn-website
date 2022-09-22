@@ -24,6 +24,7 @@ export interface ArticleData {
   sectionId: number;
   preview?: string;
   imageUrl?: string;
+  driveFileId?: string;
 }
 
 export interface IWriter {
@@ -40,11 +41,12 @@ export interface IArticle {
   slug: string;
   content: ArticleContent;
   writer: IWriter;
-  publicationDate: Date;
-  imageUrl: string;
-  featured?: boolean;
-  preview: string;
   section: ISection;
+  publicationDate: Date;
+  preview: string;
+  imageUrl: string;
+  driveFileId?: string;
+  featured?: boolean;
 }
 
 export interface ISection {

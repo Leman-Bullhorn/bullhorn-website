@@ -15,7 +15,7 @@ export const AdminDashboard = () => {
     fetchNextPage: fetchNextArticlePage,
     hasNextPage: hasNextArticlePage,
   } = useInfiniteQuery<Paginated<IArticle[]>, IApiError, Paginated<IArticle[]>>(
-    ["paginatedArticles"],
+    ["articles"],
     ({ pageParam = 1 }) => getArticles(pageParam, 20),
     {
       getNextPageParam: lastPage => lastPage.next?.page,

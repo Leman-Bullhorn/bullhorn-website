@@ -19,6 +19,11 @@ const Refresh = styled.i`
   cursor: pointer;
 `;
 
+const GrayRefresh = styled.i`
+  color: gray;
+  font-size: 1.75rem;
+`;
+
 const ThemedSpinner = styled(Spinner)`
   color: rgb(${({ theme }) => theme.lemanColorComponents});
   width: 1.75rem;
@@ -119,11 +124,17 @@ export const ArticlesTable = ({ articles }: ArticlesTableProps) => {
               style={{ width: "1.7rem", height: "1.75rem" }}
             />
           ) : (
-            <Refresh
-              onClick={() => onClickRefreshArticle(row.original)}
-              className="material-icons">
-              update
-            </Refresh>
+            <>
+              {row.original.driveFileId != null ? (
+                <Refresh
+                  onClick={() => onClickRefreshArticle(row.original)}
+                  className="material-icons">
+                  update
+                </Refresh>
+              ) : (
+                <GrayRefresh className="material-icons">update</GrayRefresh>
+              )}
+            </>
           )}
         </OverlayTrigger>
       ),

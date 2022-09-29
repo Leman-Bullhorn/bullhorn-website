@@ -24,7 +24,7 @@ const StyledImg = styled.img`
 `;
 
 export const ArticleBlock = (props: IArticle) => {
-  const sectionName = props.section.name.toLowerCase();
+  const sectionName = props.section.toLowerCase();
   const articleUrl = `/article/${sectionName}/${props.slug}`;
 
   return (
@@ -44,8 +44,7 @@ export const ArticleBlock = (props: IArticle) => {
         </Col>
         <Col xs={4}>
           {props.imageUrl !== "" && (
-            <Link
-              to={`/article/${props.section.name.toLowerCase()}/${props.slug}`}>
+            <Link to={`/article/${sectionName}/${props.slug}`}>
               <figure>
                 <StyledImg width="100%" src={props.imageUrl} alt="" />
               </figure>

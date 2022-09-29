@@ -51,8 +51,8 @@ export const ArticlePage = () => {
           <>
             <Row>
               <p className="text-uppercase" style={{ fontSize: "0.8rem" }}>
-                <ThemedLink to={article.section.permalink}>
-                  {article.section.name}
+                <ThemedLink to={`/section/${article.section.toString()}`}>
+                  {article.section.toString()}
                 </ThemedLink>
               </p>
               <ArticleHeadline>{article.headline}</ArticleHeadline>

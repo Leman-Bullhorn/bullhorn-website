@@ -31,7 +31,7 @@ interface ArticleProps extends IArticle {
 }
 
 export const Article = (props: ArticleProps) => {
-  const sectionName = props.section.name.toLowerCase();
+  const sectionName = props.section.toString();
   const articleUrl = `/article/${sectionName}/${props.slug}`;
   const writerUrl = `/writer/${props.writer.firstName}-${props.writer.lastName}`;
 

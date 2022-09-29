@@ -1,11 +1,9 @@
 import { useEffect } from "react";
-import { Container, Row, Nav, Navbar, Placeholder } from "react-bootstrap";
+import { Container, Row, Nav, Navbar } from "react-bootstrap";
 import styled from "styled-components";
 import { LinkContainer } from "./linkContainer";
-import { IApiError, ISection } from "../types";
+import { sections } from "../types";
 import { HorizontalDivider } from "./horizontalDivider";
-import { useQuery } from "@tanstack/react-query";
-import { getSections } from "../api/requests";
 import { useInView } from "react-intersection-observer";
 
 interface MastHeadProps {
@@ -20,17 +18,6 @@ export const Masthead = (props: MastHeadProps) => {
   useEffect(() => {
     changeVisibility?.(inView);
   }, [changeVisibility, inView]);
-
-  const {
-    data: sections,
-    isLoading,
-    isError,
-    error,
-  } = useQuery<ISection[], IApiError, ISection[]>(["sections"], getSections);
-
-  if (isError) {
-    return <h1>Error {error.message}</h1>;
-  }
 
   return (
     <Container ref={ref}>
@@ -57,19 +44,15 @@ export const Masthead = (props: MastHeadProps) => {
       <HorizontalDivider />
       <BorderedRow>
         <Nav fill as="ul">
-          {isLoading ? (
-            <SectionsPlaceholder />
-          ) : (
-            sections.map(section => (
-              <Nav.Item as="li" key={section.permalink}>
-                <LinkContainer to={section.permalink}>
-                  <StyledLink eventKey={section.permalink}>
-                    {section.name}
-                  </StyledLink>
-                </LinkContainer>
-              </Nav.Item>
-            ))
-          )}
+          {sections.map(section => (
+            <Nav.Item as="li" key={section}>
+              <LinkContainer to={`/section/${section.toString()}`}>
+                <StyledLink eventKey={`/section/${section.toString()}`}>
+                  {section.toString()}
+                </StyledLink>
+              </LinkContainer>
+            </Nav.Item>
+          ))}
         </Nav>
       </BorderedRow>
     </Container>
@@ -128,23 +111,3 @@ const StyledLink = styled(Nav.Link)`
     text-decoration: underline;
   }
 `;
-
-const PlaceholderText = styled.span`
-  padding: 0.5rem 1rem;
-  display: block;
-  line-height: 1rem;
-`;
-
-const SectionsPlaceholder = () => {
-  return (
-    <>
-      {Array.from(Array(6).keys()).map(idx => (
-        <Nav.Item as="li" key={idx}>
-          <Placeholder as={PlaceholderText} animation="glow">
-            <Placeholder xs={10} style={{ borderRadius: "0.125rem" }} />
-          </Placeholder>
-        </Nav.Item>
-      ))}
-    </>
-  );
-};

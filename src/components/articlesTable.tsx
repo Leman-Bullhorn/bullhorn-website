@@ -71,8 +71,6 @@ export const ArticlesTable = ({ articles }: ArticlesTableProps) => {
 
     let body = await getArticleContent(driveFileId);
 
-    console.log(body);
-
     updateArticle(
       { id: article.id, body },
       { onSuccess: () => setRefreshingArticle(false) },
@@ -85,7 +83,7 @@ export const ArticlesTable = ({ articles }: ArticlesTableProps) => {
       header: "Headline",
       cell: info => (
         <UnderlinedThemedLink
-          to={`/article/${info.row.original.section.name.toLowerCase()}/${
+          to={`/article/${info.row.original.section.toString()}/${
             info.row.original.slug
           }`}>
           {info.row.original.headline}
@@ -96,8 +94,8 @@ export const ArticlesTable = ({ articles }: ArticlesTableProps) => {
       id: "section",
       header: "Section",
       cell: ({ row }) => (
-        <UnderlinedThemedLink to={row.original.section.permalink}>
-          {row.original.section.name}
+        <UnderlinedThemedLink to={`/section/${row.original.section}`}>
+          {row.original.section.toString()}
         </UnderlinedThemedLink>
       ),
     }),

@@ -2,11 +2,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Alert, Button, Form, Modal } from "react-bootstrap";
 import {
   deleteArticleById,
-  getSections,
   getWriters,
   updateArticleById,
 } from "../api/requests";
-import { IArticle, IWriter, IApiError, ISection } from "../types";
+import { IArticle, IWriter, IApiError, sections, Section } from "../types";
 import { useMemo, useState } from "react";
 import Select from "react-select";
 import { ApiError } from "../api/utils";
@@ -35,7 +34,7 @@ export const EditArticleDialog = (props: Props) => {
     {
       id: number;
       writerId?: number;
-      sectionId?: number;
+      section?: Section;
     }
   >(({ id, ...toChange }) => updateArticleById(id, toChange), {
     onSuccess: () => {
@@ -58,18 +57,18 @@ export const EditArticleDialog = (props: Props) => {
     let id = props.article?.id;
     if (id == null) return;
 
-    let toChange: { writerId?: number; sectionId?: number } = {};
+    let toChange: { writerId?: number; section?: Section } = {};
 
     let writerId = writers?.find(
       writer => `${writer.firstName} ${writer.lastName}` === selectedAuthor,
     )?.id;
 
-    let sectionId = sections?.find(
-      section => section.name === selectedSection,
-    )?.id;
+    let newSection = sections.find(
+      section => section.toString() === selectedSection,
+    );
 
     if (writerId != null) toChange.writerId = writerId;
-    if (sectionId != null) toChange.sectionId = sectionId;
+    if (newSection != null) toChange.section = newSection;
 
     updateArticle({ id, ...toChange });
     props.onHide?.();
@@ -103,22 +102,12 @@ export const EditArticleDialog = (props: Props) => {
     [writers],
   );
 
-  const {
-    data: sections,
-    isLoading: isSectionsLoading,
-    isError: isSectionsError,
-  } = useQuery<ISection[], IApiError, ISection[]>(["sections"], getSections);
+  const sectionsOptions = sections.map(section => ({
+    value: section.toString(),
+    label: section.toString(),
+  }));
 
-  const sectionsOptions = useMemo(
-    () =>
-      sections?.map(section => ({
-        value: section.name,
-        label: section.name,
-      })),
-    [sections],
-  );
-
-  if (isWritersError || isSectionsError) {
+  if (isWritersError) {
     return (
       <Modal
         size="lg"
@@ -162,10 +151,9 @@ export const EditArticleDialog = (props: Props) => {
             <Form.Label>Section</Form.Label>
             <Select
               options={sectionsOptions}
-              isLoading={isSectionsLoading}
               defaultValue={{
-                value: article.section.name,
-                label: article.section.name,
+                value: article.section.toString(),
+                label: article.section.toString(),
               }}
               placeholder="Change section"
               onChange={it => setSelectedSection(it?.value)}

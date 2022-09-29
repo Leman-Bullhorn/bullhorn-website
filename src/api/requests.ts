@@ -2,7 +2,6 @@ import { BASE_URL, axios, validateStatusCode } from "./utils";
 import {
   IWriter,
   IArticle,
-  ISection,
   AuthRole,
   LoginInfo,
   ArticleData,
@@ -37,7 +36,7 @@ export const getWriters = async () => {
 export const postArticle = async ({
   content,
   writerId,
-  sectionId,
+  section,
   preview,
   imageUrl,
   driveFileId,
@@ -45,7 +44,7 @@ export const postArticle = async ({
   const postData: any = {
     content,
     writer_id: writerId,
-    section_id: sectionId,
+    section,
   };
   if (preview) postData.preview = preview;
   if (imageUrl) postData.imageUrl = imageUrl;
@@ -135,12 +134,6 @@ export const getArticleBySlug = async (slug: string) => {
   const response = await axios.get<IArticle>(`${BASE_URL}/articles/${slug}`);
 
   return validateStatusCode(response, articleReturnFunction(response));
-};
-
-export const getSections = async () => {
-  const response = await axios.get<ISection[]>(`${BASE_URL}/sections`);
-
-  return validateStatusCode(response);
 };
 
 export const login = async ({ username, password }: LoginInfo) => {

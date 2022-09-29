@@ -2,13 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { Alert, Button, Form, Modal } from "react-bootstrap";
 import Select from "react-select";
-import {
-  getArticleContent,
-  getSections,
-  getWriters,
-  postArticle,
-} from "../api/requests";
-import { ArticleContent, IApiError, ISection, IWriter } from "../types";
+import { getArticleContent, getWriters, postArticle } from "../api/requests";
+import { ArticleContent, IApiError, IWriter, sections } from "../types";
 
 interface PublishArticleDialogProps {
   articleFileId?: string;
@@ -49,20 +44,10 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
     },
   );
 
-  const {
-    data: sections,
-    isLoading: isSectionsLoading,
-    isError: isSectionsError,
-  } = useQuery<ISection[], IApiError, ISection[]>(["sections"], getSections);
-
-  const sectionsOptions = useMemo(
-    () =>
-      sections?.map(section => ({
-        value: section.name,
-        label: section.name,
-      })),
-    [sections],
-  );
+  const sectionsOptions = sections.map(section => ({
+    value: section.toString(),
+    label: section.toString(),
+  }));
 
   const { mutate: publishArticle } = useMutation(postArticle, {
     onSuccess: () => {
@@ -72,9 +57,9 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
   });
 
   const onClickPublish = () => {
-    let sectionId = sections!.find(
-      section => section.name === selectedSection,
-    )!.id;
+    let section = sections.find(
+      section => section.toString() === selectedSection,
+    )!;
 
     let writerId = writers!.find(
       writer => `${writer.firstName} ${writer.lastName}` === selectedAuthor,
@@ -82,13 +67,13 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
 
     publishArticle({
       content: articleContent!,
-      sectionId,
+      section,
       writerId,
       driveFileId: props.articleFileId,
     });
   };
 
-  if (isArticleError || isWritersError || isSectionsError) {
+  if (isArticleError || isWritersError) {
     return (
       <Modal
         size="lg"
@@ -131,7 +116,6 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
             <Form.Label>Section</Form.Label>
             <Select
               options={sectionsOptions}
-              isLoading={isSectionsLoading}
               placeholder="Article section"
               onChange={it => setSelectedSection(it?.value)}
             />

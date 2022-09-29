@@ -1,5 +1,25 @@
 import React from "react";
 
+export enum Section {
+  News = "News",
+  Opinions = "Opinions",
+  Humor = "Humor",
+  Features = "Features",
+  Science = "Science",
+  Sports = "Sports",
+  Arts = "Arts",
+}
+
+export const sections = [
+  Section.News,
+  Section.Opinions,
+  Section.Humor,
+  Section.Features,
+  Section.Science,
+  Section.Sports,
+  Section.Arts,
+];
+
 export interface Paginated<T> {
   next?: {
     page: number;
@@ -21,7 +41,7 @@ export interface IApiError {
 export interface ArticleData {
   content: ArticleContent;
   writerId: number;
-  sectionId: number;
+  section: Section;
   preview?: string;
   imageUrl?: string;
   driveFileId?: string;
@@ -41,18 +61,12 @@ export interface IArticle {
   slug: string;
   content: ArticleContent;
   writer: IWriter;
-  section: ISection;
+  section: Section;
   publicationDate: Date;
   preview: string;
   imageUrl: string;
   driveFileId?: string;
   featured?: boolean;
-}
-
-export interface ISection {
-  id: number;
-  name: string;
-  permalink: string;
 }
 
 export enum AuthRole {

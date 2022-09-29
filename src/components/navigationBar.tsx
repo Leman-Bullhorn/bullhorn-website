@@ -1,9 +1,7 @@
 import { Navbar, Nav, Container, Col } from "react-bootstrap";
 import styled from "styled-components";
 import { LinkContainer } from "./linkContainer";
-import { IApiError, ISection } from "../types";
-import { useQuery } from "@tanstack/react-query";
-import { getSections } from "../api/requests";
+import { sections } from "../types";
 
 const StyledNavbar = styled(Navbar)`
   transition-property: all;
@@ -41,17 +39,6 @@ interface NavigationBarProps {
 }
 
 export const NavigationBar = (props: NavigationBarProps) => {
-  const {
-    data: sections,
-    isLoading,
-    isError,
-    error,
-  } = useQuery<ISection[], IApiError, ISection[]>(["sections"], getSections);
-
-  if (isError) {
-    return <h1>Error {error.message}</h1>;
-  }
-
   const visible = props.visible ?? true;
   const buffer = props.buffer ?? true;
 
@@ -92,16 +79,15 @@ export const NavigationBar = (props: NavigationBarProps) => {
             <Nav
               as="ul"
               className="flex-grow-1 justify-content-center flex-shrink-0">
-              {!isLoading &&
-                sections.map(section => (
-                  <Nav.Item as="li" key={section.permalink}>
-                    <LinkContainer to={section.permalink}>
-                      <Nav.Link eventKey={section.permalink}>
-                        {section.name}
-                      </Nav.Link>
-                    </LinkContainer>
-                  </Nav.Item>
-                ))}
+              {sections.map(section => (
+                <Nav.Item as="li" key={section}>
+                  <LinkContainer to={`/section/${section.toString()}`}>
+                    <Nav.Link eventKey={`/section/${section.toString()}`}>
+                      {section.toString()}
+                    </Nav.Link>
+                  </LinkContainer>
+                </Nav.Item>
+              ))}
             </Nav>
           </Navbar.Collapse>
           <Col xs={2} />

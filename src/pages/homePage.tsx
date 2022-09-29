@@ -75,11 +75,16 @@ export const HomePage = () => {
                 </Row>
                 <Row className="featured-columns">
                   <Col xs={7} className="left-featured">
-                    <Article
-                      {...articles.content[0]}
-                      imageUrl="https://ichef.bbci.co.uk/news/976/cpsprodpb/13F00/production/_95146618_bills.jpg"
-                    />
-                    <Article {...articles.content[2]} />
+                    {articles.content.length === 0 ? (
+                      <p>no articles</p>
+                    ) : (
+                      <Article
+                        {...articles.content[0]}
+                        imageUrl="https://ichef.bbci.co.uk/news/976/cpsprodpb/13F00/production/_95146618_bills.jpg"
+                      />
+                    )}
+
+                    {/* <Article {...articles.content[2]} />
                     <Article {...articles.content[4]} />
                     <Article {...articles.content[6]} />
                   </Col>
@@ -87,7 +92,7 @@ export const HomePage = () => {
                     <Article {...articles.content[1]} />
                     <Article {...articles.content[3]} />
                     <Article {...articles.content[5]} />
-                    <Article {...articles.content[7]} />
+                    <Article {...articles.content[7]} /> */}
                   </Col>
                 </Row>
               </Container>

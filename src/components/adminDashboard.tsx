@@ -1,4 +1,4 @@
-import { Container, Col, Row } from "react-bootstrap";
+import { Container, Col, Row, Tab, Nav } from "react-bootstrap";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getArticles } from "../api/requests";
@@ -6,6 +6,7 @@ import { IApiError, IArticle, Paginated } from "../types";
 import { DriveTable } from "./driveTable";
 import { WritersTable } from "./writersTable";
 import { ArticlesTable } from "./articlesTable";
+import { CreateWriter } from "./createWriter";
 
 export const AdminDashboard = () => {
   const {
@@ -31,28 +32,54 @@ export const AdminDashboard = () => {
   const articles = (articleData?.pages ?? []).flatMap(it => it.content);
 
   return (
-    <>
-      <Container>
-        <Row xs={2}>
-          <Col
-            id="articles-table"
-            className="overflow-scroll"
-            style={{ height: "75vh" }}>
-            <InfiniteScroll
-              dataLength={articles.length}
-              next={fetchNextArticlePage}
-              hasMore={hasNextArticlePage ?? false}
-              loader={<span>Loading...</span>}
-              scrollableTarget="articles-table">
-              <ArticlesTable articles={articles} />
-            </InfiniteScroll>
-          </Col>
-        </Row>
-        <Row>
-          <DriveTable />
-          <WritersTable />
-        </Row>
-      </Container>
-    </>
+    <Tab.Container defaultActiveKey="article">
+      <div className="d-flex">
+        <Col sm={1} style={{ borderRight: "1px solid #dddddd" }}>
+          <Nav variant="pills" className="flex-column">
+            <Nav.Item>
+              <Nav.Link eventKey="article">Article</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="writer">Writer</Nav.Link>
+            </Nav.Item>
+          </Nav>
+        </Col>
+        <Col sm={11} style={{ height: "75vh" }}>
+          <Tab.Content>
+            <Tab.Pane eventKey="article">
+              <Container>
+                <Row xs={2}>
+                  <Col id="articles-table" className="overflow-scroll">
+                    <InfiniteScroll
+                      dataLength={articles.length}
+                      next={fetchNextArticlePage}
+                      hasMore={hasNextArticlePage ?? false}
+                      loader={<span>Loading...</span>}
+                      scrollableTarget="articles-table">
+                      <ArticlesTable articles={articles} />
+                    </InfiniteScroll>
+                  </Col>
+                  <Col>
+                    <DriveTable />
+                  </Col>
+                </Row>
+              </Container>
+            </Tab.Pane>
+            <Tab.Pane eventKey="writer">
+              <Container>
+                <Row xs={2}>
+                  <Col>
+                    <WritersTable />
+                  </Col>
+                  <Col>
+                    <CreateWriter />
+                  </Col>
+                </Row>
+              </Container>
+            </Tab.Pane>
+          </Tab.Content>
+        </Col>
+      </div>
+    </Tab.Container>
   );
 };

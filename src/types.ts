@@ -52,7 +52,8 @@ export interface IWriter {
   firstName: string;
   lastName: string;
   bio: string;
-  title: string;
+  title?: string;
+  imageUrl?: string;
 }
 
 export interface IArticle {

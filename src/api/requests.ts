@@ -186,3 +186,43 @@ export const getArticleContent = async (fileId: string) => {
 
   return validateStatusCode(response);
 };
+
+export const uploadHeadshot = async (headshot: File) => {
+  const formData = new FormData();
+  formData.append("headshot", headshot);
+
+  const response = await axios.post<void>(
+    `${BASE_URL}/writers/headshot`,
+    formData,
+  );
+
+  validateStatusCode(response);
+  return response.headers["location"];
+};
+
+export const postWriter = async ({
+  firstName,
+  lastName,
+  title,
+  bio,
+  imageUrl,
+}: {
+  firstName: string;
+  lastName: string;
+  title: string;
+  bio?: string;
+  imageUrl?: string;
+}) => {
+  const postData: any = {
+    firstName,
+    lastName,
+    title,
+  };
+
+  if (bio) postData.bio = bio;
+  if (imageUrl) postData.imageUrl = imageUrl;
+
+  const response = await axios.post<IWriter>(`${BASE_URL}/writers`, postData);
+
+  return validateStatusCode(response);
+};

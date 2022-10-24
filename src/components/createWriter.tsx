@@ -99,7 +99,13 @@ export const CreateWriter = () => {
 
       <Form.Group className="mb-3">
         <Form.Label>Headshot</Form.Label>
-        <Form.Control type="file" onChange={console.log} ref={headshotRef} />
+        <Form.Control
+          type="file"
+          accept="image/jpeg"
+          onChange={console.log}
+          ref={headshotRef}
+        />
+        <Form.Text className="text-muted">Square JPEG</Form.Text>
       </Form.Group>
 
       <Button

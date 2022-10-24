@@ -1,8 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Alert, Button, Form, Modal } from "react-bootstrap";
 import Select from "react-select";
-import { getArticleContent, getWriters, postArticle } from "../api/requests";
+import {
+  getArticleContent,
+  getWriters,
+  postArticle,
+  uploadPicture,
+} from "../api/requests";
 import { ArticleContent, IApiError, IWriter, sections } from "../types";
 
 interface PublishArticleDialogProps {
@@ -14,6 +19,7 @@ interface PublishArticleDialogProps {
 export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
   const [selectedAuthor, setSelectedAuthor] = useState<string>();
   const [selectedSection, setSelectedSection] = useState<string>();
+  const thumbnailRef = useRef<HTMLInputElement>(null);
 
   const queryClient = useQueryClient();
 
@@ -56,7 +62,7 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
     },
   });
 
-  const onClickPublish = () => {
+  const onClickPublish = async () => {
     let section = sections.find(
       section => section.toString() === selectedSection,
     )!;
@@ -65,11 +71,14 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
       writer => `${writer.firstName} ${writer.lastName}` === selectedAuthor,
     )!.id;
 
+    const thumbnail = thumbnailRef.current?.files?.[0];
+
     publishArticle({
       content: articleContent!,
       section,
       writerId,
       driveFileId: props.articleFileId,
+      imageUrl: thumbnail != null ? await uploadPicture(thumbnail) : undefined,
     });
   };
 
@@ -103,7 +112,9 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
         )}
         <Form>
           <Form.Group>
-            <Form.Label>Author</Form.Label>
+            <Form.Label>
+              Author <span style={{ color: "red" }}>*</span>
+            </Form.Label>
             <Select
               options={writerOptions}
               isLoading={isWritersLoading}
@@ -113,12 +124,20 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
           </Form.Group>
           <br />
           <Form.Group>
-            <Form.Label>Section</Form.Label>
+            <Form.Label>
+              Section <span style={{ color: "red" }}>*</span>
+            </Form.Label>
             <Select
               options={sectionsOptions}
               placeholder="Article section"
               onChange={it => setSelectedSection(it?.value)}
             />
+          </Form.Group>
+          <br />
+          <Form.Group>
+            <Form.Label>Thumbnail</Form.Label>
+            <Form.Control type="file" accept="image/jpeg" ref={thumbnailRef} />
+            <Form.Text className="text-muted">Square JPEG</Form.Text>
           </Form.Group>
         </Form>
       </Modal.Body>

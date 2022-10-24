@@ -4,9 +4,10 @@ import {
   deleteArticleById,
   getWriters,
   updateArticleById,
+  uploadPicture,
 } from "../api/requests";
 import { IArticle, IWriter, IApiError, sections, Section } from "../types";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Select from "react-select";
 import { ApiError } from "../api/utils";
 import { HorizontalDivider } from "./horizontalDivider";
@@ -25,6 +26,7 @@ interface Props {
 export const EditArticleDialog = (props: Props) => {
   const [selectedAuthor, setSelectedAuthor] = useState<string>();
   const [selectedSection, setSelectedSection] = useState<string>();
+  const thumbnailRef = useRef<HTMLInputElement>(null);
 
   const queryClient = useQueryClient();
 
@@ -35,6 +37,7 @@ export const EditArticleDialog = (props: Props) => {
       id: number;
       writerId?: number;
       section?: Section;
+      imageUrl?: string;
     }
   >(({ id, ...toChange }) => updateArticleById(id, toChange), {
     onSuccess: () => {
@@ -53,11 +56,12 @@ export const EditArticleDialog = (props: Props) => {
     },
   });
 
-  const onClickEdit = () => {
+  const onClickEdit = async () => {
     let id = props.article?.id;
     if (id == null) return;
 
-    let toChange: { writerId?: number; section?: Section } = {};
+    let toChange: { writerId?: number; section?: Section; imageUrl?: string } =
+      {};
 
     let writerId = writers?.find(
       writer => `${writer.firstName} ${writer.lastName}` === selectedAuthor,
@@ -69,6 +73,11 @@ export const EditArticleDialog = (props: Props) => {
 
     if (writerId != null) toChange.writerId = writerId;
     if (newSection != null) toChange.section = newSection;
+
+    if (thumbnailRef.current?.files?.[0] != null) {
+      const imageUrl = await uploadPicture(thumbnailRef.current.files[0]);
+      toChange.imageUrl = imageUrl;
+    }
 
     updateArticle({ id, ...toChange });
     props.onHide?.();
@@ -147,7 +156,7 @@ export const EditArticleDialog = (props: Props) => {
               onChange={it => setSelectedAuthor(it?.value)}
             />
           </Form.Group>
-          <Form.Group className="mb-5">
+          <Form.Group className="mb-3">
             <Form.Label>Section</Form.Label>
             <Select
               options={sectionsOptions}
@@ -158,6 +167,18 @@ export const EditArticleDialog = (props: Props) => {
               placeholder="Change section"
               onChange={it => setSelectedSection(it?.value)}
             />
+          </Form.Group>
+          <Form.Group className="mb-5">
+            <Form.Label>Thumbnail</Form.Label>
+            <div className="d-flex">
+              <img alt="" width={40} height={40} src={article.imageUrl} />
+              <Form.Control
+                type="file"
+                accept="image/jpeg"
+                ref={thumbnailRef}
+              />
+            </div>
+            <Form.Text className="text-muted">Square JPEG</Form.Text>
           </Form.Group>
         </Form>
         <DangerDivider className="mb-3" />

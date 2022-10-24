@@ -56,7 +56,12 @@ export const postArticle = async ({
 
 export const updateArticleById = async (
   id: number,
-  toChange: { writerId?: number; sectionId?: number; body?: ArticleContent },
+  toChange: {
+    writerId?: number;
+    sectionId?: number;
+    body?: ArticleContent;
+    imageUrl?: string;
+  },
 ) => {
   const response = await axios.patch<void>(
     `${BASE_URL}/articles/${id}`,

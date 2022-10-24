@@ -78,10 +78,7 @@ export const HomePage = () => {
                     {articles.content.length === 0 ? (
                       <p>no articles</p>
                     ) : (
-                      <Article
-                        {...articles.content[0]}
-                        imageUrl="https://ichef.bbci.co.uk/news/976/cpsprodpb/13F00/production/_95146618_bills.jpg"
-                      />
+                      <Article {...articles.content[0]} />
                     )}
 
                     {/* <Article {...articles.content[2]} />

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { NavigationBar } from "../components/navigationBar";
 import { getArticleBySlug } from "../api/requests";
 import { IArticle, IApiError } from "../types";
@@ -56,14 +56,30 @@ export const ArticlePage = () => {
                 </ThemedLink>
               </p>
               <ArticleHeadline>{article.headline}</ArticleHeadline>
-              <p className="lh-1">
-                By{" "}
-                <ThemedLink
-                  className="fw-bold"
-                  to={`/writer/${article.writer.firstName}-${article.writer.lastName}`}>
-                  {article.writer.firstName} {article.writer.lastName}
-                </ThemedLink>
-              </p>
+              <div className="d-flex">
+                <p className="mb-0">
+                  By{" "}
+                  <ThemedLink
+                    className="fw-bold"
+                    to={`/writer/${article.writer.firstName}-${article.writer.lastName}`}>
+                    {article.writer.firstName} {article.writer.lastName}
+                  </ThemedLink>
+                </p>
+
+                {article.writer.imageUrl && (
+                  <Link
+                    style={{ marginLeft: "0.4rem", lineHeight: "1" }}
+                    to={`/writer/${article.writer.firstName}-${article.writer.lastName}`}>
+                    <img
+                      className="rounded-circle"
+                      alt=""
+                      src={article.writer.imageUrl}
+                      width={24}
+                      height={24}
+                    />
+                  </Link>
+                )}
+              </div>
               <p className="text-muted">
                 <TimeStamp originalDate={article.publicationDate} />
               </p>

@@ -187,12 +187,12 @@ export const getArticleContent = async (fileId: string) => {
   return validateStatusCode(response);
 };
 
-export const uploadHeadshot = async (headshot: File) => {
+export const uploadPicture = async (picture: File) => {
   const formData = new FormData();
-  formData.append("headshot", headshot);
+  formData.append("picture", picture);
 
   const response = await axios.post<void>(
-    `${BASE_URL}/writers/headshot`,
+    `${BASE_URL}/upload_picture`,
     formData,
   );
 

@@ -85,9 +85,21 @@ export function WriterPage() {
           ) : (
             <>
               <h5 className="lh-1 fw-lighter text-start">{writer.title}</h5>
-              <h1 className="lh-1 fw-bolder text-start">
-                {writer.firstName} {writer.lastName}
-              </h1>
+              <div className="d-flex">
+                <h1 className="lh-1 fw-bolder text-start">
+                  {writer.firstName} {writer.lastName}
+                </h1>
+                {writer.imageUrl && (
+                  <img
+                    style={{ marginLeft: "0.75rem", lineHeight: "1" }}
+                    className="rounded-circle"
+                    alt=""
+                    src={writer.imageUrl}
+                    width={40}
+                    height={40}
+                  />
+                )}
+              </div>
             </>
           )}
         </HeadlineFont>

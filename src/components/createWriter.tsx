@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import styled from "styled-components";
-import { postWriter, uploadHeadshot } from "../api/requests";
+import { postWriter, uploadPicture } from "../api/requests";
 
 const StyledForm = styled(Form)`
   border: 1px solid #dddddd;
@@ -38,7 +38,7 @@ export const CreateWriter = () => {
       lastName,
       title,
       bio,
-      imageUrl: headshot != null ? await uploadHeadshot(headshot) : undefined,
+      imageUrl: headshot != null ? await uploadPicture(headshot) : undefined,
     });
 
     setFirstName(undefined);
@@ -99,12 +99,7 @@ export const CreateWriter = () => {
 
       <Form.Group className="mb-3">
         <Form.Label>Headshot</Form.Label>
-        <Form.Control
-          type="file"
-          accept="image/jpeg"
-          onChange={console.log}
-          ref={headshotRef}
-        />
+        <Form.Control type="file" accept="image/jpeg" ref={headshotRef} />
         <Form.Text className="text-muted">Square JPEG</Form.Text>
       </Form.Group>
 

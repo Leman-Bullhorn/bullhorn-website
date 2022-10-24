@@ -86,6 +86,14 @@ export const ArticlePage = () => {
             </Row>
             <StyledDivider />
             <Row style={{ fontFamily: "georgia", fontSize: "1.25rem" }}>
+              {article.imageUrl && (
+                <img
+                  alt=""
+                  src={article.imageUrl}
+                  className="w-50"
+                  style={{ marginLeft: "auto", marginRight: "auto" }}
+                />
+              )}
               {article.content.paragraphs.map((paragraph, idx) => (
                 <p key={idx} style={{ textAlign: paragraph.textAlignment }}>
                   {paragraph.spans.map((span, idx) => (

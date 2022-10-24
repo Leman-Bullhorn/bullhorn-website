@@ -171,7 +171,9 @@ export const EditArticleDialog = (props: Props) => {
           <Form.Group className="mb-5">
             <Form.Label>Thumbnail</Form.Label>
             <div className="d-flex">
-              <img alt="" width={40} height={40} src={article.imageUrl} />
+              {article.imageUrl && (
+                <img alt="" width={40} height={40} src={article.imageUrl} />
+              )}
               <Form.Control
                 type="file"
                 accept="image/jpeg"

@@ -138,25 +138,27 @@ export const ArticlesTable = ({ articles }: ArticlesTableProps) => {
         <OverlayTrigger
           placement="right"
           overlay={<Tooltip>Update from Google doc</Tooltip>}>
-          {refreshingArticle ? (
-            <ThemedSpinner
-              animation="border"
-              role="status"
-              style={{ width: "1.7rem", height: "1.75rem" }}
-            />
-          ) : (
-            <>
-              {row.original.driveFileId != null ? (
-                <Refresh
-                  onClick={() => onClickRefreshArticle(row.original)}
-                  className="material-icons">
-                  update
-                </Refresh>
-              ) : (
-                <GrayRefresh className="material-icons">update</GrayRefresh>
-              )}
-            </>
-          )}
+          <div className="d-inline-block">
+            {refreshingArticle ? (
+              <ThemedSpinner
+                animation="border"
+                role="status"
+                style={{ width: "1.7rem", height: "1.75rem" }}
+              />
+            ) : (
+              <>
+                {row.original.driveFileId != null ? (
+                  <Refresh
+                    onClick={() => onClickRefreshArticle(row.original)}
+                    className="material-icons">
+                    update
+                  </Refresh>
+                ) : (
+                  <GrayRefresh className="material-icons">update</GrayRefresh>
+                )}
+              </>
+            )}
+          </div>
         </OverlayTrigger>
       ),
     }),

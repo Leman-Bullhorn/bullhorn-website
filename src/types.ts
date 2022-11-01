@@ -45,6 +45,7 @@ export interface ArticleData {
   preview?: string;
   imageUrl?: string;
   driveFileId?: string;
+  featured?: boolean;
 }
 
 export interface IWriter {
@@ -67,7 +68,7 @@ export interface IArticle {
   preview: string;
   imageUrl: string;
   driveFileId?: string;
-  featured?: boolean;
+  featured: boolean;
 }
 
 export enum AuthRole {

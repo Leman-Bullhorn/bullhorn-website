@@ -1,5 +1,5 @@
 import { ArticleContent, IArticle } from "../types";
-import { OverlayTrigger, Spinner, Table, Tooltip } from "react-bootstrap";
+import { Form, OverlayTrigger, Spinner, Table, Tooltip } from "react-bootstrap";
 import {
   createColumnHelper,
   flexRender,
@@ -9,10 +9,15 @@ import {
 import { useState } from "react";
 import { EditArticleDialog } from "./editArticleDialog";
 import styled from "styled-components";
-import { getArticleContent, updateArticleById } from "../api/requests";
+import {
+  getArticleContent,
+  getFeaturedArticle,
+  updateArticleById,
+} from "../api/requests";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApiError } from "../api/utils";
 import { UnderlinedThemedLink } from "./themedLink";
+import { ConfirmFeatureDialog } from "./confirmFeatureDialog";
 
 const Refresh = styled.i`
   color: rgb(${({ theme }) => theme.lemanColorComponents});
@@ -42,6 +47,9 @@ export const ArticlesTable = ({ articles }: ArticlesTableProps) => {
   const [selectedArticle, setSelectedArticle] = useState<IArticle>();
   const [showArticleDialog, setShowArticleDialog] = useState(false);
   const [refreshingArticle, setRefreshingArticle] = useState(false);
+  const [confirmFeature, setConfirmFeature] = useState(false);
+  const [oldFeature, setOldFeature] = useState<IArticle>();
+  const [newFeature, setNewFeature] = useState<IArticle>();
 
   const onClickEditArticle = (article: IArticle) => {
     setSelectedArticle(article);
@@ -59,7 +67,6 @@ export const ArticlesTable = ({ articles }: ArticlesTableProps) => {
     }
   >(({ id, ...toChange }) => updateArticleById(id, toChange), {
     onSuccess: () => {
-      // queryClient.removeQueries(["writers", writerId]);
       queryClient.invalidateQueries(["articles"]);
     },
   });
@@ -75,6 +82,23 @@ export const ArticlesTable = ({ articles }: ArticlesTableProps) => {
       { id: article.id, body },
       { onSuccess: () => setRefreshingArticle(false) },
     );
+  };
+
+  const changeFeatured = async (article: IArticle) => {
+    if (article.featured) {
+      await updateArticleById(article.id, { featured: false });
+      queryClient.invalidateQueries(["articles"]);
+    } else {
+      try {
+        const alreadyFeaturedArticle = await getFeaturedArticle();
+        setOldFeature(alreadyFeaturedArticle);
+        setNewFeature(article);
+        setConfirmFeature(true);
+      } catch (_) {
+        await updateArticleById(article.id, { featured: true });
+        queryClient.invalidateQueries(["articles"]);
+      }
+    }
   };
 
   const columns = [
@@ -162,6 +186,18 @@ export const ArticlesTable = ({ articles }: ArticlesTableProps) => {
         </OverlayTrigger>
       ),
     }),
+    columnHelper.display({
+      id: "featured",
+      header: "Featured",
+      cell: ({ row }) => (
+        <Form.Check
+          type="switch"
+          label="Featured"
+          checked={row.original.featured}
+          onChange={() => changeFeatured(row.original)}
+        />
+      ),
+    }),
   ];
 
   const table = useReactTable({
@@ -179,6 +215,18 @@ export const ArticlesTable = ({ articles }: ArticlesTableProps) => {
           setShowArticleDialog(false);
           setTimeout(() => {
             setSelectedArticle(undefined);
+          }, 200);
+        }}
+      />
+      <ConfirmFeatureDialog
+        show={confirmFeature}
+        oldFeature={oldFeature}
+        newFeature={newFeature}
+        onHide={() => {
+          setConfirmFeature(false);
+          setTimeout(() => {
+            setOldFeature(undefined);
+            setNewFeature(undefined);
           }, 200);
         }}
       />

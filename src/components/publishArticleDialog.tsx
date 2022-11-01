@@ -1,14 +1,22 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { Alert, Button, Form, Modal } from "react-bootstrap";
 import Select from "react-select";
 import {
   getArticleContent,
+  getFeaturedArticle,
   getWriters,
   postArticle,
+  updateArticleById,
   uploadPicture,
 } from "../api/requests";
-import { ArticleContent, IApiError, IWriter, sections } from "../types";
+import {
+  ArticleContent,
+  IApiError,
+  IArticle,
+  IWriter,
+  sections,
+} from "../types";
 
 interface PublishArticleDialogProps {
   articleFileId?: string;
@@ -19,7 +27,10 @@ interface PublishArticleDialogProps {
 export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
   const [selectedAuthor, setSelectedAuthor] = useState<string>();
   const [selectedSection, setSelectedSection] = useState<string>();
-  const thumbnailRef = useRef<HTMLInputElement>(null);
+  const [featured, setFeatured] = useState(false);
+  const [alreadyFeaturedArticle, setAlreadyFeaturedArticle] =
+    useState<IArticle>();
+  const [thumbnailFile, setThumbnailFile] = useState<File>();
 
   const queryClient = useQueryClient();
 
@@ -57,10 +68,20 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
 
   const { mutate: publishArticle } = useMutation(postArticle, {
     onSuccess: () => {
-      props.onHide?.();
+      hide();
       queryClient.invalidateQueries(["articles"]);
     },
   });
+
+  const hide = () => {
+    setSelectedAuthor(undefined);
+    setSelectedSection(undefined);
+    setFeatured(false);
+    setAlreadyFeaturedArticle(undefined);
+    setThumbnailFile(undefined);
+
+    props.onHide?.();
+  };
 
   const onClickPublish = async () => {
     let section = sections.find(
@@ -71,24 +92,50 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
       writer => `${writer.firstName} ${writer.lastName}` === selectedAuthor,
     )!.id;
 
-    const thumbnail = thumbnailRef.current?.files?.[0];
+    if (featured) {
+      try {
+        const featuredArticle = await getFeaturedArticle();
+        setAlreadyFeaturedArticle(featuredArticle);
+        return;
+      } catch (_) {}
+    }
 
     publishArticle({
       content: articleContent!,
       section,
       writerId,
       driveFileId: props.articleFileId,
-      imageUrl: thumbnail != null ? await uploadPicture(thumbnail) : undefined,
+      imageUrl:
+        thumbnailFile != null ? await uploadPicture(thumbnailFile) : undefined,
+      featured,
+    });
+  };
+
+  const onClickPublishAndUnfeature = async () => {
+    if (alreadyFeaturedArticle == null) return;
+    let section = sections.find(
+      section => section.toString() === selectedSection,
+    )!;
+
+    let writerId = writers!.find(
+      writer => `${writer.firstName} ${writer.lastName}` === selectedAuthor,
+    )!.id;
+
+    updateArticleById(alreadyFeaturedArticle.id, { featured: false });
+    publishArticle({
+      content: articleContent!,
+      section,
+      writerId,
+      driveFileId: props.articleFileId,
+      imageUrl:
+        thumbnailFile != null ? await uploadPicture(thumbnailFile) : undefined,
+      featured: true,
     });
   };
 
   if (isArticleError || isWritersError) {
     return (
-      <Modal
-        size="lg"
-        show={props.show}
-        onHide={props.onHide}
-        onEscapeKeyDown={props.onHide}>
+      <Modal size="lg" show={props.show} onHide={hide} onEscapeKeyDown={hide}>
         <Alert variant="danger">Error fetching article data</Alert>
       </Modal>
     );
@@ -99,8 +146,8 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
       size="lg"
       backdrop="static"
       show={props.show}
-      onHide={props.onHide}
-      onEscapeKeyDown={props.onHide}>
+      onHide={hide}
+      onEscapeKeyDown={hide}>
       <Modal.Header closeButton>
         <Modal.Title>Publish Article</Modal.Title>
       </Modal.Header>
@@ -136,24 +183,47 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
           <br />
           <Form.Group>
             <Form.Label>Thumbnail</Form.Label>
-            <Form.Control type="file" accept="image/jpeg" ref={thumbnailRef} />
+            <Form.Control
+              type="file"
+              accept="image/jpeg"
+              onChange={e => setThumbnailFile((e.target as any).files[0])}
+            />
             <Form.Text className="text-muted">Square JPEG</Form.Text>
+          </Form.Group>
+          <br />
+          <Form.Group>
+            <Form.Check
+              type="checkbox"
+              label="Featured"
+              onChange={e => setFeatured(e.target.checked)}
+            />
+            {featured && !thumbnailFile && (
+              <Form.Text style={{ color: "red" }}>
+                Warning: featuring article without a thumbnail image
+              </Form.Text>
+            )}
           </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={props.onHide}>
+        <Button variant="secondary" onClick={hide}>
           Close
         </Button>
 
-        <Button
-          variant="primary"
-          onClick={onClickPublish}
-          disabled={Boolean(
-            !selectedAuthor || !selectedSection || !articleContent,
-          )}>
-          Publish
-        </Button>
+        {alreadyFeaturedArticle == null ? (
+          <Button
+            variant="primary"
+            onClick={onClickPublish}
+            disabled={Boolean(
+              !selectedAuthor || !selectedSection || !articleContent,
+            )}>
+            Publish
+          </Button>
+        ) : (
+          <Button variant="danger" onClick={onClickPublishAndUnfeature}>
+            Publishing will un-feature {alreadyFeaturedArticle.headline}
+          </Button>
+        )}
       </Modal.Footer>
     </Modal>
   );

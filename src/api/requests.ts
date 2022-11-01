@@ -40,16 +40,24 @@ export const postArticle = async ({
   preview,
   imageUrl,
   driveFileId,
+  featured,
 }: ArticleData) => {
   const postData: any = {
     content,
     writer_id: writerId,
     section,
+    featured: featured ?? false,
   };
   if (preview) postData.preview = preview;
   if (imageUrl) postData.imageUrl = imageUrl;
   if (driveFileId) postData.driveFileId = driveFileId;
   const response = await axios.post<IArticle>(`${BASE_URL}/articles`, postData);
+
+  return validateStatusCode(response);
+};
+
+export const getFeaturedArticle = async () => {
+  const response = await axios.get<IArticle>(`${BASE_URL}/articles/featured`);
 
   return validateStatusCode(response);
 };
@@ -61,6 +69,7 @@ export const updateArticleById = async (
     sectionId?: number;
     body?: ArticleContent;
     imageUrl?: string;
+    featured?: boolean;
   },
 ) => {
   const response = await axios.patch<void>(

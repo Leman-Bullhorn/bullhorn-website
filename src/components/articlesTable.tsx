@@ -192,7 +192,6 @@ export const ArticlesTable = ({ articles }: ArticlesTableProps) => {
       cell: ({ row }) => (
         <Form.Check
           type="switch"
-          label="Featured"
           checked={row.original.featured}
           onChange={() => changeFeatured(row.original)}
         />

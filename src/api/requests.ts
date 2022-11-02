@@ -59,7 +59,11 @@ export const postArticle = async ({
 export const getFeaturedArticle = async () => {
   const response = await axios.get<IArticle>(`${BASE_URL}/articles/featured`);
 
-  return validateStatusCode(response);
+  const article = validateStatusCode(response);
+
+  article.publicationDate = new Date(article.publicationDate);
+
+  return article;
 };
 
 export const updateArticleById = async (

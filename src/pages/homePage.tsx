@@ -4,11 +4,12 @@ import { Article } from "../components/article";
 import { Container, Row, Col, Spinner } from "react-bootstrap";
 import { NavigationBar } from "../components/navigationBar";
 import { AuthRole, IApiError, IArticle, Paginated } from "../types";
-import { current, getArticles } from "../api/requests";
+import { current, getArticles, getFeaturedArticle } from "../api/requests";
 import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 import { HorizontalDivider } from "../components/horizontalDivider";
 import { AdminPageButton } from "../components/adminPageButton";
+import { FeaturedArticle } from "../components/featuredArticle";
 
 const Styles = styled.div`
   .featured-section {
@@ -17,7 +18,6 @@ const Styles = styled.div`
   }
 
   .featured-columns {
-    padding-top: 10px;
     padding-right: 10px;
   }
 
@@ -35,13 +35,18 @@ export const HomePage = () => {
   const [isMastHeadVisible, setMastHeadVisible] = useState(true);
 
   const {
-    data: articles,
+    data: latestArticles,
     isLoading,
     isError,
     error,
   } = useQuery<Paginated<IArticle[]>, IApiError, Paginated<IArticle[]>>(
     ["articles", { paginated: true }, 1],
     () => getArticles(1, 50),
+  );
+
+  const { data: featuredArticle } = useQuery<IArticle, IApiError, IArticle>(
+    ["articles", { featured: true }],
+    () => getFeaturedArticle(),
   );
 
   const { data: roleData } = useQuery(["role"], current);
@@ -56,47 +61,37 @@ export const HomePage = () => {
       <NavigationBar visible={!isMastHeadVisible} buffer={false} />
 
       <Container>
-        <Row>
+        <Row className="mb-4">
           <Masthead changeVisibility={setMastHeadVisible} />
         </Row>
         {isLoading ? (
           <Spinner animation="border" role="status" />
         ) : (
           <Styles>
-            {/* <Row> */}
-            <Col xs={12} sm={12} md={8} lg={8} xl={8} xxl={8}>
-              <Container
-                fluid
-                className="featured-section"
-                style={{ border: "0px red solid" }}>
-                <Row>
-                  <h3>News</h3>
-                  <HorizontalDivider />
-                </Row>
-                <Row className="featured-columns">
-                  <Col xs={7} className="left-featured">
-                    {articles.content.length === 0 ? (
-                      <p>no articles</p>
-                    ) : (
-                      <Article {...articles.content[0]} />
-                    )}
+            <Row>
+              <Col
+                xs={12}
+                md={8}
+                style={{
+                  paddingRight: "1rem",
+                  borderRight: "1px solid #dddddd",
+                }}>
+                {featuredArticle && (
+                  <FeaturedArticle article={featuredArticle} />
+                )}
+              </Col>
 
-                    {/* <Article {...articles.content[2]} />
-                    <Article {...articles.content[4]} />
-                    <Article {...articles.content[6]} />
-                  </Col>
-                  <Col className="right-featured">
-                    <Article {...articles.content[1]} />
-                    <Article {...articles.content[3]} />
-                    <Article {...articles.content[5]} />
-                    <Article {...articles.content[7]} /> */}
-                  </Col>
-                </Row>
-              </Container>
-            </Col>
-
-            <Col>{/* <Article {...activeArticles[2]} /> */}</Col>
-            {/* </Row> */}
+              <Col>
+                <p className="mb-0">Latest</p>
+                <HorizontalDivider />
+                {latestArticles.content
+                  .filter(article => !article.featured)
+                  .slice(0, 3)
+                  .map(article => (
+                    <Article article={article} />
+                  ))}
+              </Col>
+            </Row>
           </Styles>
         )}
       </Container>

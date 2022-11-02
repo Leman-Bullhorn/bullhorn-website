@@ -3,21 +3,21 @@ import React from "react";
 export enum Section {
   News = "News",
   Opinions = "Opinions",
-  Humor = "Humor",
   Features = "Features",
   Science = "Science",
   Sports = "Sports",
-  Arts = "Arts",
+  Arts = "Arts & Entertainment",
+  Humor = "Humor",
 }
 
 export const sections = [
   Section.News,
   Section.Opinions,
-  Section.Humor,
   Section.Features,
   Section.Science,
   Section.Sports,
   Section.Arts,
+  Section.Humor,
 ];
 
 export interface Paginated<T> {

@@ -6,7 +6,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { EditArticleDialog } from "./editArticleDialog";
 import styled from "styled-components";
 import {
@@ -50,6 +50,19 @@ export const ArticlesTable = ({ articles }: ArticlesTableProps) => {
   const [confirmFeature, setConfirmFeature] = useState(false);
   const [oldFeature, setOldFeature] = useState<IArticle>();
   const [newFeature, setNewFeature] = useState<IArticle>();
+
+  const articlesWithFeaturedFirst = useMemo(() => {
+    const featuredArticle = articles.find(article => article.featured);
+
+    if (featuredArticle) {
+      return [
+        featuredArticle,
+        ...articles.filter(article => !article.featured),
+      ];
+    } else {
+      return articles;
+    }
+  }, [articles]);
 
   const onClickEditArticle = (article: IArticle) => {
     setSelectedArticle(article);
@@ -200,7 +213,7 @@ export const ArticlesTable = ({ articles }: ArticlesTableProps) => {
   ];
 
   const table = useReactTable({
-    data: articles,
+    data: articlesWithFeaturedFirst,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });

@@ -56,10 +56,10 @@ export const Masthead = (props: MastHeadProps) => {
               className="nav-item"
               as="li"
               style={{ flexGrow: 0 }}
-              key={section}>
+              key={section.id}>
               <LinkContainer to={`/section/${section.toString()}`}>
                 <StyledLink eventKey={`/section/${section.toString()}`}>
-                  {section.toString()}
+                  {section.display}
                 </StyledLink>
               </LinkContainer>
             </Nav.Item>

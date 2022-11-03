@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { NavigationBar } from "../components/navigationBar";
 import { getArticleBySlug } from "../api/requests";
-import { IArticle, IApiError } from "../types";
+import { IArticle, IApiError, sections } from "../types";
 import { VariableContainer } from "../components/variableContainer";
 import styled from "styled-components";
 import { Placeholder, Row } from "react-bootstrap";
@@ -52,7 +52,8 @@ export const ArticlePage = () => {
             <Row>
               <p className="text-uppercase" style={{ fontSize: "0.8rem" }}>
                 <ThemedLink to={`/section/${article.section.toString()}`}>
-                  {article.section.toString()}
+                  {sections.find(section => section.id === article.section)
+                    ?.display ?? article.section}
                 </ThemedLink>
               </p>
               <ArticleHeadline>{article.headline}</ArticleHeadline>

@@ -67,12 +67,10 @@ export const EditArticleDialog = (props: Props) => {
       writer => `${writer.firstName} ${writer.lastName}` === selectedAuthor,
     )?.id;
 
-    let newSection = sections.find(
-      section => section.toString() === selectedSection,
-    );
+    let newSection = sections.find(section => section.id === selectedSection);
 
     if (writerId != null) toChange.writerId = writerId;
-    if (newSection != null) toChange.section = newSection;
+    if (newSection != null) toChange.section = newSection.id;
 
     if (thumbnailRef.current?.files?.[0] != null) {
       const imageUrl = await uploadPicture(thumbnailRef.current.files[0]);
@@ -112,8 +110,8 @@ export const EditArticleDialog = (props: Props) => {
   );
 
   const sectionsOptions = sections.map(section => ({
-    value: section.toString(),
-    label: section.toString(),
+    value: section.id,
+    label: section.id,
   }));
 
   if (isWritersError) {
@@ -161,8 +159,8 @@ export const EditArticleDialog = (props: Props) => {
             <Select
               options={sectionsOptions}
               defaultValue={{
-                value: article.section.toString(),
-                label: article.section.toString(),
+                value: article.section,
+                label: article.section,
               }}
               placeholder="Change section"
               onChange={it => setSelectedSection(it?.value)}

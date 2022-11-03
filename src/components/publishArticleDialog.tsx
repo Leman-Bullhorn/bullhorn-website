@@ -63,8 +63,8 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
   );
 
   const sectionsOptions = sections.map(section => ({
-    value: section.toString(),
-    label: section.toString(),
+    value: section.id,
+    label: section.display,
   }));
 
   const { mutate: publishArticle } = useMutation(postArticle, {

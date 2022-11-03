@@ -1,23 +1,44 @@
 import React from "react";
 
 export enum Section {
-  News = "News",
-  Opinions = "Opinions",
-  Features = "Features",
-  Science = "Science",
-  Sports = "Sports",
-  Arts = "Arts & Entertainment",
-  Humor = "Humor",
+  News = "news",
+  Opinions = "opinions",
+  Features = "features",
+  Science = "science",
+  Sports = "sports",
+  Arts = "arts",
+  Humor = "humor",
 }
 
 export const sections = [
-  Section.News,
-  Section.Opinions,
-  Section.Features,
-  Section.Science,
-  Section.Sports,
-  Section.Arts,
-  Section.Humor,
+  {
+    id: Section.News,
+    display: "News",
+  },
+  {
+    id: Section.Opinions,
+    display: "Opinions",
+  },
+  {
+    id: Section.Features,
+    display: "Features",
+  },
+  {
+    id: Section.Science,
+    display: "Science",
+  },
+  {
+    id: Section.Sports,
+    display: "Sports",
+  },
+  {
+    id: Section.Arts,
+    display: "Arts & Entertainment",
+  },
+  {
+    id: Section.Humor,
+    display: "Humor",
+  },
 ];
 
 export interface Paginated<T> {

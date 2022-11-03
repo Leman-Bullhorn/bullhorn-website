@@ -37,18 +37,18 @@ export const postArticle = async ({
   content,
   writerId,
   section,
-  preview,
+  focus,
   imageUrl,
   driveFileId,
   featured,
 }: ArticleData) => {
   const postData: any = {
     content,
+    focus,
     writer_id: writerId,
     section,
     featured: featured ?? false,
   };
-  if (preview) postData.preview = preview;
   if (imageUrl) postData.imageUrl = imageUrl;
   if (driveFileId) postData.driveFileId = driveFileId;
   const response = await axios.post<IArticle>(`${BASE_URL}/articles`, postData);

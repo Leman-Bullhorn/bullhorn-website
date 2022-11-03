@@ -39,7 +39,7 @@ export const Article: React.FC<{ article: IArticle }> = ({ article }) => {
           </ThemedLink>
         </span>
 
-        {article.preview && <p className="text-muted">{article.preview}</p>}
+        <p className="text-muted">{article.focus}</p>
 
         <p className="text-muted mb-0">
           <TimeStamp originalDate={article.publicationDate} />

@@ -42,7 +42,7 @@ export interface ArticleData {
   content: ArticleContent;
   writerId: number;
   section: Section;
-  preview?: string;
+  focus: string;
   imageUrl?: string;
   driveFileId?: string;
   featured?: boolean;
@@ -65,7 +65,7 @@ export interface IArticle {
   writer: IWriter;
   section: Section;
   publicationDate: Date;
-  preview: string;
+  focus: string;
   imageUrl: string;
   driveFileId?: string;
   featured: boolean;

@@ -37,7 +37,7 @@ export const ArticleBlock = (props: IArticle) => {
             </h3>
           </HeadlineFont>
 
-          {props.preview && <p className="text-muted">{props.preview}</p>}
+          <p className="text-muted">{props.focus}</p>
           <p className="text-muted">
             <TimeStamp originalDate={props.publicationDate} />
           </p>

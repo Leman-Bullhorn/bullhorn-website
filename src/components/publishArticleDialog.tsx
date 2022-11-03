@@ -25,6 +25,7 @@ interface PublishArticleDialogProps {
 }
 
 export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
+  const [focusText, setFocusText] = useState<string>();
   const [selectedAuthor, setSelectedAuthor] = useState<string>();
   const [selectedSection, setSelectedSection] = useState<string>();
   const [featured, setFeatured] = useState(false);
@@ -74,6 +75,7 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
   });
 
   const hide = () => {
+    setFocusText(undefined);
     setSelectedAuthor(undefined);
     setSelectedSection(undefined);
     setFeatured(false);
@@ -84,9 +86,8 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
   };
 
   const onClickPublish = async () => {
-    let section = sections.find(
-      section => section.toString() === selectedSection,
-    )!;
+    if (focusText == null) return;
+    let section = sections.find(section => section.id === selectedSection)!;
 
     let writerId = writers!.find(
       writer => `${writer.firstName} ${writer.lastName}` === selectedAuthor,
@@ -102,7 +103,8 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
 
     publishArticle({
       content: articleContent!,
-      section,
+      section: section.id,
+      focus: focusText,
       writerId,
       driveFileId: props.articleFileId,
       imageUrl:
@@ -112,10 +114,8 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
   };
 
   const onClickPublishAndUnfeature = async () => {
-    if (alreadyFeaturedArticle == null) return;
-    let section = sections.find(
-      section => section.toString() === selectedSection,
-    )!;
+    if (alreadyFeaturedArticle == null || focusText == null) return;
+    let section = sections.find(section => section.id === selectedSection)!;
 
     let writerId = writers!.find(
       writer => `${writer.firstName} ${writer.lastName}` === selectedAuthor,
@@ -124,7 +124,8 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
     updateArticleById(alreadyFeaturedArticle.id, { featured: false });
     publishArticle({
       content: articleContent!,
-      section,
+      section: section.id,
+      focus: focusText,
       writerId,
       driveFileId: props.articleFileId,
       imageUrl:
@@ -182,6 +183,16 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
           </Form.Group>
           <br />
           <Form.Group>
+            <Form.Label>
+              Focus Text <span style={{ color: "red" }}>*</span>
+            </Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter Focus Text"
+              onChange={e => setFocusText(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group>
             <Form.Label>Thumbnail</Form.Label>
             <Form.Control
               type="file"
@@ -215,7 +226,10 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
             variant="primary"
             onClick={onClickPublish}
             disabled={Boolean(
-              !selectedAuthor || !selectedSection || !articleContent,
+              !selectedAuthor ||
+                !selectedSection ||
+                !articleContent ||
+                !focusText,
             )}>
             Publish
           </Button>

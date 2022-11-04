@@ -88,7 +88,7 @@ export const HomePage = () => {
                   .filter(article => !article.featured)
                   .slice(0, 3)
                   .map(article => (
-                    <Article article={article} />
+                    <Article article={article} key={article.id} />
                   ))}
               </Col>
             </Row>

@@ -41,7 +41,6 @@ export const EditArticleDialog = (props: Props) => {
     }
   >(({ id, ...toChange }) => updateArticleById(id, toChange), {
     onSuccess: () => {
-      // queryClient.removeQueries(["writers", writerId]);
       queryClient.invalidateQueries(["articles"]);
     },
   });

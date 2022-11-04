@@ -17,6 +17,7 @@ import {
   IWriter,
   sections,
 } from "../types";
+import { RequiredStar } from "./requiredStar";
 
 interface PublishArticleDialogProps {
   articleFileId?: string;
@@ -161,7 +162,7 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
         <Form>
           <Form.Group>
             <Form.Label>
-              Author <span style={{ color: "red" }}>*</span>
+              Author <RequiredStar />
             </Form.Label>
             <Select
               options={writerOptions}
@@ -173,7 +174,7 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
           <br />
           <Form.Group>
             <Form.Label>
-              Section <span style={{ color: "red" }}>*</span>
+              Section <RequiredStar />
             </Form.Label>
             <Select
               options={sectionsOptions}
@@ -184,7 +185,7 @@ export const PublishArticleDialog = (props: PublishArticleDialogProps) => {
           <br />
           <Form.Group>
             <Form.Label>
-              Focus Text <span style={{ color: "red" }}>*</span>
+              Focus Text <RequiredStar />
             </Form.Label>
             <Form.Control
               type="text"

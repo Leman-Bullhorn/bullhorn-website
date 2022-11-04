@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import styled from "styled-components";
 import { postWriter, uploadPicture } from "../api/requests";
+import { RequiredStar } from "./requiredStar";
 
 const StyledForm = styled(Form)`
   border: 1px solid #dddddd;
@@ -53,7 +54,7 @@ export const CreateWriter = () => {
       <h2>Create Writer</h2>
       <Form.Group className="mb-3">
         <Form.Label>
-          First name <span style={{ color: "red" }}>*</span>
+          First name <RequiredStar />
         </Form.Label>
         <Form.Control
           type="text"
@@ -65,7 +66,7 @@ export const CreateWriter = () => {
 
       <Form.Group className="mb-3">
         <Form.Label>
-          Last name <span style={{ color: "red" }}>*</span>
+          Last name <RequiredStar />
         </Form.Label>
         <Form.Control
           type="text"
@@ -77,7 +78,7 @@ export const CreateWriter = () => {
 
       <Form.Group className="mb-3">
         <Form.Label>
-          Title <span style={{ color: "red" }}>*</span>
+          Title <RequiredStar />
         </Form.Label>
         <Form.Control
           type="text"

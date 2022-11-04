@@ -25,12 +25,14 @@ export const Article: React.FC<{ article: IArticle }> = ({ article }) => {
 
   return (
     <Styles fluid>
-      <Col xs={7}>
+      <Col xs={article.imageUrl ? 7 : 12}>
         <HeadlineFont>
           <ThemedLink to={articleUrl}>
             <h4 className="d-inline mb-0">{article.headline}</h4>
           </ThemedLink>
         </HeadlineFont>
+
+        <p className="text-muted mb-2">{article.focus}</p>
 
         <span>
           By{" "}
@@ -39,13 +41,11 @@ export const Article: React.FC<{ article: IArticle }> = ({ article }) => {
           </ThemedLink>
         </span>
 
-        <p className="text-muted">{article.focus}</p>
-
         <p className="text-muted mb-0">
           <TimeStamp originalDate={article.publicationDate} />
         </p>
       </Col>
-      <Col xs={5}>
+      <Col>
         {article.imageUrl && (
           <Link to={articleUrl}>
             <img src={article.imageUrl} alt="" width="100%" />

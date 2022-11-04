@@ -14,6 +14,7 @@ import { NotFoundPage } from "./pages/notFoundPage";
 import { ArticlePage } from "./pages/articlePage";
 import { AdminPage } from "./pages/adminPage";
 import ScrollToTop from "./components/scrollToTop";
+import { SignOutButton } from "./components/signOutButton";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ root.render(
   <StrictMode>
     <ThemeProvider theme={lightTheme}>
       <QueryClientProvider client={queryClient}>
+        <SignOutButton />
         <ReactQueryDevtools />
         <GlobalStyles />
         <BrowserRouter>

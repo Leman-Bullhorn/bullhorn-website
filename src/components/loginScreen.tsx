@@ -11,7 +11,7 @@ export const LoginScreen = () => {
 
   const loginMutation = useMutation(login, {
     onSuccess() {
-      queryClient.invalidateQueries(["role"]);
+      queryClient.resetQueries(["role"]);
     },
   });
 

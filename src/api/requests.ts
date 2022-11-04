@@ -163,6 +163,10 @@ export const login = async ({ username, password }: LoginInfo) => {
   return validateStatusCode(response);
 };
 
+export const logout = async () => {
+  await axios.post<void>(`${BASE_URL}/logout`);
+};
+
 export const current = async () => {
   const response = await axios.get<AuthRole>(`${BASE_URL}/current`);
 

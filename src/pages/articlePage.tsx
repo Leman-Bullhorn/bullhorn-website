@@ -96,7 +96,14 @@ export const ArticlePage = () => {
                 />
               )}
               {article.content.paragraphs.map((paragraph, idx) => (
-                <p key={idx} style={{ textAlign: paragraph.textAlignment }}>
+                <p
+                  key={idx}
+                  style={{
+                    marginLeft: paragraph.marginLeft,
+                    marginRight: paragraph.marginRight,
+                    textAlign: paragraph.textAlignment,
+                    textIndent: paragraph.textIndent,
+                  }}>
                   {paragraph.spans.map((span, idx) => (
                     <span
                       key={idx}

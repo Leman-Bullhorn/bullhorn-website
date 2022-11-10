@@ -94,6 +94,7 @@ export interface IArticle {
 
 export enum AuthRole {
   Admin = "Admin",
+  Editor = "Editor",
   Default = "Default",
 }
 
@@ -126,7 +127,10 @@ export interface ArticleSpan {
 }
 
 export interface ArticleParagraph {
+  marginLeft: React.CSSProperties["marginLeft"];
+  marginRight: React.CSSProperties["marginRight"];
   textAlignment: React.CSSProperties["textAlign"];
+  textIndent: React.CSSProperties["textIndent"];
   spans: ArticleSpan[];
 }
 

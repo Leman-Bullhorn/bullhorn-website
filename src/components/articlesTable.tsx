@@ -46,7 +46,7 @@ const columnHelper = createColumnHelper<IArticle>();
 export const ArticlesTable = ({ articles }: ArticlesTableProps) => {
   const [selectedArticle, setSelectedArticle] = useState<IArticle>();
   const [showArticleDialog, setShowArticleDialog] = useState(false);
-  const [refreshingArticle, setRefreshingArticle] = useState(false);
+  const [refreshingArticleId, setRefreshingArticleId] = useState<number>();
   const [confirmFeature, setConfirmFeature] = useState(false);
   const [oldFeature, setOldFeature] = useState<IArticle>();
   const [newFeature, setNewFeature] = useState<IArticle>();
@@ -87,13 +87,13 @@ export const ArticlesTable = ({ articles }: ArticlesTableProps) => {
   const onClickRefreshArticle = async (article: IArticle) => {
     let { driveFileId } = article;
     if (driveFileId == null) return;
-    setRefreshingArticle(true);
+    setRefreshingArticleId(article.id);
 
     let body = await getArticleContent(driveFileId);
 
     updateArticle(
       { id: article.id, body },
-      { onSuccess: () => setRefreshingArticle(false) },
+      { onSuccess: () => setRefreshingArticleId(undefined) },
     );
   };
 
@@ -176,7 +176,7 @@ export const ArticlesTable = ({ articles }: ArticlesTableProps) => {
           placement="right"
           overlay={<Tooltip>Update from Google doc</Tooltip>}>
           <div className="d-inline-block">
-            {refreshingArticle ? (
+            {refreshingArticleId === row.original.id ? (
               <ThemedSpinner
                 animation="border"
                 role="status"

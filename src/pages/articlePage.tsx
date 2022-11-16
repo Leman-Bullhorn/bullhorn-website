@@ -12,6 +12,10 @@ import { useQuery } from "@tanstack/react-query";
 import { TextPlaceholder } from "../components/textPlaceholder";
 import { ArticleHeadline } from "../components/articleHeadline";
 
+const ArticleLink = styled(ThemedAnchor)`
+  display: inline;
+`;
+
 const StyledContainer = styled(VariableContainer)`
   margin-top: 50px;
 `;
@@ -116,7 +120,7 @@ export const ArticlePage = () => {
                       {span.content.map((content, idx) => {
                         if ("anchor" in content) {
                           return (
-                            <ThemedAnchor
+                            <ArticleLink
                               key={idx}
                               href={content.anchor.href}
                               dangerouslySetInnerHTML={{

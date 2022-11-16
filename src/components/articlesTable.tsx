@@ -120,9 +120,7 @@ export const ArticlesTable = ({ articles }: ArticlesTableProps) => {
       header: "Headline",
       cell: info => (
         <UnderlinedThemedLink
-          to={`/article/${info.row.original.section.toString()}/${
-            info.row.original.slug
-          }`}>
+          to={`/article/${info.row.original.section}/${info.row.original.slug}`}>
           {info.row.original.headline}
         </UnderlinedThemedLink>
       ),
@@ -132,7 +130,7 @@ export const ArticlesTable = ({ articles }: ArticlesTableProps) => {
       header: "Section",
       cell: ({ row }) => (
         <UnderlinedThemedLink to={`/section/${row.original.section}`}>
-          {row.original.section.toString()}
+          {row.original.section}
         </UnderlinedThemedLink>
       ),
     }),

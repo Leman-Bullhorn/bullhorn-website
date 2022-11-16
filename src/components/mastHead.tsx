@@ -57,8 +57,8 @@ export const Masthead = (props: MastHeadProps) => {
               as="li"
               style={{ flexGrow: 0 }}
               key={section.id}>
-              <LinkContainer to={`/section/${section.toString()}`}>
-                <StyledLink eventKey={`/section/${section.toString()}`}>
+              <LinkContainer to={`/section/${section.id}`}>
+                <StyledLink eventKey={`/section/${section.id}`}>
                   {section.display}
                 </StyledLink>
               </LinkContainer>

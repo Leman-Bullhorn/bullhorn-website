@@ -18,8 +18,7 @@ const StyledFigure = styled.figure`
 export const FeaturedArticle: React.FC<{ article: IArticle }> = ({
   article,
 }) => {
-  const sectionName = article.section.toString();
-  const articleUrl = `/article/${sectionName}/${article.slug}`;
+  const articleUrl = `/article/${article.section}/${article.slug}`;
   const writerUrl = `/writer/${article.writer.firstName}-${article.writer.lastName}`;
 
   return (

@@ -81,8 +81,8 @@ export const NavigationBar = (props: NavigationBarProps) => {
               className="flex-grow-1 justify-content-center flex-shrink-0">
               {sections.map(section => (
                 <Nav.Item as="li" key={section.id}>
-                  <LinkContainer to={`/section/${section.toString()}`}>
-                    <Nav.Link eventKey={`/section/${section.toString()}`}>
+                  <LinkContainer to={`/section/${section.id}`}>
+                    <Nav.Link eventKey={`/section/${section.id}`}>
                       {section.display}
                     </Nav.Link>
                   </LinkContainer>

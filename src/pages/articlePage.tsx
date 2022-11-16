@@ -55,7 +55,7 @@ export const ArticlePage = () => {
           <>
             <Row>
               <p className="text-uppercase" style={{ fontSize: "0.8rem" }}>
-                <ThemedLink to={`/section/${article.section.toString()}`}>
+                <ThemedLink to={`/section/${article.section}`}>
                   {sections.find(section => section.id === article.section)
                     ?.display ?? article.section}
                 </ThemedLink>

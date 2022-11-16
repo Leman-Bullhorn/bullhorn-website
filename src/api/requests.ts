@@ -8,6 +8,8 @@ import {
   Paginated,
   DriveFile,
   ArticleContent,
+  ArticleSubmission,
+  ArticleSubmissionData,
 } from "../types";
 import { AxiosResponse } from "axios";
 
@@ -245,6 +247,31 @@ export const postWriter = async ({
   if (imageUrl) postData.imageUrl = imageUrl;
 
   const response = await axios.post<IWriter>(`${BASE_URL}/writers`, postData);
+
+  return validateStatusCode(response);
+};
+
+export const getArticleSubmissions = async () => {
+  const response = await axios.get<ArticleSubmission[]>(
+    `${BASE_URL}/submission`,
+  );
+
+  return validateStatusCode(response);
+};
+
+export const postArticleSubmission = async (
+  submission: ArticleSubmissionData,
+) => {
+  const response = await axios.post<ArticleSubmission>(
+    `${BASE_URL}/submission`,
+    submission,
+  );
+
+  return validateStatusCode(response);
+};
+
+export const deleteArticleSubmission = async (id: number) => {
+  const response = await axios.delete<void>(`${BASE_URL}/submission/${id}`);
 
   return validateStatusCode(response);
 };

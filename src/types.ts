@@ -138,3 +138,22 @@ export interface ArticleContent {
   headline: string;
   paragraphs: ArticleParagraph[];
 }
+
+export interface ArticleSubmission {
+  id: number;
+  headline: string;
+  focus: string;
+  section: Section;
+  authorId: number;
+  driveFileId: string;
+  thumbnailUrl?: string;
+}
+
+export interface ArticleSubmissionData {
+  headline: string;
+  focus: string;
+  section: Section;
+  authorId: number;
+  driveFileId: string;
+  thumbnailUrl?: string;
+}

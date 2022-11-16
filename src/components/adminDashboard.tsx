@@ -1,12 +1,12 @@
 import { Container, Col, Row, Tab, Nav } from "react-bootstrap";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { getArticles } from "../api/requests";
-import { IApiError, IArticle, Paginated } from "../types";
-import { DriveTable } from "./driveTable";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { getArticles, getArticleSubmissions } from "../api/requests";
+import { ArticleSubmission, IApiError, IArticle, Paginated } from "../types";
 import { WritersTable } from "./writersTable";
 import { ArticlesTable } from "./articlesTable";
 import { CreateWriter } from "./createWriter";
+import { ArticleSubmissionsTable } from "./articleSubmissionsTable";
 
 export const AdminDashboard = () => {
   const {
@@ -25,6 +25,12 @@ export const AdminDashboard = () => {
     },
   );
 
+  const { data: articleSubmissions } = useQuery<
+    ArticleSubmission[],
+    IApiError,
+    ArticleSubmission[]
+  >(["submissions"], getArticleSubmissions);
+
   if (isArticlesError) {
     return <h1>Error {articleError.message}</h1>;
   }
@@ -34,35 +40,37 @@ export const AdminDashboard = () => {
   return (
     <Tab.Container defaultActiveKey="article">
       <div className="d-flex">
-        <Col sm={1} style={{ borderRight: "1px solid #dddddd" }}>
+        <Col sm={2} style={{ borderRight: "1px solid #dddddd" }}>
           <Nav variant="pills" className="flex-column">
             <Nav.Item>
-              <Nav.Link eventKey="article">Article</Nav.Link>
+              <Nav.Link eventKey="article">Articles</Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link eventKey="writer">Writer</Nav.Link>
             </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="submissions">
+                Article Submissions{" "}
+                {articleSubmissions ? `(${articleSubmissions.length})` : ""}
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="content">Content</Nav.Link>
+            </Nav.Item>
           </Nav>
         </Col>
-        <Col sm={11} style={{ height: "75vh" }}>
+        <Col sm={10} style={{ height: "75vh" }}>
           <Tab.Content>
             <Tab.Pane eventKey="article">
               <Container>
-                <Row xs={2}>
-                  <Col id="articles-table" className="overflow-scroll">
-                    <InfiniteScroll
-                      dataLength={articles.length}
-                      next={fetchNextArticlePage}
-                      hasMore={hasNextArticlePage ?? false}
-                      loader={<span>Loading...</span>}
-                      scrollableTarget="articles-table">
-                      <ArticlesTable articles={articles} />
-                    </InfiniteScroll>
-                  </Col>
-                  <Col>
-                    <DriveTable />
-                  </Col>
-                </Row>
+                <InfiniteScroll
+                  dataLength={articles.length}
+                  next={fetchNextArticlePage}
+                  hasMore={hasNextArticlePage ?? false}
+                  loader={<span>Loading...</span>}
+                  scrollableTarget="articles-table">
+                  <ArticlesTable articles={articles} />
+                </InfiniteScroll>
               </Container>
             </Tab.Pane>
             <Tab.Pane eventKey="writer">
@@ -75,6 +83,16 @@ export const AdminDashboard = () => {
                     <CreateWriter />
                   </Col>
                 </Row>
+              </Container>
+            </Tab.Pane>
+            <Tab.Pane eventKey="submissions">
+              <Container>
+                <ArticleSubmissionsTable />
+              </Container>
+            </Tab.Pane>
+            <Tab.Pane eventKey="content">
+              <Container>
+                <p>hi</p>
               </Container>
             </Tab.Pane>
           </Tab.Content>

@@ -2,6 +2,7 @@ import { Navbar, Nav, Container, Col } from "react-bootstrap";
 import styled from "styled-components";
 import { LinkContainer } from "./linkContainer";
 import { sections } from "../types";
+import { SectionFont } from "./sectionFont";
 
 const StyledNavbar = styled(Navbar)`
   transition-property: all;
@@ -83,7 +84,7 @@ export const NavigationBar = (props: NavigationBarProps) => {
                 <Nav.Item as="li" key={section.id}>
                   <LinkContainer to={`/section/${section.id}`}>
                     <Nav.Link eventKey={`/section/${section.id}`}>
-                      {section.display}
+                      <SectionFont>{section.display}</SectionFont>
                     </Nav.Link>
                   </LinkContainer>
                 </Nav.Item>

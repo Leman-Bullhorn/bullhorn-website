@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { LinkContainer } from "./linkContainer";
 import { sections } from "../types";
 import { useInView } from "react-intersection-observer";
-import { HeadlineFont } from "./headlineFont";
+import { SectionFont } from "./sectionFont";
 
 const StyledNavbar = styled(Navbar)`
   .navbar-brand {
@@ -28,6 +28,7 @@ const BrandText = styled.a`
   font-weight: 500;
   transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out,
     border-color 0.25s ease-in-out;
+  font-family: "Futura-Medium";
 
   :hover {
     text-decoration: underline;
@@ -84,7 +85,7 @@ export const Masthead = (props: MastHeadProps) => {
           href="https://www.lemanmanhattan.org/"
           target="_blank"
           rel="noreferrer">
-          <HeadlineFont>Léman Manhattan Preparatory School</HeadlineFont>
+          Léman Manhattan Preparatory School
         </BrandText>
       </Row>
       <Row style={{ boxShadow: "0px 5px 5px -5px rgba(0, 0, 0, 0.28)" }}>
@@ -97,7 +98,7 @@ export const Masthead = (props: MastHeadProps) => {
               key={section.id}>
               <LinkContainer to={`/section/${section.id}`}>
                 <StyledLink eventKey={`/section/${section.id}`}>
-                  {section.display}
+                  <SectionFont>{section.display}</SectionFont>
                 </StyledLink>
               </LinkContainer>
             </Nav.Item>

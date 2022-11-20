@@ -37,7 +37,9 @@ root.render(
             <Route path="/" element={<HomePage />} />
             <Route path="/writer/:writerName" element={<WriterPage />} />
             <Route path="/article/:section/:slug" element={<ArticlePage />} />
+            <Route path="/section/:sectionId" element={<SectionPage />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/staff" element={<StaffPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>

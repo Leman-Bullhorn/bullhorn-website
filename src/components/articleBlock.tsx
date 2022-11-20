@@ -10,7 +10,6 @@ import { TextPlaceholder } from "./textPlaceholder";
 const BorderedDiv = styled.div`
   border-bottom: 1px solid #dddddd;
   margin-bottom: 20px;
-  padding-bottom: 20px;
 `;
 
 const StyledImg = styled.img`
@@ -26,6 +25,7 @@ const StyledImg = styled.img`
 export const ArticleBlock = (props: IArticle) => {
   const sectionName = props.section.toLowerCase();
   const articleUrl = `/article/${sectionName}/${props.slug}`;
+  const writerUrl = `/writer/${props.writer.firstName}-${props.writer.lastName}`;
 
   return (
     <BorderedDiv>
@@ -38,6 +38,12 @@ export const ArticleBlock = (props: IArticle) => {
           </HeadlineFont>
 
           <p className="text-muted">{props.focus}</p>
+          <span>
+            By{" "}
+            <ThemedLink to={writerUrl}>
+              {props.writer.firstName} {props.writer.lastName}
+            </ThemedLink>
+          </span>
           <p className="text-muted">
             <TimeStamp originalDate={props.publicationDate} />
           </p>

@@ -10,6 +10,7 @@ import {
   ArticleContent,
   ArticleSubmission,
   ArticleSubmissionData,
+  Section,
 } from "../types";
 import { AxiosResponse } from "axios";
 
@@ -139,6 +140,25 @@ export const getArticles = async (page: number = 1, limit: number = 10) => {
         limit,
       },
     },
+  );
+
+  const articles = validateStatusCode(response);
+
+  articles.content.forEach(
+    article => (article.publicationDate = new Date(article.publicationDate)),
+  );
+
+  return articles;
+};
+
+export const getArticlesBySection = async (
+  section: Section,
+  page: number = 1,
+  limit: number = 10,
+) => {
+  const response = await axios.get<Paginated<IArticle[]>>(
+    `${BASE_URL}/sectionArticles/${section}`,
+    { params: { page, limit } },
   );
 
   const articles = validateStatusCode(response);

@@ -27,7 +27,12 @@ export const FeaturedArticle: React.FC<{ article: IArticle }> = ({
               src={article.imageUrl}
               alt=""
               width="66.667%"
-              style={{ float: "right", maxHeight: "480px", overflow: "hidden" }}
+              style={{
+                float: "right",
+                maxHeight: "480px",
+                overflow: "hidden",
+                paddingLeft: "0.25rem",
+              }}
             />
           </Link>
         )}

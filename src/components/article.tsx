@@ -43,7 +43,7 @@ export const Article: React.FC<{ article: IArticle }> = ({ article }) => {
             </ThemedLink>
           </HeadlineFont>
 
-          <p className="text-muted my-2">{article.focus}</p>
+          <p className="text-muted my-2 fs-6">{article.focus}</p>
         </div>
 
         <span>

@@ -15,6 +15,11 @@ const StyledFigure = styled.figure`
   }
 `;
 
+const ArticleContainer = styled(Container)`
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #dddddd;
+`;
+
 export const FeaturedArticle: React.FC<{ article: IArticle }> = ({
   article,
 }) => {
@@ -22,7 +27,7 @@ export const FeaturedArticle: React.FC<{ article: IArticle }> = ({
   const writerUrl = `/writer/${article.writer.firstName}-${article.writer.lastName}`;
 
   return (
-    <Container fluid>
+    <ArticleContainer fluid>
       <Row>
         <Col xs={4}>
           <HeadlineFont>
@@ -31,7 +36,7 @@ export const FeaturedArticle: React.FC<{ article: IArticle }> = ({
             </ThemedLink>
           </HeadlineFont>
 
-          <p className="display-inline-black text-muted mb-2">
+          <p className="display-inline-black text-muted mb-2 fs-6">
             {article.focus}
           </p>
 
@@ -57,6 +62,6 @@ export const FeaturedArticle: React.FC<{ article: IArticle }> = ({
           )}
         </Col>
       </Row>
-    </Container>
+    </ArticleContainer>
   );
 };

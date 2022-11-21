@@ -12,9 +12,11 @@ const ArticleContainer = styled(Container)`
   min-height: 500px;
 `;
 
-export const FeaturedArticle: React.FC<{ article: IArticle }> = ({
-  article,
-}) => {
+interface Props {
+  article: IArticle;
+}
+
+const FeaturedArticleRegular: React.FC<Props> = ({ article }) => {
   const articleUrl = `/article/${article.section}/${article.slug}`;
   const writerUrl = `/writer/${article.writer.firstName}-${article.writer.lastName}`;
 
@@ -59,5 +61,62 @@ export const FeaturedArticle: React.FC<{ article: IArticle }> = ({
         </p>
       </Col>
     </ArticleContainer>
+  );
+};
+
+const FeaturedArticleSmall: React.FC<Props> = ({ article }) => {
+  const articleUrl = `/article/${article.section}/${article.slug}`;
+  const writerUrl = `/writer/${article.writer.firstName}-${article.writer.lastName}`;
+
+  return (
+    <ArticleContainer fluid>
+      <Col>
+        <HeadlineFont>
+          <ThemedLink to={articleUrl}>
+            <h4>{article.headline}</h4>
+          </ThemedLink>
+        </HeadlineFont>
+
+        {article.imageUrl && (
+          <Link to={articleUrl}>
+            <img
+              src={article.imageUrl}
+              alt=""
+              width="100%"
+              style={{
+                maxHeight: "480px",
+                overflow: "hidden",
+              }}
+            />
+          </Link>
+        )}
+
+        <p className="text-muted my-2 fs-6">{article.focus}</p>
+
+        <span>
+          By{" "}
+          <ThemedLink to={writerUrl}>
+            {article.writer.firstName} {article.writer.lastName}
+          </ThemedLink>
+        </span>
+
+        <p className="text-muted mb-0">
+          <TimeStamp originalDate={article.publicationDate} />
+        </p>
+      </Col>
+    </ArticleContainer>
+  );
+};
+
+export const FeaturedArticle: React.FC<Props> = ({ article }) => {
+  return (
+    <>
+      <div className="d-none d-sm-block">
+        <FeaturedArticleRegular article={article} />
+      </div>
+      <div className="d-sm-none">
+        <FeaturedArticleSmall article={article} />
+      </div>
+    </>
   );
 };

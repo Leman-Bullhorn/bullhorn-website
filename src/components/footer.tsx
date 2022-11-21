@@ -60,7 +60,7 @@ export const Footer = () => (
         <StyledA
           rel="noreferrer"
           target="_blank"
-          href="https://docs.google.com/document/d/1XWB8Qv22tqQQN6c_pfNhsMPHsyk5ccFE/edit">
+          href="https://forms.gle/Vk1wBTRvKeKd9gUb6">
           Join
         </StyledA>
         <br />

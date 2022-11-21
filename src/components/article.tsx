@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { CSSProperties } from "styled-components";
 
 import { IArticle } from "../types";
 import { TimeStamp } from "./timeStamp";
@@ -18,12 +18,15 @@ const Styles = styled(Container)`
   }
 `;
 
-export const Article: React.FC<{ article: IArticle }> = ({ article }) => {
+export const Article: React.FC<{
+  article: IArticle;
+  style?: CSSProperties;
+}> = ({ article, style }) => {
   const articleUrl = `/article/${article.section}/${article.slug}`;
   const writerUrl = `/writer/${article.writer.firstName}-${article.writer.lastName}`;
-
+  <Container style={{}}></Container>;
   return (
-    <Styles fluid>
+    <Styles fluid style={style}>
       <Col>
         {article.imageUrl && (
           <Link to={articleUrl}>
@@ -31,7 +34,7 @@ export const Article: React.FC<{ article: IArticle }> = ({ article }) => {
               src={article.imageUrl}
               alt=""
               width="45%"
-              style={{ float: "right" }}
+              style={{ float: "right", paddingLeft: "0.25rem" }}
             />
           </Link>
         )}

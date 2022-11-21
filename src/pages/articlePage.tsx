@@ -11,6 +11,7 @@ import { TimeStamp } from "../components/timeStamp";
 import { useQuery } from "@tanstack/react-query";
 import { TextPlaceholder } from "../components/textPlaceholder";
 import { ArticleHeadline } from "../components/articleHeadline";
+import { SectionFont } from "../components/sectionFont";
 
 const ArticleLink = styled(ThemedAnchor)`
   display: inline;
@@ -56,8 +57,10 @@ export const ArticlePage = () => {
             <Row>
               <p className="text-uppercase" style={{ fontSize: "0.8rem" }}>
                 <ThemedLink to={`/section/${article.section}`}>
-                  {sections.find(section => section.id === article.section)
-                    ?.display ?? article.section}
+                  <SectionFont>
+                    {sections.find(section => section.id === article.section)
+                      ?.display ?? article.section}
+                  </SectionFont>
                 </ThemedLink>
               </p>
               <ArticleHeadline>{article.headline}</ArticleHeadline>
@@ -90,7 +93,13 @@ export const ArticlePage = () => {
               </p>
             </Row>
             <StyledDivider />
-            <Row style={{ fontFamily: "georgia", fontSize: "1.25rem" }}>
+            <Row
+              style={{
+                fontFamily: "georgia",
+                fontSize: "1.25rem",
+                maxWidth: "70ch",
+                margin: "0 auto",
+              }}>
               {article.imageUrl && (
                 <img
                   alt=""

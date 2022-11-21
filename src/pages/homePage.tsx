@@ -33,11 +33,16 @@ export const HomePage = () => {
     <>
       {roleData === AuthRole.Admin && <AdminPageButton />}
       <NavigationBar visible={!isMastHeadVisible} buffer={false} />
+      <div className="d-sm-none">
+        <NavigationBar buffer />
+      </div>
 
       <Container>
-        <Row className="mb-4">
-          <Masthead changeVisibility={setMastHeadVisible} />
-        </Row>
+        <div className="d-none d-sm-block">
+          <Row className="mb-4">
+            <Masthead changeVisibility={setMastHeadVisible} />
+          </Row>
+        </div>
         {isLoading ? (
           <Spinner animation="border" role="status" />
         ) : (

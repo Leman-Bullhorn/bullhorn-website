@@ -1,35 +1,14 @@
 import { useState } from "react";
 import { Masthead } from "../components/mastHead";
-import { Article } from "../components/article";
-import { Container, Row, Col, Spinner } from "react-bootstrap";
+import { Container, Row, Spinner } from "react-bootstrap";
 import { NavigationBar } from "../components/navigationBar";
 import { AuthRole, IApiError, IArticle, Paginated } from "../types";
-import { current, getArticles, getFeaturedArticle } from "../api/requests";
+import { current, getArticles } from "../api/requests";
 import { useQuery } from "@tanstack/react-query";
-import styled from "styled-components";
-import { HorizontalDivider } from "../components/horizontalDivider";
 import { AdminPageButton } from "../components/adminPageButton";
-import { FeaturedArticle } from "../components/featuredArticle";
-
-const Styles = styled.div`
-  .featured-section {
-    padding-right: 18px;
-    border-right: 1px solid #dddddd;
-  }
-
-  .featured-columns {
-    padding-right: 10px;
-  }
-
-  .left-featured {
-    padding-right: 18px;
-    border-right: 1px solid #dddddd;
-  }
-
-  .right-featured {
-    padding-left: 18px;
-  }
-`;
+import { HomePageLarge } from "../components/homePageLarge";
+import { HomePageMedium } from "../components/homePageMedium";
+import { HomePageSmall } from "../components/homePageSmall";
 
 export const HomePage = () => {
   const [isMastHeadVisible, setMastHeadVisible] = useState(true);
@@ -42,11 +21,6 @@ export const HomePage = () => {
   } = useQuery<Paginated<IArticle[]>, IApiError, Paginated<IArticle[]>>(
     ["articles", { paginated: true }, 1],
     () => getArticles(1, 50),
-  );
-
-  const { data: featuredArticle } = useQuery<IArticle, IApiError, IArticle>(
-    ["articles", { featured: true }],
-    () => getFeaturedArticle(),
   );
 
   const { data: roleData } = useQuery(["role"], current);
@@ -67,32 +41,17 @@ export const HomePage = () => {
         {isLoading ? (
           <Spinner animation="border" role="status" />
         ) : (
-          <Styles>
-            <Row>
-              <Col
-                xs={12}
-                md={8}
-                style={{
-                  paddingRight: "1rem",
-                  borderRight: "1px solid #dddddd",
-                }}>
-                {featuredArticle && (
-                  <FeaturedArticle article={featuredArticle} />
-                )}
-              </Col>
-
-              <Col>
-                <p className="mb-0">Latest</p>
-                <HorizontalDivider />
-                {latestArticles.content
-                  .filter(article => !article.featured)
-                  .slice(0, 3)
-                  .map(article => (
-                    <Article article={article} key={article.id} />
-                  ))}
-              </Col>
-            </Row>
-          </Styles>
+          <>
+            <div className="d-none d-lg-block">
+              <HomePageLarge latestArticles={latestArticles.content} />
+            </div>
+            <div className="d-none d-sm-block d-lg-none">
+              <HomePageMedium latestArticles={latestArticles.content} />
+            </div>
+            <div className="d-sm-none">
+              <HomePageSmall latestArticles={latestArticles.content} />
+            </div>
+          </>
         )}
       </Container>
     </>

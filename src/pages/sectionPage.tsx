@@ -7,7 +7,6 @@ import {
   ArticleBlock,
   ArticleBlockPlaceholder,
 } from "../components/articleBlock";
-import { HeadlineFont } from "../components/headlineFont";
 import { HorizontalDivider } from "../components/horizontalDivider";
 import { NavigationBar } from "../components/navigationBar";
 import { SectionFont } from "../components/sectionFont";

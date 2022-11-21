@@ -6,7 +6,9 @@ import { AuthRole } from "../types";
 export const SignOutButton = () => {
   const queryClient = useQueryClient();
 
-  const { data: role } = useQuery(["role"], current);
+  const { data: role } = useQuery(["role"], current, {
+    retry: false,
+  });
 
   const { mutate: signOut } = useMutation(logout, {
     onSuccess() {

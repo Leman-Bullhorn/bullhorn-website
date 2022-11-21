@@ -15,6 +15,9 @@ import { ArticlePage } from "./pages/articlePage";
 import { AdminPage } from "./pages/adminPage";
 import ScrollToTop from "./components/scrollToTop";
 import { SignOutButton } from "./components/signOutButton";
+import { Footer } from "./components/footer";
+import { SectionPage } from "./pages/sectionPage";
+import { StaffPage } from "./pages/staffPage";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +45,7 @@ root.render(
             <Route path="/staff" element={<StaffPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
+          <Footer />
         </BrowserRouter>
       </QueryClientProvider>
     </ThemeProvider>

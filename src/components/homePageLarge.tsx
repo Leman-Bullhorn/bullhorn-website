@@ -92,15 +92,19 @@ export const HomePageLarge: React.FC<{ latestArticles: IArticle[] }> = ({
               )!
             }
           />
-        </BorderedCol>
-        <BorderedCol>
+
           <Article
+            style={{ borderBottom: "none" }}
             article={
               latestArticles.find(
-                article => article.slug === "giants-contenders-or-pretenders",
+                article =>
+                  article.slug ===
+                  "new-student-run-clubs-how-leadership-is-demonstrated-at-lman",
               )!
             }
           />
+        </BorderedCol>
+        <BorderedCol>
           <Article
             article={
               latestArticles.find(
@@ -110,8 +114,41 @@ export const HomePageLarge: React.FC<{ latestArticles: IArticle[] }> = ({
               )!
             }
           />
+          <Article
+            article={
+              latestArticles.find(
+                article =>
+                  article.slug ===
+                  "lman-uniform-policy-inspires-unity-as-well-as-criticism",
+              )!
+            }
+          />
+          <Article
+            article={
+              latestArticles.find(
+                article => article.slug === "giants-contenders-or-pretenders",
+              )!
+            }
+          />
+          <Article
+            style={{ borderBottom: "none" }}
+            article={
+              latestArticles.find(
+                article =>
+                  article.slug === "are-we-in-bella-hadids-golden-age-",
+              )!
+            }
+          />
         </BorderedCol>
         <Col>
+          <Article
+            article={
+              latestArticles.find(
+                article =>
+                  article.slug === "ye-and-separating-art-from-the-artist",
+              )!
+            }
+          />
           <Article
             article={
               latestArticles.find(
@@ -122,6 +159,7 @@ export const HomePageLarge: React.FC<{ latestArticles: IArticle[] }> = ({
             }
           />
           <Article
+            style={{ borderBottom: "none" }}
             article={
               latestArticles.find(
                 article =>

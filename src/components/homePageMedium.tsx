@@ -50,8 +50,7 @@ export const HomePageMedium: React.FC<{ latestArticles: IArticle[] }> = ({
             article={
               latestArticles.find(
                 article =>
-                  article.slug ===
-                  "was-2022-the-year-for-horror-and-thriller-movies",
+                  article.slug === "ye-and-separating-art-from-the-artist",
               )!
             }
           />
@@ -60,11 +59,10 @@ export const HomePageMedium: React.FC<{ latestArticles: IArticle[] }> = ({
               latestArticles.find(
                 article =>
                   article.slug ===
-                  "the-problem-driving-the-us-crazy-unstable-gas-prices",
+                  "lman-uniform-policy-inspires-unity-as-well-as-criticism",
               )!
             }
           />
-
           <Article
             article={
               latestArticles.find(article => article.slug === "student-voices")!
@@ -75,7 +73,24 @@ export const HomePageMedium: React.FC<{ latestArticles: IArticle[] }> = ({
               latestArticles.find(
                 article =>
                   article.slug ===
-                  "new-photos-from-the-james-webb-space-telescope",
+                  "new-student-run-clubs-how-leadership-is-demonstrated-at-lman",
+              )!
+            }
+          />
+          <Article
+            article={
+              latestArticles.find(
+                article => article.slug === "giants-contenders-or-pretenders",
+              )!
+            }
+          />
+          <Article
+            style={{ borderBottom: "none" }}
+            article={
+              latestArticles.find(
+                article =>
+                  article.slug ===
+                  "drive-to-survive-has-taken-the-hearts-of-americans",
               )!
             }
           />
@@ -93,7 +108,9 @@ export const HomePageMedium: React.FC<{ latestArticles: IArticle[] }> = ({
           <Article
             article={
               latestArticles.find(
-                article => article.slug === "giants-contenders-or-pretenders",
+                article =>
+                  article.slug ===
+                  "tension-in-most-recent-brazilian-presidential-election",
               )!
             }
           />
@@ -102,7 +119,7 @@ export const HomePageMedium: React.FC<{ latestArticles: IArticle[] }> = ({
               latestArticles.find(
                 article =>
                   article.slug ===
-                  "drive-to-survive-has-taken-the-hearts-of-americans",
+                  "the-problem-driving-the-us-crazy-unstable-gas-prices",
               )!
             }
           />
@@ -120,7 +137,26 @@ export const HomePageMedium: React.FC<{ latestArticles: IArticle[] }> = ({
               latestArticles.find(
                 article =>
                   article.slug ===
-                  "tension-in-most-recent-brazilian-presidential-election",
+                  "was-2022-the-year-for-horror-and-thriller-movies",
+              )!
+            }
+          />
+
+          <Article
+            article={
+              latestArticles.find(
+                article =>
+                  article.slug ===
+                  "new-photos-from-the-james-webb-space-telescope",
+              )!
+            }
+          />
+          <Article
+            style={{ borderBottom: "none" }}
+            article={
+              latestArticles.find(
+                article =>
+                  article.slug === "are-we-in-bella-hadids-golden-age-",
               )!
             }
           />

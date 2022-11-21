@@ -52,11 +52,6 @@ export const HomePageSmall: React.FC<{ latestArticles: IArticle[] }> = ({
           />
           <Article
             article={
-              latestArticles.find(article => article.slug === "student-voices")!
-            }
-          />
-          <Article
-            article={
               latestArticles.find(
                 article =>
                   article.slug ===
@@ -68,15 +63,7 @@ export const HomePageSmall: React.FC<{ latestArticles: IArticle[] }> = ({
             article={
               latestArticles.find(
                 article =>
-                  article.slug ===
-                  "was-2022-the-year-for-horror-and-thriller-movies",
-              )!
-            }
-          />
-          <Article
-            article={
-              latestArticles.find(
-                article => article.slug === "giants-contenders-or-pretenders",
+                  article.slug === "ye-and-separating-art-from-the-artist",
               )!
             }
           />
@@ -94,7 +81,7 @@ export const HomePageSmall: React.FC<{ latestArticles: IArticle[] }> = ({
               latestArticles.find(
                 article =>
                   article.slug ===
-                  "drive-to-survive-has-taken-the-hearts-of-americans",
+                  "lman-uniform-policy-inspires-unity-as-well-as-criticism",
               )!
             }
           />
@@ -109,10 +96,61 @@ export const HomePageSmall: React.FC<{ latestArticles: IArticle[] }> = ({
           />
           <Article
             article={
+              latestArticles.find(article => article.slug === "student-voices")!
+            }
+          />
+
+          <Article
+            article={
+              latestArticles.find(
+                article =>
+                  article.slug ===
+                  "was-2022-the-year-for-horror-and-thriller-movies",
+              )!
+            }
+          />
+          <Article
+            article={
+              latestArticles.find(
+                article =>
+                  article.slug ===
+                  "new-student-run-clubs-how-leadership-is-demonstrated-at-lman",
+              )!
+            }
+          />
+          <Article
+            article={
+              latestArticles.find(
+                article => article.slug === "giants-contenders-or-pretenders",
+              )!
+            }
+          />
+
+          <Article
+            article={
+              latestArticles.find(
+                article =>
+                  article.slug ===
+                  "drive-to-survive-has-taken-the-hearts-of-americans",
+              )!
+            }
+          />
+
+          <Article
+            article={
               latestArticles.find(
                 article =>
                   article.slug ===
                   "new-photos-from-the-james-webb-space-telescope",
+              )!
+            }
+          />
+          <Article
+            style={{ borderBottom: "none" }}
+            article={
+              latestArticles.find(
+                article =>
+                  article.slug === "are-we-in-bella-hadids-golden-age-",
               )!
             }
           />

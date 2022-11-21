@@ -63,7 +63,8 @@ export const HomePageSmall: React.FC<{ latestArticles: IArticle[] }> = ({
             article={
               latestArticles.find(
                 article =>
-                  article.slug === "ye-and-separating-art-from-the-artist",
+                  article.slug ===
+                  "new-year-new-administration-dean-miller-and-dr-leonardatos-join-the-leman-community",
               )!
             }
           />

@@ -27,6 +27,14 @@ export const HomePageSmall: React.FC<{ latestArticles: IArticle[] }> = ({
             article={
               latestArticles.find(
                 article =>
+                  article.slug === "predicting-an-unpredictable-world-cup",
+              )!
+            }
+          />
+          <Article
+            article={
+              latestArticles.find(
+                article =>
                   article.slug ===
                   "hurricane-fiona-and-what-3-clubs-are-doing-about-it",
               )!
@@ -109,6 +117,16 @@ export const HomePageSmall: React.FC<{ latestArticles: IArticle[] }> = ({
               )!
             }
           />
+
+          <Article
+            article={
+              latestArticles.find(
+                article =>
+                  article.slug === "lman-welcomes-47-new-students-to-nhs",
+              )!
+            }
+          />
+
           <Article
             article={
               latestArticles.find(

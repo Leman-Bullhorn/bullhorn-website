@@ -50,7 +50,7 @@ export const HomePageLarge: React.FC<{ latestArticles: IArticle[] }> = ({
                 latestArticles.find(
                   article =>
                     article.slug ===
-                    "what-is-the-fourth-of-july-to-a-ten-year-old-in-ohio",
+                    "tension-in-most-recent-brazilian-presidential-election",
                 )!
               }
             />
@@ -89,6 +89,15 @@ export const HomePageLarge: React.FC<{ latestArticles: IArticle[] }> = ({
                 article =>
                   article.slug ===
                   "the-problem-driving-the-us-crazy-unstable-gas-prices",
+              )!
+            }
+          />
+          <Article
+            article={
+              latestArticles.find(
+                article =>
+                  article.slug ===
+                  "what-is-the-fourth-of-july-to-a-ten-year-old-in-ohio",
               )!
             }
           />
@@ -159,12 +168,21 @@ export const HomePageLarge: React.FC<{ latestArticles: IArticle[] }> = ({
             }
           />
           <Article
-            style={{ borderBottom: "none" }}
             article={
               latestArticles.find(
                 article =>
                   article.slug ===
                   "drive-to-survive-has-taken-the-hearts-of-americans",
+              )!
+            }
+          />
+          <Article
+            style={{ borderBottom: "none" }}
+            article={
+              latestArticles.find(
+                article =>
+                  article.slug ===
+                  "new-photos-from-the-james-webb-space-telescope",
               )!
             }
           />

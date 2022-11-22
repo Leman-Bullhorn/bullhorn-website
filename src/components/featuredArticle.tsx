@@ -9,7 +9,7 @@ import { TimeStamp } from "./timeStamp";
 const ArticleContainer = styled(Container)`
   padding-bottom: 1rem;
   border-bottom: 1px solid #dddddd;
-  min-height: 500px;
+  min-height: 400px;
 `;
 
 interface Props {

@@ -24,7 +24,6 @@ export const Article: React.FC<{
 }> = ({ article, style }) => {
   const articleUrl = `/article/${article.section}/${article.slug}`;
   const writerUrl = `/writer/${article.writer.firstName}-${article.writer.lastName}`;
-  <Container style={{}}></Container>;
   return (
     <Styles fluid style={style}>
       <Col>

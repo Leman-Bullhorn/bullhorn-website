@@ -74,8 +74,15 @@ export const Masthead = (props: MastHeadProps) => {
           bg="white"
           expand={false}>
           <Nav className="flex-column">
-            <Nav.Link href="/">
-              <Navbar.Brand>The Bullhorn</Navbar.Brand>
+            <Nav.Link href="/" className="d-flex justify-content-center">
+              <img
+                src="./winter-masthead.png"
+                alt=""
+                style={{
+                  width: "70%",
+                }}
+              />
+              {/* <Navbar.Brand>The Bullhorn</Navbar.Brand> */}
             </Nav.Link>
           </Nav>
         </StyledNavbar>

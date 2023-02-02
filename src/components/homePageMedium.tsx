@@ -11,6 +11,7 @@ const BorderedCol = styled(Col)`
 `;
 
 const articleSlugs = [
+  "lman-celebrates-lunar-new-year-the-celebration-of-the-rabbit",
   "us-river-heat-waves-becoming-more-frequent-threatening-safety-of-river-based-ecosystems",
   "us-world-cup-convictions-crushed",
   "bad-blood-taylor-swift--the-ticketmaster-fiasco",

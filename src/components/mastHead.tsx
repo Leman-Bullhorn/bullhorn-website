@@ -75,14 +75,14 @@ export const Masthead = (props: MastHeadProps) => {
           expand={false}>
           <Nav className="flex-column">
             <Nav.Link href="/" className="d-flex justify-content-center">
-              <img
+              {/* <img
                 src="./winter-masthead.png"
                 alt=""
                 style={{
                   width: "70%",
                 }}
-              />
-              {/* <Navbar.Brand>The Bullhorn</Navbar.Brand> */}
+              /> */}
+              <Navbar.Brand>The Bullhorn</Navbar.Brand>
             </Nav.Link>
           </Nav>
         </StyledNavbar>

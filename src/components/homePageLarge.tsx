@@ -12,6 +12,7 @@ const BorderedCol = styled(Col)`
 `;
 
 const articleSlugs = [
+  "setting-our-sights-on-super-bowl-lvii",
   "the-giants-fall",
   "homecoming-lman-starts-2023-with-a-bang-",
   "mma-world-comes-to-a-halt-after-18-year-old-victoria-lees-death",

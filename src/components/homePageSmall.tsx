@@ -6,6 +6,7 @@ import { Article } from "./article";
 import { FeaturedArticle } from "./featuredArticle";
 
 const articleSlugs = [
+  "setting-our-sights-on-super-bowl-lvii",
   "george-santos-serial-liar-and-us-representative",
   "the-importance-of-having-a-health-class-in-high-school",
   "chatgpt-a-look-into-the-ai-taking-the-world-by-storm",

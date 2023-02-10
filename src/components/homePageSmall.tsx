@@ -6,6 +6,15 @@ import { Article } from "./article";
 import { FeaturedArticle } from "./featuredArticle";
 
 const articleSlugs = [
+  "george-santos-serial-liar-and-us-representative",
+  "the-importance-of-having-a-health-class-in-high-school",
+  "chatgpt-a-look-into-the-ai-taking-the-world-by-storm",
+  "the-giants-fall",
+  "homecoming-lman-starts-2023-with-a-bang-",
+  "mma-world-comes-to-a-halt-after-18-year-old-victoria-lees-death",
+  "the-lman-bulls-are-making-waves",
+  "the-grim-future-of-affirmative-action",
+  "covid-19-its-not-over-just-yet",
   "lman-celebrates-lunar-new-year-the-celebration-of-the-rabbit",
   "us-river-heat-waves-becoming-more-frequent-threatening-safety-of-river-based-ecosystems",
   "us-world-cup-convictions-crushed",

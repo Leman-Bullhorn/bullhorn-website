@@ -10,34 +10,10 @@ const BorderedCol = styled(Col)`
   border-right: 1px solid #dddddd;
 `;
 
-const articleSlugs = [
-  "setting-our-sights-on-super-bowl-lvii",
-  "george-santos-serial-liar-and-us-representative",
-  "the-importance-of-having-a-health-class-in-high-school",
-  "chatgpt-a-look-into-the-ai-taking-the-world-by-storm",
-  "the-giants-fall",
-  "homecoming-lman-starts-2023-with-a-bang-",
-  "mma-world-comes-to-a-halt-after-18-year-old-victoria-lees-death",
-  "the-lman-bulls-are-making-waves",
-  "the-grim-future-of-affirmative-action",
-  "covid-19-its-not-over-just-yet",
-  "lman-celebrates-lunar-new-year-the-celebration-of-the-rabbit",
-  "us-river-heat-waves-becoming-more-frequent-threatening-safety-of-river-based-ecosystems",
-  "us-world-cup-convictions-crushed",
-  "bad-blood-taylor-swift--the-ticketmaster-fiasco",
-  "the-fight-against-climate-change",
-  "the-world-population-has-surpassed-8-billion-people-now-what",
-  "red-wave-hits-blue-wall----how-the-outcome-of-the-midterms-will-impact-the-us",
-  "running-with-the-lady-bulls",
-  "is-this-the-end-of-snl",
-  "climate-activists-capture-the-worlds-attention-with-the-recent-attacks-on-art",
-  "world-population-reaches-eight-billion-biden-announces-purge-to-control-overpopulation",
-  "leman-fall-sports-recap",
-];
-
-export const HomePageMedium: React.FC<{ latestArticles: IArticle[] }> = ({
-  latestArticles,
-}) => {
+export const HomePageMedium: React.FC<{
+  latestArticles: IArticle[];
+  slugs: string[];
+}> = ({ latestArticles, slugs }) => {
   const { data: featuredArticle } = useQuery<IArticle, IApiError, IArticle>(
     ["articles", { featured: true }],
     () => getFeaturedArticle(),
@@ -54,63 +30,43 @@ export const HomePageMedium: React.FC<{ latestArticles: IArticle[] }> = ({
       <Row className="pt-2">
         <BorderedCol>
           <Article
-            article={
-              latestArticles.find(article => article.slug === articleSlugs[0])!
-            }
+            article={latestArticles.find(article => article.slug === slugs[0])!}
           />
           <Article
-            article={
-              latestArticles.find(article => article.slug === articleSlugs[2])!
-            }
+            article={latestArticles.find(article => article.slug === slugs[2])!}
           />
           <Article
-            article={
-              latestArticles.find(article => article.slug === articleSlugs[4])!
-            }
+            article={latestArticles.find(article => article.slug === slugs[4])!}
           />
           <Article
-            article={
-              latestArticles.find(article => article.slug === articleSlugs[6])!
-            }
+            article={latestArticles.find(article => article.slug === slugs[6])!}
           />
           <Article
-            article={
-              latestArticles.find(article => article.slug === articleSlugs[8])!
-            }
+            article={latestArticles.find(article => article.slug === slugs[8])!}
           />
           <Article
             style={{ borderBottom: "none" }}
             article={
-              latestArticles.find(article => article.slug === articleSlugs[10])!
+              latestArticles.find(article => article.slug === slugs[10])!
             }
           />
         </BorderedCol>
         <Col>
           <Article
-            article={
-              latestArticles.find(article => article.slug === articleSlugs[1])!
-            }
+            article={latestArticles.find(article => article.slug === slugs[1])!}
           />
           <Article
-            article={
-              latestArticles.find(article => article.slug === articleSlugs[3])!
-            }
+            article={latestArticles.find(article => article.slug === slugs[3])!}
           />
           <Article
-            article={
-              latestArticles.find(article => article.slug === articleSlugs[5])!
-            }
+            article={latestArticles.find(article => article.slug === slugs[5])!}
           />
           <Article
-            article={
-              latestArticles.find(article => article.slug === articleSlugs[7])!
-            }
+            article={latestArticles.find(article => article.slug === slugs[7])!}
           />
           <Article
             style={{ borderBottom: "none" }}
-            article={
-              latestArticles.find(article => article.slug === articleSlugs[9])!
-            }
+            article={latestArticles.find(article => article.slug === slugs[9])!}
           />
         </Col>
       </Row>

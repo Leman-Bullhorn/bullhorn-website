@@ -11,33 +11,6 @@ const BorderedCol = styled(Col)`
   border-right: 1px solid #dddddd;
 `;
 
-// const articleSlugs = [
-//   "how-controversial-is-too-controversial",
-//   "chatgpt-a-look-into-the-ai-taking-the-world-by-storm",
-//   "homecoming-lman-starts-2023-with-a-bang-",
-//   "mma-world-comes-to-a-halt-after-18-year-old-victoria-lees-death",
-//   "the-lman-bulls-are-making-waves",
-//   "the-grim-future-of-affirmative-action",
-//   "covid-19-its-not-over-just-yet",
-//   "the-fight-against-climate-change",
-//   "the-world-population-has-surpassed-8-billion-people-now-what",
-//   "the-giants-fall",
-//   "red-wave-hits-blue-wall----how-the-outcome-of-the-midterms-will-impact-the-us",
-//   "running-with-the-lady-bulls",
-//   "the-importance-of-having-a-health-class-in-high-school",
-//   "is-this-the-end-of-snl",
-//   "climate-activists-capture-the-worlds-attention-with-the-recent-attacks-on-art",
-//   "world-population-reaches-eight-billion-biden-announces-purge-to-control-overpopulation",
-//   "setting-our-sights-on-super-bowl-lvii",
-//   "leman-fall-sports-recap",
-// ];
-
-// const sideColumnSlugs = [
-//   "arsenal-fc-22-23-premier-league-champions-or-back-to-back-season-choke-artists",
-//   "george-santos-serial-liar-and-us-representative",
-//   "the-golden-globes-return-from-previous-controversies-how-did-they-handle-it-who-were-the-winners",
-// ];
-
 export const HomePageLarge: React.FC<{
   latestArticles: IArticle[];
   slugs: string[];
@@ -104,21 +77,37 @@ export const HomePageLarge: React.FC<{
 
       <Row className="pt-2">
         <BorderedCol>
-          <Article
-            article={
-              latestArticles.find(article => article.slug === articleSlugs[2])!
-            }
-          />
-
-          <Article
-            style={{ borderBottom: "none" }}
-            article={
-              latestArticles.find(article => article.slug === articleSlugs[5])!
-            }
-          />
+          {articleSlugs
+            .slice(2)
+            .map((slug, idx) =>
+              idx % 3 === 0 ? (
+                <Article
+                  style={
+                    idx + 3 > articleSlugs.length - 1
+                      ? { borderBottom: "none" }
+                      : undefined
+                  }
+                  article={
+                    latestArticles.find(article => article.slug === slug)!
+                  }
+                />
+              ) : null,
+            )}
         </BorderedCol>
         <BorderedCol>
-          <Article
+          {articleSlugs.map((slug, idx) =>
+            idx % 3 === 1 ? (
+              <Article
+                style={
+                  idx + 3 > articleSlugs.length - 1
+                    ? { borderBottom: "none" }
+                    : undefined
+                }
+                article={latestArticles.find(article => article.slug === slug)!}
+              />
+            ) : null,
+          )}
+          {/* <Article
             article={
               latestArticles.find(article => article.slug === articleSlugs[3])!
             }
@@ -128,10 +117,23 @@ export const HomePageLarge: React.FC<{
             article={
               latestArticles.find(article => article.slug === articleSlugs[6])!
             }
-          />
+          /> */}
         </BorderedCol>
+
         <Col>
-          <Article
+          {articleSlugs.map((slug, idx) =>
+            idx % 3 === 2 ? (
+              <Article
+                style={
+                  idx + 3 > articleSlugs.length - 1
+                    ? { borderBottom: "none" }
+                    : undefined
+                }
+                article={latestArticles.find(article => article.slug === slug)!}
+              />
+            ) : null,
+          )}
+          {/* <Article
             article={
               latestArticles.find(article => article.slug === articleSlugs[7])!
             }
@@ -141,7 +143,7 @@ export const HomePageLarge: React.FC<{
             article={
               latestArticles.find(article => article.slug === articleSlugs[4])!
             }
-          />
+          /> */}
         </Col>
       </Row>
     </div>

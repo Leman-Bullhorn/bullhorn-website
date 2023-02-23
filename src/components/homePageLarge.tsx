@@ -82,6 +82,7 @@ export const HomePageLarge: React.FC<{
             .map((slug, idx) =>
               idx % 3 === 0 ? (
                 <Article
+                  key={slug}
                   style={
                     idx + 3 > articleSlugs.length - 1
                       ? { borderBottom: "none" }
@@ -98,6 +99,7 @@ export const HomePageLarge: React.FC<{
           {articleSlugs.map((slug, idx) =>
             idx % 3 === 1 ? (
               <Article
+                key={slug}
                 style={
                   idx + 3 > articleSlugs.length - 1
                     ? { borderBottom: "none" }
@@ -107,23 +109,13 @@ export const HomePageLarge: React.FC<{
               />
             ) : null,
           )}
-          {/* <Article
-            article={
-              latestArticles.find(article => article.slug === articleSlugs[3])!
-            }
-          />
-          <Article
-            style={{ borderBottom: "none" }}
-            article={
-              latestArticles.find(article => article.slug === articleSlugs[6])!
-            }
-          /> */}
         </BorderedCol>
 
         <Col>
           {articleSlugs.map((slug, idx) =>
             idx % 3 === 2 ? (
               <Article
+                key={slug}
                 style={
                   idx + 3 > articleSlugs.length - 1
                     ? { borderBottom: "none" }
@@ -133,17 +125,6 @@ export const HomePageLarge: React.FC<{
               />
             ) : null,
           )}
-          {/* <Article
-            article={
-              latestArticles.find(article => article.slug === articleSlugs[7])!
-            }
-          />
-          <Article
-            style={{ borderBottom: "none" }}
-            article={
-              latestArticles.find(article => article.slug === articleSlugs[4])!
-            }
-          /> */}
         </Col>
       </Row>
     </div>

@@ -29,7 +29,20 @@ export const HomePageMedium: React.FC<{
 
       <Row className="pt-2">
         <BorderedCol>
-          <Article
+          {slugs.map((slug, idx) =>
+            idx % 2 === 0 ? (
+              <Article
+                style={
+                  idx + 2 > slugs.length - 1
+                    ? { borderBottom: "none" }
+                    : undefined
+                }
+                key={slug}
+                article={latestArticles.find(article => article.slug === slug)!}
+              />
+            ) : null,
+          )}
+          {/* <Article
             article={latestArticles.find(article => article.slug === slugs[0])!}
           />
           <Article
@@ -49,10 +62,23 @@ export const HomePageMedium: React.FC<{
             article={
               latestArticles.find(article => article.slug === slugs[10])!
             }
-          />
+          /> */}
         </BorderedCol>
         <Col>
-          <Article
+          {slugs.map((slug, idx) =>
+            idx % 2 === 1 ? (
+              <Article
+                style={
+                  idx + 2 > slugs.length - 1
+                    ? { borderBottom: "none" }
+                    : undefined
+                }
+                key={slug}
+                article={latestArticles.find(article => article.slug === slug)!}
+              />
+            ) : null,
+          )}
+          {/* <Article
             article={latestArticles.find(article => article.slug === slugs[1])!}
           />
           <Article
@@ -67,7 +93,7 @@ export const HomePageMedium: React.FC<{
           <Article
             style={{ borderBottom: "none" }}
             article={latestArticles.find(article => article.slug === slugs[9])!}
-          />
+          /> */}
         </Col>
       </Row>
     </div>

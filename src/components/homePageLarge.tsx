@@ -96,35 +96,43 @@ export const HomePageLarge: React.FC<{
             )}
         </BorderedCol>
         <BorderedCol>
-          {articleSlugs.map((slug, idx) =>
-            idx % 3 === 1 ? (
-              <Article
-                key={slug}
-                style={
-                  idx + 3 > articleSlugs.length - 1
-                    ? { borderBottom: "none" }
-                    : undefined
-                }
-                article={latestArticles.find(article => article.slug === slug)!}
-              />
-            ) : null,
-          )}
+          {articleSlugs
+            .slice(2)
+            .map((slug, idx) =>
+              idx % 3 === 1 ? (
+                <Article
+                  key={slug}
+                  style={
+                    idx + 3 > articleSlugs.length - 1
+                      ? { borderBottom: "none" }
+                      : undefined
+                  }
+                  article={
+                    latestArticles.find(article => article.slug === slug)!
+                  }
+                />
+              ) : null,
+            )}
         </BorderedCol>
 
         <Col>
-          {articleSlugs.map((slug, idx) =>
-            idx % 3 === 2 ? (
-              <Article
-                key={slug}
-                style={
-                  idx + 3 > articleSlugs.length - 1
-                    ? { borderBottom: "none" }
-                    : undefined
-                }
-                article={latestArticles.find(article => article.slug === slug)!}
-              />
-            ) : null,
-          )}
+          {articleSlugs
+            .slice(2)
+            .map((slug, idx) =>
+              idx % 3 === 2 ? (
+                <Article
+                  key={slug}
+                  style={
+                    idx + 3 > articleSlugs.length - 1
+                      ? { borderBottom: "none" }
+                      : undefined
+                  }
+                  article={
+                    latestArticles.find(article => article.slug === slug)!
+                  }
+                />
+              ) : null,
+            )}
         </Col>
       </Row>
     </div>
